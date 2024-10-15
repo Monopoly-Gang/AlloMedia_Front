@@ -1,7 +1,7 @@
 import React from 'react';
-import PaymentIcon from '../assets/img/services1-ilustration.svg';
-import ProductIcon from '../assets/img/services2-ilustration.svg';
-import ReceivedIcon from '../assets/img/services3-ilustration.svg';
+import PaymentIcon from '../assets/img/services1-illustration.svg';
+import ProductIcon from '../assets/img/services2-illustration.svg';
+import ReceivedIcon from '../assets/img/services3-illustration.svg';
 
 const ServiceCard = ({ title, description, icon, altText }) => (
   <div className="bg-slate-50 dark:bg-slate-800 w-full max-w-xs border border-slate-200 dark:border-slate-700 rounded-2xl shadow-md shadow-slate-500/10 p-6 flex flex-col items-center text-center">
