@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import React, { useState } from "react";
 import { User, Mail, Lock, Phone, MapPin } from "lucide-react";
 import InputField from "../../components/InputField";
@@ -6,7 +7,7 @@ import IconInstagram from "../../components/icons/IconInstagram";
 import IconX from "../../components/icons/IconX.jsx";
 import IconGoogle from "../../components/icons/IconGoogle";
 import IconFacebook from "../../components/icons/IconFacebook";
-
+import { Toaster, toast } from "sonner";
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [userData, setUserData] = useState({
@@ -24,6 +25,7 @@ const Register = () => {
 
   return (
     <div>
+      <Toaster richColors />
       <div className="absolute inset-0">
         <img
           src="/assets/images/auth/bg-gradient.png"
