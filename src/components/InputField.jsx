@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { CircleX, CircleCheck, Eye, EyeOff } from 'lucide-react';
 
 const InputField = ({
@@ -34,7 +35,7 @@ const InputField = ({
             <Icon size={16} />
           </span>
         )}
-        {id === 'password' && (
+        {id === 'password' && togglePasswordVisibility && (
           <button
             type="button"
             className="absolute end-4 top-1/2 -translate-y-1/2"
@@ -57,6 +58,20 @@ const InputField = ({
       )}
     </div>
   );
+};
+
+InputField.propTypes = {
+  id: PropTypes.string.isRequired,
+  type: PropTypes.string,
+  value: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+  placeholder: PropTypes.string.isRequired,
+  error: PropTypes.string,
+  touched: PropTypes.bool,
+  icon: PropTypes.elementType,
+  disabled: PropTypes.bool,
+  showPassword: PropTypes.bool,
+  togglePasswordVisibility: PropTypes.func,
 };
 
 export default InputField;
