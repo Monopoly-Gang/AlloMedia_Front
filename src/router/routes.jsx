@@ -4,6 +4,7 @@ const Home = lazy(() => import('../pages/Home'));
 const Login = lazy(() => import('../pages/auth/Login'));
 const Register = lazy(() => import('../pages/auth/Register'));
 const VerifyOtp = lazy(() => import('../pages/auth/VerifyOtp'));
+const RoleSelection = lazy(() => import('../pages/auth/RoleSelection'));
 const ResetPassword = lazy(() => import('../pages/auth/ResetPassword'));
 const ForgotPassword = lazy(() => import('../pages/auth/ForgotPassword'));
 const VerifyEmail = lazy(() => import('../pages/auth/VerifyEmail'));
@@ -15,6 +16,7 @@ export const routes = [
   { path: '/auth/login', element: <Login /> },
   { path: '/auth/register', element: <Register /> },
   { path: '/auth/verify-otp', element: <VerifyOtp /> },
+  { path: '/auth/role-selection', element: <RoleSelection /> },
   { path: '/auth/reset-password', element: <ResetPassword /> },
   { path: '/auth/forgot-password', element: <ForgotPassword /> },
   { path: '/auth/verify-email', element: <VerifyEmail /> },

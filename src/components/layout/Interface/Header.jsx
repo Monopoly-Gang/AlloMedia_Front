@@ -87,7 +87,11 @@ const Navbar = () => {
               onClick={handleToggleDarkMode}
               className="border border-slate-300 dark:border-slate-400 rounded-full p-2"
             >
-              {isDarkMode ? <IoMoon size="20" /> : <IoSunny size="20" />}
+              {isDarkMode ? (
+                <IoMoon color="#f1f5f9" size="20" />
+              ) : (
+                <IoSunny color="#94a3b8" size="20" />
+              )}
             </button>
             {renderAuthButtons()}
           </div>
@@ -96,7 +100,7 @@ const Navbar = () => {
               onClick={handleToggleDarkMode}
               className="border border-slate-300 dark:border-slate-400 rounded-full p-2 mr-4"
             >
-              {isDarkMode ? <IoMoon size="20" /> : <IoSunny size="20" />}
+              {isDarkMode ? <IoMoon color="#f1f5f9" size="20" /> : <IoSunny color="#94a3b8" size="20" />}
             </button>
             <button onClick={toggleNavbar}>
               {mobileDrawerOpen ? (
