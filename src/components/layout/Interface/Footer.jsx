@@ -1,14 +1,34 @@
 import React from "react";
-import { useContext } from "react";
 import { FaFacebook, FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
-import paymentMethodsImage from "../../assets/img/payment.png";
-import logoLight from "../../assets/img/logo-light.svg";
-import logoDark from "../../assets/img/logo-dark.svg";
-import { ThemeContext } from "../../contexts/ThemeContext";
+import paymentMethodsImage from "../../../assets/img/payment.png";
+import logoLight from "../../../assets/img/logo-light.svg";
+import logoDark from "../../../assets/img/logo-dark.svg";
+import { useSelector } from 'react-redux';
 
 const Footer = () => {
-  const { isDarkMode } = useContext(ThemeContext);
- 
+  const isDarkMode = useSelector((state) => state.theme.isDarkMode);
+
+  const socialLinks = [
+    { icon: <FaFacebook />, href: "#" },
+    { icon: <FaInstagram />, href: "#" },
+    { icon: <FaTwitter />, href: "#" },
+    { icon: <FaYoutube />, href: "#" },
+  ];
+
+  const footerLinks = [
+    {
+      title: "Pagedone",
+      links: ["Home", "About", "Pricing", "Pro Version"],
+    },
+    {
+      title: "Products",
+      links: ["Figma UI System", "Icons Assets", "Responsive Blocks", "Components Library"],
+    },
+    {
+      title: "Resources",
+      links: ["FAQs", "Quick Start", "Documentation", "User Guide"],
+    },
+  ];
 
   return (
     <footer className="bg-slate-50 dark:bg-slate-900 text-slate-600 dark:text-slate-200 py-12 border-t border-slate-200 dark:border-slate-700">
@@ -22,151 +42,38 @@ const Footer = () => {
             />
           </div>
           <div className="flex space-x-4">
-            <a
-              href="#"
-              className="bg-slate-200 text-slate-900 hover:bg-orange-500 hover:text-white p-2 rounded-full"
-            >
-              <FaFacebook />
-            </a>
-            <a
-              href="#"
-              className="bg-slate-200 text-slate-900 hover:bg-orange-500 hover:text-white p-2 rounded-full"
-            >
-              <FaInstagram />
-            </a>
-            <a
-              href="#"
-              className="bg-slate-200 text-slate-900 hover:bg-orange-500 hover:text-white p-2 rounded-full"
-            >
-              <FaTwitter />
-            </a>
-            <a
-              href="#"
-              className="bg-slate-200 text-slate-900 hover:bg-orange-500 hover:text-white p-2 rounded-full"
-            >
-              <FaYoutube />
-            </a>
+            {socialLinks.map(({ icon, href }, index) => (
+              <a
+                key={index}
+                href={href}
+                className="bg-slate-200 text-slate-900 hover:bg-orange-500 hover:text-white p-2 rounded-full"
+              >
+                {icon}
+              </a>
+            ))}
           </div>
         </div>
 
         <div className="grid grid-cols-1 py-10 border-t border-slate-200 dark:border-slate-700 md:grid-cols-4 gap-8">
-          <div>
-            <h3 className="text-slate-900 dark:text-slate-50 text-lg font-semibold mb-4">
-              Pagedone
-            </h3>
-            <ul className="space-y-2">
-              <li>
-                <a
-                  href="#"
-                  className="dark:text-slate-400 text-slate-700 hover:text-orange-500"
-                >
-                  Home
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="dark:text-slate-400 text-slate-700 hover:text-orange-500"
-                >
-                  About
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="dark:text-slate-400 text-slate-700 hover:text-orange-500"
-                >
-                  Pricing
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="dark:text-slate-400 text-slate-700 hover:text-orange-500"
-                >
-                  Pro Version
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h3 className="text-slate-900 dark:text-slate-50 text-lg font-semibold mb-4">
-              Products
-            </h3>
-            <ul className="space-y-2">
-              <li>
-                <a
-                  href="#"
-                  className=" text-slate-700 dark:text-slate-400 hover:text-orange-500"
-                >
-                  Figma UI System
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className=" text-slate-700 dark:text-slate-400 hover:text-orange-500"
-                >
-                  Icons Assets
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className=" text-slate-700 dark:text-slate-400 hover:text-orange-500"
-                >
-                  Responsive Blocks
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className=" text-slate-700 dark:text-slate-400 hover:text-orange-500"
-                >
-                  Components Library
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h3 className="text-slate-900 dark:text-slate-50 text-lg font-semibold mb-4">
-              Resources
-            </h3>
-            <ul className="space-y-2">
-              <li>
-                <a
-                  href="#"
-                  className="text-slate-700 dark:text-slate-400 hover:text-orange-500"
-                >
-                  FAQs
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-slate-700 dark:text-slate-400 hover:text-orange-500"
-                >
-                  Quick Start
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-slate-700 dark:text-slate-400 hover:text-orange-500"
-                >
-                  Documentation
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-slate-700 dark:text-slate-400 hover:text-orange-500"
-                >
-                  User Guide
-                </a>
-              </li>
-            </ul>
-          </div>
+          {footerLinks.map(({ title, links }, index) => (
+            <div key={index}>
+              <h3 className="text-slate-900 dark:text-slate-50 text-lg font-semibold mb-4">
+                {title}
+              </h3>
+              <ul className="space-y-2">
+                {links.map((link, idx) => (
+                  <li key={idx}>
+                    <a
+                      href="#"
+                      className="dark:text-slate-400 text-slate-700 hover:text-orange-500"
+                    >
+                      {link}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
           <div>
             <h3 className="text-slate-900 dark:text-slate-50 text-lg font-semibold mb-4">
               Newsletter

@@ -1,20 +1,19 @@
 import { Menu, X } from "lucide-react";
-import { useState, useEffect, useContext } from "react";
-import logoLight from "../../assets/img/logo-light.svg";
-import logoDark from "../../assets/img/logo-dark.svg";
-import { IoMoon } from "react-icons/io5";
-import { IoSunny } from "react-icons/io5";
-import { ThemeContext } from "../../contexts/ThemeContext";
-import { AuthContext } from "../../contexts/AuthContext"; 
+import { useState, useEffect } from "react";
+import logoLight from "../../../assets/img/logo-light.svg";
+import logoDark from "../../../assets/img/logo-dark.svg";
+import { IoMoon, IoSunny } from "react-icons/io5";
+import { useSelector, useDispatch } from 'react-redux';
+import { toggleDarkMode } from '../../../store/themeSlice';
 
 const Navbar = () => {
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
-  const { isDarkMode, setIsDarkMode } = useContext(ThemeContext);
-  const { user, logout } = useContext(AuthContext); 
+  const isDarkMode = useSelector((state) => state.theme.isDarkMode);
+  const dispatch = useDispatch();
   const [isScrolled, setIsScrolled] = useState(false);
 
-  const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
+  const handleToggleDarkMode = () => {
+    dispatch(toggleDarkMode());
   };
 
   useEffect(() => {
@@ -33,6 +32,38 @@ const Navbar = () => {
     setMobileDrawerOpen(!mobileDrawerOpen);
   };
 
+  const renderNavLinks = () => (
+    <>
+      {['Home', 'Services', 'About Us', 'Contact Us', 'FAQ'].map((link) => (
+        <li key={link}>
+          <a
+            href="#"
+            className="hover:text-orange-500 transition-colors duration-300"
+          >
+            {link}
+          </a>
+        </li>
+      ))}
+    </>
+  );
+
+  const renderAuthButtons = () => (
+    <>
+      <a
+        href="/auth/login"
+        className="py-1 px-2 border rounded-md text-slate-900 dark:text-slate-50 hover:text-slate-50 hover:bg-gradient-to-r hover:from-orange-500 hover:to-orange-600 transition-colors duration-300"
+      >
+        Sign In
+      </a>
+      <a
+        href="/auth/role-selection"
+        className="py-1 px-2 text-white rounded-md bg-orange-500 hover:bg-gradient-to-r hover:from-orange-500 hover:to-orange-600 transition-colors duration-300"
+      >
+        Create an account
+      </a>
+    </>
+  );
+
   return (
     <nav
       className={`sticky top-0 z-50 py-3 px-7 ${
@@ -49,98 +80,29 @@ const Navbar = () => {
             />
           </div>
           <ul className="hidden text-slate-900 font-medium dark:text-slate-50 lg:flex ml-14 space-x-12">
-            <li>
-              <a
-                href=""
-                className="hover:text-orange-500 transition-colors duration-300"
-              >
-                Home
-              </a>
-            </li>
-            <li>
-              <a
-                href=""
-                className="hover:text-orange-500 transition-colors duration-300"
-              >
-                Services
-              </a>
-            </li>
-            <li>
-              <a
-                href=""
-                className="hover:text-orange-500 transition-colors duration-300"
-              >
-                About Us
-              </a>
-            </li>
-            <li>
-              <a
-                href=""
-                className="hover:text-orange-500 transition-colors duration-300"
-              >
-                Contact Us
-              </a>
-            </li>
-            <li>
-              <a
-                href=""
-                className="hover:text-orange-500 transition-colors duration-300"
-              >
-                FAQ
-              </a>
-            </li>
+            {renderNavLinks()}
           </ul>
           <div className="hidden lg:flex justify-center space-x-12 items-center">
             <button
-              onClick={toggleDarkMode}
+              onClick={handleToggleDarkMode}
               className="border border-slate-300 dark:border-slate-400 rounded-full p-2"
             >
-              {isDarkMode ? (
-                <IoMoon color="#f1f5f9" size="20" />
-              ) : (
-                <IoSunny color="#94a3b8" size="20" />
-              )}
+              {isDarkMode ? <IoMoon size="20" /> : <IoSunny size="20" />}
             </button>
-            {user ? (
-              <button
-                onClick={logout}
-                className="text-slate-900 hover:text-slate-50 dark:text-slate-50 font-medium py-2 px-3 border rounded-md border-slate-400 dark:border-slate-700 hover:bg-gradient-to-r hover:from-orange-500 hover:to-orange-600 transition-colors duration-300"
-              >
-                Logout
-              </button>
-            ) : (
-              <>
-                <a
-                  href="/auth/login"
-                  className="text-slate-900 hover:text-slate-50 dark:text-slate-50 font-medium py-2 px-3 border rounded-md border-slate-400 dark:border-slate-700 hover:bg-gradient-to-r hover:from-orange-500 hover:to-orange-600 transition-colors duration-300"
-                >
-                  Sign In
-                </a>
-                <a
-                  href="/auth/role-selection"
-                  className="text-white font-medium bg-orange-500 hover:bg-gradient-to-r hover:from-orange-500 hover:to-orange-600 transition-colors duration-300 py-2 px-3 rounded-md dark:border-slate-700"
-                >
-                  Create an account
-                </a>
-              </>
-            )}
+            {renderAuthButtons()}
           </div>
           <div className="lg:hidden flex items-center">
             <button
-              onClick={toggleDarkMode}
+              onClick={handleToggleDarkMode}
               className="border border-slate-300 dark:border-slate-400 rounded-full p-2 mr-4"
             >
-              {isDarkMode ? (
-                <IoMoon color="#f1f5f9" size="20" />
-              ) : (
-                <IoSunny color="#94a3b8" size="20" />
-              )}
+              {isDarkMode ? <IoMoon size="20" /> : <IoSunny size="20" />}
             </button>
             <button onClick={toggleNavbar}>
               {mobileDrawerOpen ? (
-                <X color={isDarkMode ? "#f1f5f9" : "#1e293b"} size="24" />
+                <X size="24" />
               ) : (
-                <Menu color={isDarkMode ? "#f1f5f9" : "#1e293b"} size="24" />
+                <Menu size="24" />
               )}
             </button>
           </div>
@@ -154,76 +116,14 @@ const Navbar = () => {
               <X size="24" />
             </button>
             <ul className="space-y-4 mt-8 text-slate-900 dark:text-slate-50">
-              <li>
-                <a
-                  href=""
-                  className="hover:text-orange-500 transition-colors duration-300"
-                >
-                  Home
-                </a>
-              </li>
-              <li>
-                <a
-                  href=""
-                  className="hover:text-orange-500 transition-colors duration-300"
-                >
-                  Services
-                </a>
-              </li>
-              <li>
-                <a
-                  href=""
-                  className="hover:text-orange-500 transition-colors duration-300"
-                >
-                  About Us
-                </a>
-              </li>
-              <li>
-                <a
-                  href=""
-                  className="hover:text-orange-500 transition-colors duration-300"
-                >
-                  Contact Us
-                </a>
-              </li>
-              <li>
-                <a
-                  href=""
-                  className="hover:text-orange-500 transition-colors duration-300"
-                >
-                  FAQ
-                </a>
-              </li>
+              {renderNavLinks()}
             </ul>
             <div className="flex space-x-6 mt-8">
-              {user ? (
-                <button
-                  onClick={logout}
-                  className="py-1 px-2 border rounded-md text-slate-900 dark:text-slate-50 hover:text-slate-50 hover:bg-gradient-to-r hover:from-orange-500 hover:to-orange-600 transition-colors duration-300"
-                >
-                  Logout
-                </button>
-              ) : (
-                <>
-                  <a
-                    href="/auth/login"
-                    className="py-1 px-2 border rounded-md text-slate-900 dark:text-slate-50 hover:text-slate-50 hover:bg-gradient-to-r hover:from-orange-500 hover:to-orange-600 transition-colors duration-300"
-                  >
-                    Sign In
-                  </a>
-                  <a
-                    href="/auth/role-selection"
-                    className="py-1 px-2 text-white rounded-md bg-orange-500 hover:bg-gradient-to-r hover:from-orange-500 hover:to-orange-600 transition-colors duration-300"
-                  >
-                    Create an account
-                  </a>
-                </>
-              )}
+              {renderAuthButtons()}
             </div>
           </div>
         )}
       </div>
-      
     </nav>
   );
 };

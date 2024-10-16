@@ -8,7 +8,6 @@ import { Mail, Lock } from "lucide-react";
 import { Toaster } from "sonner";
 import InputField from "../../components/InputField";
 import SpinnerIcon from "../../components/SpinnerIcon";
-
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
