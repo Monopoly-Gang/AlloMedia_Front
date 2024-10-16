@@ -9,16 +9,17 @@ const ResetPassword = lazy(() => import('../pages/auth/ResetPassword'));
 const ForgotPassword = lazy(() => import('../pages/auth/ForgotPassword'));
 const VerifyEmail = lazy(() => import('../pages/auth/VerifyEmail'));
 const NotFound = lazy(() => import('../pages/404'));
-
+const SuperAdminDashboard = lazy(() => import('../pages/restaurantManager/Dashboard'));
 
 export const routes = [
-  { path: '/', element: <Home /> },
-  { path: '/auth/login', element: <Login /> },
-  { path: '/auth/register', element: <Register /> },
-  { path: '/auth/verify-otp', element: <VerifyOtp /> },
-  { path: '/auth/role-selection', element: <RoleSelection /> },
-  { path: '/auth/reset-password', element: <ResetPassword /> },
-  { path: '/auth/forgot-password', element: <ForgotPassword /> },
-  { path: '/auth/verify-email', element: <VerifyEmail /> },
-  { path: '*', element: <NotFound /> },
+  { path: '/', element: <Home />, layout: 'default' },
+  { path: '/auth/login', element: <Login />, layout: 'blank' },
+  { path: '/auth/register', element: <Register />, layout: 'blank' },
+  { path: '/auth/verify-otp', element: <VerifyOtp />, layout: 'blank' },
+  { path: '/auth/role-selection', element: <RoleSelection />, layout: 'blank' },
+  { path: '/auth/reset-password', element: <ResetPassword />, layout: 'blank' },
+  { path: '/auth/forgot-password', element: <ForgotPassword />, layout: 'blank' },
+  { path: '/auth/verify-email', element: <VerifyEmail />, layout: 'blank' },
+  { path: '*', element: <NotFound />, layout: 'blank' },
+  { path: '/restaurant-manager/dashboard', element: <SuperAdminDashboard />, layout: 'default' },
 ];
