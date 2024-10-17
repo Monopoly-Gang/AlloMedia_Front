@@ -1,16 +1,13 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { Outlet } from 'react-router-dom';
 
-const BlankLayout = ({ children }) => {
+
+const BlankLayout = () => {
   return (
-    <div className="text-black dark:text-white-dark min-h-screen">
-      {children}
+    <div className="min-h-screen">
+      <Outlet />
     </div>
   );
-};
-
-BlankLayout.propTypes = {
-  children: PropTypes.node.isRequired,
 };
 
 export default BlankLayout;

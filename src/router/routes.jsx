@@ -1,16 +1,33 @@
-import Home from '../pages/Home';
-import Login from '../pages/auth/Login';
-import Register from '../pages/auth/Register';
-import RestaurantManagerDashboard from '../pages/restaurantManager/Dashboard';
-import SuperAdminDashboard from '../pages/superAdmin/Dashboard';
-import MainLayout from '../components/layout/Interface/MainLayout';
-import DefaultLayout from '../components/layout/Dashboard/DefaultLayout';
-import BlankLayout from '../components/layout/Dashboard/BlankLayout';
+import { lazy } from 'react';
+
+const Home = lazy(() => import('../pages/Home'));
+const Register = lazy(() => import('../pages/auth/Register'));
+const RestaurantManagerDashboard = lazy(() => import('../pages/restaurantManager/Dashboard'));
+const SuperAdminDashboard = lazy(() => import('../pages/superAdmin/Dashboard'));
+const MainLayout = lazy(() => import('../components/layout/Interface/MainLayout'));
+const DefaultLayout = lazy(() => import('../components/layout/Dashboard/DefaultLayout'));
+const BlankLayout = lazy(() => import('../components/layout/Dashboard/BlankLayout'));
+const Login = lazy(() => import('../pages/auth/Login'));
 
 export const routes = [
-  { path: '/', element: <Home />, layout: MainLayout },
-  { path: '/auth/login', element: <Login />, layout: BlankLayout },
-  { path: '/auth/register', element: <Register />, layout: BlankLayout },
-  { path: '/dashboard/restaurant-manager', element: <RestaurantManagerDashboard />, layout: DefaultLayout },
-  { path: '/dashboard/super-admin', element: <SuperAdminDashboard />, layout: DefaultLayout },
+  {
+    element: MainLayout,
+    children: [
+      { path: '/', element: Home },
+    ],
+  },
+  {
+    element: DefaultLayout,
+    children: [
+      { path: '/dashboard/restaurant-manager', element: RestaurantManagerDashboard },
+      { path: '/dashboard/super-admin', element: SuperAdminDashboard },
+    ],
+  },
+  {
+    element: BlankLayout,
+    children: [
+      { path: '/auth/login', element: Login },
+      { path: '/auth/register', element: Register },
+    ],
+  },
 ];

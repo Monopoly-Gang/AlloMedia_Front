@@ -1,54 +1,36 @@
-// src/router/index.jsx
-import { lazy, Suspense } from 'react';
-import { createBrowserRouter } from 'react-router-dom';
-import MainLayout from '../components/layout/Interface/MainLayout';
-import DefaultLayout from '../components/layout/Dashboard/DefaultLayout';
-import BlankLayout from '../components/layout/Dashboard/BlankLayout';
+import React, { Suspense } from 'react';
+import { createBrowserRouter, Outlet } from 'react-router-dom';
 import Loader from '../components/Loader';
+import { routes } from './routes';
 
-// Lazy load pages
-const Home = lazy(() => import('../pages/Home'));
-const Login = lazy(() => import('../pages/auth/Login'));
-const Register = lazy(() => import('../pages/auth/Register'));
-const RestaurantManagerDashboard = lazy(() => import('../pages/restaurantManager/Dashboard'));
-const SuperAdminDashboard = lazy(() => import('../pages/superAdmin/RestaurantManagement/ManageRestaurants'));
-const NotFound = lazy(() => import('../pages/404'));
+const lazyLoad = (Component) => {
+  const LazyComponent = (props) => (
+    <Suspense fallback={<Loader />}>
+      <Component {...props} />
+    </Suspense>
+  );
+  LazyComponent.displayName = `LazyLoad(${Component.displayName || Component.name || 'Component'})`;
+  return LazyComponent;
+};
 
-const routes = [
-  {
-    path: '/',
-    element: <MainLayout />,
-    children: [
-      { index: true, element: <Suspense fallback={<Loader />}><Home /></Suspense> },
-      { path: 'login', element: <Suspense fallback={<Loader />}><Login /></Suspense> },
-      { path: 'register', element: <Suspense fallback={<Loader />}><Register /></Suspense> },
-      { path: '*', element: <Suspense fallback={<Loader />}><NotFound /></Suspense> },
-    ],
-  },
-  {
-    path: '/dashboard',
-    element: <DefaultLayout />,
-    children: [
-      { 
-        path: 'restaurant-manager', 
-        element: <Suspense fallback={<Loader />}><RestaurantManagerDashboard /></Suspense> 
-      },
-      { 
-        path: 'super-admin', 
-        element: <Suspense fallback={<Loader />}><SuperAdminDashboard /></Suspense> 
-      },
-    ],
-  },
-  {
-    path: '/auth',
-    element: <BlankLayout />,
-    children: [
-      { path: 'forgot-password', element: <Suspense fallback={<Loader />}><ForgotPassword /></Suspense> },
-      { path: 'reset-password', element: <Suspense fallback={<Loader />}><ResetPassword /></Suspense> },
-    ],
-  },
-];
+const applyLayout = (route) => {
+  const Layout = route.layout || React.Fragment;
+  const RouteComponent = route.element ? lazyLoad(route.element) : Outlet;
 
-const router = createBrowserRouter(routes);
+  const LayoutWrapper = (props) => (
+    <Layout>
+      <RouteComponent {...props} />
+    </Layout>
+  );
+  LayoutWrapper.displayName = `LayoutWrapper(${Layout.displayName || Layout.name || 'Layout'})`;
+
+  return {
+    ...route,
+    element: <LayoutWrapper />,
+    children: route.children ? route.children.map(applyLayout) : undefined,
+  };
+};
+
+const router = createBrowserRouter(routes.map(applyLayout));
 
 export default router;
