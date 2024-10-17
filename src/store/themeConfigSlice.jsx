@@ -126,7 +126,7 @@ const themeConfigSlice = createSlice({
         },
         toggleLocale(state, { payload }) {
             payload = payload || state.locale;
-            i18next.changeLanguage(payload);
+            localStorage.setItem('i18nextLng', payload);
             state.locale = payload;
         },
         toggleSidebar(state) {

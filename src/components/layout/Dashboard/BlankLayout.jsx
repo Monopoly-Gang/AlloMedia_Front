@@ -1,17 +1,16 @@
-import App from '../../App';
+import React from 'react';
 import PropTypes from 'prop-types';
 
-
 const BlankLayout = ({ children }) => {
-    return (
-        <App>
-            <div className="text-black dark:text-white-dark min-h-screen">{children}</div>
-        </App>
-    );
+  return (
+    <div className="text-black dark:text-white-dark min-h-screen">
+      {children}
+    </div>
+  );
 };
 
 BlankLayout.propTypes = {
-    children: PropTypes.node.isRequired,
+  children: PropTypes.node.isRequired,
 };
 
 export default BlankLayout;

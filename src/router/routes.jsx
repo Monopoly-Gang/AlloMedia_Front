@@ -1,25 +1,16 @@
-import { lazy } from 'react';
-
-const Home = lazy(() => import('../pages/Home'));
-const Login = lazy(() => import('../pages/auth/Login'));
-const Register = lazy(() => import('../pages/auth/Register'));
-const VerifyOtp = lazy(() => import('../pages/auth/VerifyOtp'));
-const RoleSelection = lazy(() => import('../pages/auth/RoleSelection'));
-const ResetPassword = lazy(() => import('../pages/auth/ResetPassword'));
-const ForgotPassword = lazy(() => import('../pages/auth/ForgotPassword'));
-const VerifyEmail = lazy(() => import('../pages/auth/VerifyEmail'));
-const NotFound = lazy(() => import('../pages/404'));
-const SuperAdminDashboard = lazy(() => import('../pages/restaurantManager/Dashboard'));
+import Home from '../pages/Home';
+import Login from '../pages/auth/Login';
+import Register from '../pages/auth/Register';
+import RestaurantManagerDashboard from '../pages/restaurantManager/Dashboard';
+import SuperAdminDashboard from '../pages/superAdmin/Dashboard';
+import MainLayout from '../components/layout/Interface/MainLayout';
+import DefaultLayout from '../components/layout/Dashboard/DefaultLayout';
+import BlankLayout from '../components/layout/Dashboard/BlankLayout';
 
 export const routes = [
-  { path: '/', element: <Home />, layout: 'default' },
-  { path: '/auth/login', element: <Login />, layout: 'blank' },
-  { path: '/auth/register', element: <Register />, layout: 'blank' },
-  { path: '/auth/verify-otp', element: <VerifyOtp />, layout: 'blank' },
-  { path: '/auth/role-selection', element: <RoleSelection />, layout: 'blank' },
-  { path: '/auth/reset-password', element: <ResetPassword />, layout: 'blank' },
-  { path: '/auth/forgot-password', element: <ForgotPassword />, layout: 'blank' },
-  { path: '/auth/verify-email', element: <VerifyEmail />, layout: 'blank' },
-  { path: '*', element: <NotFound />, layout: 'blank' },
-  { path: '/restaurant-manager/dashboard', element: <SuperAdminDashboard />, layout: 'default' },
+  { path: '/', element: <Home />, layout: MainLayout },
+  { path: '/auth/login', element: <Login />, layout: BlankLayout },
+  { path: '/auth/register', element: <Register />, layout: BlankLayout },
+  { path: '/dashboard/restaurant-manager', element: <RestaurantManagerDashboard />, layout: DefaultLayout },
+  { path: '/dashboard/super-admin', element: <SuperAdminDashboard />, layout: DefaultLayout },
 ];
