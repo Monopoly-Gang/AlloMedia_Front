@@ -1,16 +1,36 @@
-import { createBrowserRouter } from 'react-router-dom';
-import BlankLayout from '../components/layout/Dashboard/BlankLayout';
-import DefaultLayout from '../components/layout/Dashboard/DefaultLayout';
+import React, { Suspense } from 'react';
+import { createBrowserRouter, Outlet } from 'react-router-dom';
+import Loader from '../components/Loader';
 import { routes } from './routes';
 
-const finalRoutes = routes.map((route) => {
-    const Layout = route.layout === 'blank' ? BlankLayout : DefaultLayout;
-    return {
-        ...route,
-        element: <Layout>{route.element}</Layout>,
-    };
-});
+const lazyLoad = (Component) => {
+  const LazyComponent = (props) => (
+    <Suspense fallback={<Loader />}>
+      <Component {...props} />
+    </Suspense>
+  );
+  LazyComponent.displayName = `LazyLoad(${Component.displayName || Component.name || 'Component'})`;
+  return LazyComponent;
+};
 
-const router = createBrowserRouter(finalRoutes);
+const applyLayout = (route) => {
+  const Layout = route.layout || React.Fragment;
+  const RouteComponent = route.element ? lazyLoad(route.element) : Outlet;
+
+  const LayoutWrapper = (props) => (
+    <Layout>
+      <RouteComponent {...props} />
+    </Layout>
+  );
+  LayoutWrapper.displayName = `LayoutWrapper(${Layout.displayName || Layout.name || 'Layout'})`;
+
+  return {
+    ...route,
+    element: <LayoutWrapper />,
+    children: route.children ? route.children.map(applyLayout) : undefined,
+  };
+};
+
+const router = createBrowserRouter(routes.map(applyLayout));
 
 export default router;

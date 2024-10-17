@@ -1,16 +1,15 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, NavLink, useLocation } from 'react-router-dom';
-import { IRootState } from '../../store';
-import { toggleRTL, toggleTheme, toggleSidebar } from '../../store/themeConfigSlice';
+import { Link, useLocation } from 'react-router-dom';
+import { toggleRTL, toggleTheme, toggleSidebar } from '../../../store/themeConfigSlice';
 import { useTranslation } from 'react-i18next';
 import i18next from 'i18next';
-import Dropdown from '../Dropdown';
+import Dropdown from './Dropdown';
 
 const Header = () => {
     const location = useLocation();
     const dispatch = useDispatch();
-    const themeConfig = useSelector((state: IRootState) => state.themeConfig);
+    const themeConfig = useSelector((state) => state.themeConfig);
     const isRtl = themeConfig.rtlClass === 'rtl';
     const { t } = useTranslation();
 

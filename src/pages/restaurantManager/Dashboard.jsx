@@ -1,12 +1,12 @@
 import React from 'react';
 
-const SuperAdminDashboard = () => {
+const RestaurantManagerDashboard = () => {
     return (
         <div>
-            <h1>Super Admin Dashboard</h1>
-            {/* Add more components and functionality specific to the super admin here */}
+            <h1>Restaurant Manager Dashboard</h1>
+            {/* Add more components and functionality specific to the restaurant manager here */}
         </div>
     );
 };
 
-export default SuperAdminDashboard;
+export default RestaurantManagerDashboard;
