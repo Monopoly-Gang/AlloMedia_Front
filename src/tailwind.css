@@ -69,6 +69,17 @@
         @apply transition-all duration-300 lg:ltr:ml-[260px] lg:rtl:mr-[260px];
     }
 
+    .sidebar .scroll-container {
+        @apply max-h-max overflow-y-auto
+        [&::-webkit-scrollbar]:w-2
+        [&::-webkit-scrollbar-track]:rounded-full
+        [&::-webkit-scrollbar-track]:bg-slate-100
+        [&::-webkit-scrollbar-thumb]:rounded-full
+        [&::-webkit-scrollbar-thumb]:bg-slate-200
+        dark:[&::-webkit-scrollbar-track]:bg-slate-800
+        dark:[&::-webkit-scrollbar-thumb]:bg-slate-700;
+    }
+
     /* Horizontal layouts */
     .horizontal .horizontal-menu {
         @apply hidden shadow-md lg:flex;

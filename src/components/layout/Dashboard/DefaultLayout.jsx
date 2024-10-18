@@ -20,7 +20,7 @@ const DefaultLayout = () => {
   };
 
   const onScrollHandler = () => {
-    setShowTopButton(window.pageYOffset > 50);
+    setShowTopButton(window.scrollY > 50);
   };
 
   useEffect(() => {
