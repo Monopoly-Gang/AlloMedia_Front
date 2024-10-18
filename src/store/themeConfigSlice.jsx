@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-import i18next from 'i18next';
 import themeConfig from '../theme.config';
 
 const defaultState = {
@@ -93,7 +92,7 @@ const themeConfigSlice = createSlice({
         },
         toggleMenu(state, { payload }) {
             payload = payload || state.menu; // vertical, collapsible-vertical, horizontal
-            state.sidebar = false; // reset sidebar state
+            // state.sidebar = false; // reset sidebar state
             localStorage.setItem('menu', payload);
             state.menu = payload;
         },
@@ -130,7 +129,7 @@ const themeConfigSlice = createSlice({
             state.locale = payload;
         },
         toggleSidebar(state) {
-            state.sidebar = !state.sidebar;
+            state.sidebar = !state.sidebar;      
         },
 
         setPageTitle(state, { payload }) {
