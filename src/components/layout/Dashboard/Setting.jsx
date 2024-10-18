@@ -127,7 +127,7 @@ const Setting = () => {
                             </button>
                         </div>
                         <div className="mt-5 text-primary">
-                            <label className="inline-flex mb-0">
+                            <label className="inline-flex justify-center items-center mb-0">
                                 <input
                                     type="checkbox"
                                     className="form-checkbox"
