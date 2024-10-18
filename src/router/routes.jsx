@@ -17,9 +17,14 @@ export const routes = [
     ],
   },
   {
-    element: DefaultLayout,
+    element: (props) => <DefaultLayout {...props} userRole="restaurantManager" />,
     children: [
       { path: '/dashboard/restaurant-manager', element: RestaurantManagerDashboard },
+    ],
+  },
+  {
+    element: (props) => <DefaultLayout {...props} userRole="superAdmin" />,
+    children: [
       { path: '/dashboard/super-admin', element: SuperAdminDashboard },
     ],
   },

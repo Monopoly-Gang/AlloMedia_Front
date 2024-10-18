@@ -64,16 +64,7 @@ const SuperAdminSidebar = () => {
                 <AnimateHeight duration={300} height={currentMenu === "dashboard" ? "auto" : 0}>
                   <ul className="sub-menu text-gray-500">
                     <li>
-                      <NavLink to="/">{t("sales")}</NavLink>
-                    </li>
-                    <li>
                       <NavLink to="/analytics">{t("analytics")}</NavLink>
-                    </li>
-                    <li>
-                      <NavLink to="/finance">{t("finance")}</NavLink>
-                    </li>
-                    <li>
-                      <NavLink to="/crypto">{t("crypto")}</NavLink>
                     </li>
                   </ul>
                 </AnimateHeight>

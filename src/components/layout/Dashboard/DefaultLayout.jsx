@@ -1,14 +1,16 @@
 import React, { Suspense, useEffect, useState } from "react";
+import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from "react-redux";
 import { Outlet } from "react-router-dom";
 import { toggleSidebar } from "../../../store/themeConfigSlice";
 import Header from "./Header";
 import Setting from "./Setting";
-import Sidebar from "./Sidebar";
+import SuperAdminSidebar from "./SuperAdminSidebar";
+import RestaurantManagerSidebar from "./RestaurantManagerSidebar";
 import Portals from "./Portals";
 import Loader from "../../Loader";
 
-const DefaultLayout = () => {
+const DefaultLayout = ({ userRole }) => {
   const themeConfig = useSelector((state) => state.themeConfig);
   const dispatch = useDispatch();
 
@@ -90,7 +92,7 @@ const DefaultLayout = () => {
         className={`${themeConfig.navbar} main-container text-black dark:text-white-dark min-h-screen`}
       >
         {/* BEGIN SIDEBAR */}
-        <Sidebar />
+        {userRole === 'superAdmin' ? <SuperAdminSidebar /> : <RestaurantManagerSidebar />}
         {/* END SIDEBAR */}
 
         <div className="main-content flex flex-col min-h-screen">
@@ -110,6 +112,10 @@ const DefaultLayout = () => {
       </div>
     </div>
   );
+};
+
+DefaultLayout.propTypes = {
+  userRole: PropTypes.string.isRequired,
 };
 
 export default DefaultLayout;
