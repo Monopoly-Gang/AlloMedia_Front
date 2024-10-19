@@ -1,5 +1,7 @@
 /** @type {import('tailwindcss').Config} */
+import { iconsPlugin, dynamicIconsPlugin } from '@egoist/tailwindcss-icons'
 export default {
+
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
@@ -66,6 +68,6 @@ export default {
         },
     },
 },
-  plugins: [],
+plugins: [iconsPlugin(), dynamicIconsPlugin()],
 }
 

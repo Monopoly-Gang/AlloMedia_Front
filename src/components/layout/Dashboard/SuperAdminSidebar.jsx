@@ -1,13 +1,14 @@
 import React from 'react';
 import { useTranslation } from "react-i18next";
 import { NavLink } from "react-router-dom";
-import PerfectScrollbar from "react-perfect-scrollbar";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleSidebar } from "../../../store/themeConfigSlice";
 import AnimateHeight from "react-animate-height";
 import { useState, useEffect } from "react";
+import { MaterialSymbolsDashboardCustomizeRounded } from "../../icons/MaterialSymbolsDashboardCustomizeRounded";
+import { Restaurant } from "../../icons/Restaurant";
 
-const SuperAdminSidebar = () => {
+const RestaurantManagerSidebar = () => {
   const [currentMenu, setCurrentMenu] = useState("");
   const themeConfig = useSelector((state) => state.themeConfig);
   const semidark = useSelector((state) => state.themeConfig.semidark);
@@ -42,17 +43,14 @@ const SuperAdminSidebar = () => {
               </svg>
             </button>
           </div>
-          <PerfectScrollbar className="h-[calc(100vh-80px)] relative">
+          <div className="h-[calc(100vh-80px)] relative overflow-y-auto scroll-container">
             <ul className="relative font-semibold space-y-0.5 p-4 py-0">
               <li className="menu nav-item">
                 <button type="button" className={`${currentMenu === "dashboard" ? "active" : ""} nav-link group w-full`} onClick={() => toggleMenu("dashboard")}>
                   <div className="flex items-center">
-                    <svg className="group-hover:!text-primary shrink-0" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path opacity="0.5" d="M2 12.2039C2 9.91549 2 8.77128 2.5192 7.82274C3.0384 6.87421 3.98695 6.28551 5.88403 5.10813L7.88403 3.86687C9.88939 2.62229 10.8921 2 12 2C13.1079 2 14.1106 2.62229 16.116 3.86687L18.116 5.10812C20.0131 6.28551 20.9616 6.87421 21.4808 7.82274C22 8.77128 22 9.91549 22 12.2039V13.725C22 17.6258 22 19.5763 20.8284 20.7881C19.6569 22 17.7712 22 14 22H10C6.22876 22 4.34315 22 3.17157 20.7881C2 19.5763 2 17.6258 2 13.725V12.2039Z" fill="currentColor" />
-                      <path d="M9 17.25C8.58579 17.25 8.25 17.5858 8.25 18C8.25 18.4142 8.58579 18.75 9 18.75H15C15.4142 18.75 15.75 18.4142 15.75 18C15.75 17.5858 15.4142 17.25 15 17.25H9Z" fill="currentColor" />
-                    </svg>
+                  <MaterialSymbolsDashboardCustomizeRounded className="group-hover:!text-primary shrink-0" />
                     <span className="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">
-                      {t("dashboard")}
+                      {t("Dashboard")}
                     </span>
                   </div>
                   <div className={currentMenu === "dashboard" ? "rotate-90" : "rtl:rotate-180"}>
@@ -64,18 +62,96 @@ const SuperAdminSidebar = () => {
                 <AnimateHeight duration={300} height={currentMenu === "dashboard" ? "auto" : 0}>
                   <ul className="sub-menu text-gray-500">
                     <li>
-                      <NavLink to="/analytics">{t("analytics")}</NavLink>
+                      <NavLink to="/analytics">{t("Analytics")}</NavLink>
                     </li>
                   </ul>
                 </AnimateHeight>
               </li>
-              {/* Add more menu items specific to Super Admin */}
+              <h2 className="py-3 px-7 flex items-center uppercase font-extrabold bg-white-light/30 dark:bg-dark dark:bg-opacity-[0.08] -mx-4 mb-1">
+                <svg
+                  className="w-4 h-5 flex-none hidden"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  fill="none"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+                <span className='text-[0.85rem]'>{t("Restaurant Management")}</span>
+              </h2>
+              <li className="menu nav-item">
+                <button
+                  type="button"
+                  className={`${
+                    currentMenu === "restaurant" ? "active" : ""
+                  } nav-link group w-full`}
+                  onClick={() => toggleMenu("restaurant")}
+                >
+                  <div className="flex items-center">
+                  <Restaurant className="group-hover:!text-primary shrink-0" />
+                    <span className="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">
+                      {t("restaurant")}
+                    </span>
+                  </div>
+
+                  <div
+                    className={
+                      currentMenu === "restaurant"
+                        ? "rotate-90"
+                        : "rtl:rotate-180"
+                    }
+                  >
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M9 5L15 12L9 19"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </div>
+                </button>
+
+                <AnimateHeight
+                  duration={300}
+                  height={currentMenu === "restaurant" ? "auto" : 0}
+                >
+                  <ul className="sub-menu text-gray-500">
+                    <li>
+                      <NavLink to=""> {t("List Restaurant")}</NavLink>
+                    </li>
+                    <li>
+                      <NavLink to=""> {t("Add restaurant")}</NavLink>
+                    </li>
+                    <li>
+                      <NavLink to="">
+                      {t("Edit restaurant")}
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink to="">
+                      {t("Approve restaurant")}
+                      </NavLink>
+                    </li>
+                  </ul>
+                </AnimateHeight>
+              </li>
+
             </ul>
-          </PerfectScrollbar>
+          </div>
         </div>
       </nav>
     </div>
   );
 };
 
-export default SuperAdminSidebar;
+export default RestaurantManagerSidebar;
