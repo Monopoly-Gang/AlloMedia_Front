@@ -1,4 +1,3 @@
-import PerfectScrollbar from "react-perfect-scrollbar";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useLocation } from "react-router-dom";
@@ -46,7 +45,6 @@ const Sidebar = () => {
       dispatch(toggleSidebar());
     }
   }, [location, dispatch, themeConfig.sidebar]);
-
   
   return (
     <div className={semidark ? "dark" : "" }>
@@ -101,7 +99,7 @@ const Sidebar = () => {
               </svg>
             </button>
           </div>
-          <PerfectScrollbar className="h-[calc(100vh-80px)] relative">
+          <div className="h-[calc(100vh-80px)] relative overflow-y-auto scroll-container">
             <ul className="relative font-semibold space-y-0.5 p-4 py-0">
               <li className="menu nav-item">
                 <button
@@ -1660,7 +1658,7 @@ const Sidebar = () => {
                 </NavLink>
               </li>
             </ul>
-          </PerfectScrollbar>
+          </div>
         </div>
       </nav>
     </div>

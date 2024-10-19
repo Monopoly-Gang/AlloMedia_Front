@@ -1,5 +1,7 @@
 /** @type {import('tailwindcss').Config} */
+import { iconsPlugin, dynamicIconsPlugin } from '@egoist/tailwindcss-icons'
 export default {
+
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
@@ -43,8 +45,8 @@ export default {
                 'dark-light': 'rgba(33,150,243,.15)',
             },
             dark: {
-                DEFAULT: '#3b3f5c',
-                light: '#eaeaec',
+                DEFAULT: '#0f172a',
+                light: '#f8fafc',
                 'dark-light': 'rgba(59,63,92,.15)',
             },
             black: {
@@ -58,9 +60,6 @@ export default {
                 dark: '#888ea8',
             },
         },
-        fontFamily: {
-          poppins: ['Poppins', 'sans-serif'],
-        },
         spacing: {
             4.5: '18px',
         },
@@ -69,6 +68,6 @@ export default {
         },
     },
 },
-  plugins: [],
+plugins: [iconsPlugin(), dynamicIconsPlugin()],
 }
 

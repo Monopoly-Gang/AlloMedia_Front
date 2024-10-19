@@ -69,6 +69,17 @@
         @apply transition-all duration-300 lg:ltr:ml-[260px] lg:rtl:mr-[260px];
     }
 
+    .sidebar .scroll-container {
+        @apply max-h-max overflow-y-auto
+        [&::-webkit-scrollbar]:w-2
+        [&::-webkit-scrollbar-track]:rounded-full
+        [&::-webkit-scrollbar-track]:bg-slate-100
+        [&::-webkit-scrollbar-thumb]:rounded-full
+        [&::-webkit-scrollbar-thumb]:bg-slate-200
+        dark:[&::-webkit-scrollbar-track]:bg-slate-800
+        dark:[&::-webkit-scrollbar-thumb]:bg-slate-700;
+    }
+
     /* Horizontal layouts */
     .horizontal .horizontal-menu {
         @apply hidden shadow-md lg:flex;
@@ -372,7 +383,7 @@
     /* checkbox & radio */
     .form-radio,
     .form-checkbox {
-        @apply h-5 w-5 cursor-pointer rounded border-2 border-white-light bg-transparent text-primary !shadow-none !outline-none !ring-0 !ring-offset-0 checked:bg-[length:90%_90%] disabled:cursor-not-allowed disabled:bg-[#eee] ltr:mr-1.5 rtl:ml-1.5
+        @apply h-4 w-4 cursor-pointer rounded border-2 border-white-light bg-transparent accent-primary checked:text-slate-50 !shadow-none !outline-none !ring-0 !ring-offset-0 checked:bg-[length:90%_90%] disabled:cursor-not-allowed disabled:bg-[#eee] ltr:mr-1.5 rtl:ml-1.5
       dark:border-[#253b5c] dark:checked:border-transparent dark:disabled:bg-[#1b2e4b];
     }
 

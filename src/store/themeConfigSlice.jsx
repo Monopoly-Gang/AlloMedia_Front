@@ -90,9 +90,11 @@ const themeConfigSlice = createSlice({
                 document.querySelector('body')?.classList.remove('dark');
             }
         },
+        toggleSidebar(state) {
+            state.sidebar = !state.sidebar;      
+        },
         toggleMenu(state, { payload }) {
             payload = payload || state.menu; // vertical, collapsible-vertical, horizontal
-            // state.sidebar = false; // reset sidebar state
             localStorage.setItem('menu', payload);
             state.menu = payload;
         },
@@ -127,9 +129,6 @@ const themeConfigSlice = createSlice({
             payload = payload || state.locale;
             localStorage.setItem('i18nextLng', payload);
             state.locale = payload;
-        },
-        toggleSidebar(state) {
-            state.sidebar = !state.sidebar;      
         },
 
         setPageTitle(state, { payload }) {
