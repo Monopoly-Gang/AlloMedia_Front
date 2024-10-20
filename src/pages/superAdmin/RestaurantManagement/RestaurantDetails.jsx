@@ -1,11 +1,8 @@
-import React from "react";
-import { useTranslation } from "react-i18next";
 import RestaurantHeader from "../../../components/RestaurantDetails/RestaurantHeader";
 import MenuSection from "../../../components/RestaurantDetails/MenuSection";
 import RestaurantInfoSection from "../../../components/RestaurantDetails/RestaurantInfoSection";  
 
 const RestaurantDetails = () => {
-  const { t } = useTranslation();
 
   // Mock data - replace with actual data fetching logic
   const restaurantData = {

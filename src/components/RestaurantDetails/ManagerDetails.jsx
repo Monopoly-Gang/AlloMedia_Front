@@ -1,8 +1,9 @@
-import React from "react";
 import { User, Mail, Phone } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import PropTypes from 'prop-types';
 
 const ManagerDetails = ({ manager }) => {
+
   const { t } = useTranslation();
 
   return (
@@ -27,5 +28,9 @@ const ManagerDetails = ({ manager }) => {
     </div>
   );
 };
+
+ManagerDetails.propTypes = {
+    manager: PropTypes.object.isRequired,
+  };
 
 export default ManagerDetails;

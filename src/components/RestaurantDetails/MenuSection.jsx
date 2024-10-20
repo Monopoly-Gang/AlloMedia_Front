@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Plus } from "lucide-react";
 import MenuItem from "./MenuItem";
 import SpinnerIcon from "../../components/SpinnerIcon";
-
+import PropTypes from 'prop-types';
 const MenuSection = ({ menu }) => {
   const { t } = useTranslation();
   const [currentPage, setCurrentPage] = useState(1);
@@ -67,6 +67,10 @@ const MenuSection = ({ menu }) => {
       )}
     </div>
   );
+};
+
+MenuSection.propTypes = {
+  menu: PropTypes.array.isRequired,
 };
 
 export default MenuSection;
