@@ -3,7 +3,6 @@ import { FaFacebook, FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
 import paymentMethodsImage from "../../../assets/img/payment.png";
 import logoLight from "../../../assets/img/logo-light.svg";
 import logoDark from "../../../assets/img/logo-dark.svg";
-import { toggleTheme } from "../../../store/themeConfigSlice";
 import { useSelector } from 'react-redux';
 
 const Footer = () => {

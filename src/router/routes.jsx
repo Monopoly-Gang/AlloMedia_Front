@@ -10,6 +10,7 @@ const BlankLayout = lazy(() => import('../components/layout/Dashboard/BlankLayou
 const Login = lazy(() => import('../pages/auth/Login'));
 const ManageRestaurants = lazy(() => import('../pages/superAdmin/RestaurantManagement/ManageRestaurants'));
 const RestaurantDetails = lazy(() => import('../pages/superAdmin/RestaurantManagement/RestaurantDetails'));
+const AddRestaurant = lazy(() => import('../pages/superAdmin/RestaurantManagement/AddRestaurant'));
 
 export const routes = [
   {
@@ -30,6 +31,7 @@ export const routes = [
       { path: '/dashboard/super-admin', element: SuperAdminDashboard },
       { path: '/dashboard/super-admin/manage-restaurants', element: ManageRestaurants },
       { path: '/dashboard/super-admin/restaurant-details/:id', element: RestaurantDetails },
+      { path: '/dashboard/super-admin/add-restaurant', element: AddRestaurant },
     ],
   },
   {
