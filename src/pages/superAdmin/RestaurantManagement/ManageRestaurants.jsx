@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
   Search,
@@ -20,6 +21,7 @@ const ManageRestaurants = () => {
   const [filterCuisine, setFilterCuisine] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
   const [restaurantsPerPage] = useState(8);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Fetch restaurants data (replace with API call)
@@ -92,6 +94,10 @@ const ManageRestaurants = () => {
   const totalPages = Math.ceil(filteredRestaurants.length / restaurantsPerPage);
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  const handelViewDetails = (id) => {
+    navigate(`/dashboard/super-admin/restaurant-details/${id}`);
+  }
 
   return (
     <div className="p-6 bg-white dark:bg-slate-900 rounded-lg shadow-md">
@@ -174,7 +180,7 @@ const ManageRestaurants = () => {
                 </div>
               </div>
               <div className="flex justify-between items-center w-full mt-8">
-                <button className="w-1/2 bg-primary text-white py-2 rounded-lg hover:bg-primary-dark transition duration-300">
+                <button className="w-1/2 bg-primary text-white py-2 rounded-lg hover:bg-primary-dark transition duration-300" onClick={ () => handelViewDetails(restaurant.id)}>
                   {t("View Details")}
                 </button>
                 <div className="flex flex-row items-center justify-center">
