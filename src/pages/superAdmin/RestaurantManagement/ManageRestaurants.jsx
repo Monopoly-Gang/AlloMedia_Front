@@ -34,7 +34,7 @@ const ManageRestaurants = () => {
           "2123 Osprey the Blue Mountains, Townline, Feversham, ON NOC 1CO, Canada",
         email: "hbruggen0@narod.ru",
         phone: "1078832848",
-        logo: "/path/to/logo1.png",
+        logo: "https://via.placeholder.com/100?text=Healthy+Feast+Corner",
         cuisineType: "Healthy",
       },
       {
@@ -44,7 +44,7 @@ const ManageRestaurants = () => {
         address: "2045 Scotch Line, Essa, Ontario, L9R 1V2, Alliston, CA",
         email: "dsoden1@fda.gov",
         phone: "2847899814",
-        logo: "/path/to/logo2.png",
+        logo: "https://via.placeholder.com/100?text=Farmhouse+Dish+Heaven",
         cuisineType: "American",
       },
       {
@@ -54,7 +54,7 @@ const ManageRestaurants = () => {
         address: "6058 Townhigh Mountains, Sideroad, Clarksburg, ON.",
         email: "lhillen2@dyndns.org",
         phone: "2816686226",
-        logo: "/path/to/logo3.png",
+        logo: "https://via.placeholder.com/100?text=Kitchen+Creation",
         cuisineType: "Italian",
       },
       {
@@ -64,7 +64,7 @@ const ManageRestaurants = () => {
         address: "A-67 Concession 8, Nottawasaga RD, Glen Huron, Poland",
         email: "knewsome3@alexa.com",
         phone: "1102607941",
-        logo: "/path/to/logo4.png",
+        logo: "https://via.placeholder.com/100?text=Country+Cooking+Cove",
         cuisineType: "Mexican",
       },
     ];
