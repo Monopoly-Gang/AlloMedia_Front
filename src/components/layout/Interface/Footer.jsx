@@ -3,10 +3,12 @@ import { FaFacebook, FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
 import paymentMethodsImage from "../../../assets/img/payment.png";
 import logoLight from "../../../assets/img/logo-light.svg";
 import logoDark from "../../../assets/img/logo-dark.svg";
+import { toggleTheme } from "../../../store/themeConfigSlice";
 import { useSelector } from 'react-redux';
 
 const Footer = () => {
-  const isDarkMode = useSelector((state) => state.theme.isDarkMode);
+
+  const themeConfig = useSelector((state) => state.themeConfig);
 
   const socialLinks = [
     { icon: <FaFacebook />, href: "#" },
@@ -37,7 +39,7 @@ const Footer = () => {
           <div className="flex items-center">
             <img
               className="h-12 w-24 mr-2"
-              src={isDarkMode ? logoDark : logoLight}
+              src={themeConfig.theme === "dark" ? logoDark : logoLight}
               alt="logo AlloMedia"
             />
           </div>

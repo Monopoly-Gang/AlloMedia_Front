@@ -1,5 +1,4 @@
 /** @type {import('tailwindcss').Config} */
-import { iconsPlugin, dynamicIconsPlugin } from '@egoist/tailwindcss-icons'
 export default {
 
   content: [
@@ -13,6 +12,15 @@ export default {
         center: true,
     },
     extend: {
+        animation: {
+            fadeInUp: 'fadeInUp 0.5s ease-out',
+          },
+          keyframes: {
+            fadeInUp: {
+              '0%': { opacity: '0', transform: 'translateY(20px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
+            },
+          },
         colors: {
             primary: {
                 DEFAULT: '#f97316',
@@ -68,6 +76,6 @@ export default {
         },
     },
 },
-plugins: [iconsPlugin(), dynamicIconsPlugin()],
+plugins: [],
 }
 

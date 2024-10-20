@@ -8,6 +8,8 @@ const MainLayout = lazy(() => import('../components/layout/Interface/MainLayout'
 const DefaultLayout = lazy(() => import('../components/layout/Dashboard/DefaultLayout'));
 const BlankLayout = lazy(() => import('../components/layout/Dashboard/BlankLayout'));
 const Login = lazy(() => import('../pages/auth/Login'));
+const ManageRestaurants = lazy(() => import('../pages/superAdmin/RestaurantManagement/ManageRestaurants'));
+const RestaurantDetails = lazy(() => import('../pages/superAdmin/RestaurantManagement/RestaurantDetails'));
 
 export const routes = [
   {
@@ -26,6 +28,8 @@ export const routes = [
     element: (props) => <DefaultLayout {...props} userRole="superAdmin" />,
     children: [
       { path: '/dashboard/super-admin', element: SuperAdminDashboard },
+      { path: '/dashboard/super-admin/manage-restaurants', element: ManageRestaurants },
+      { path: '/dashboard/super-admin/restaurant-details/:id', element: RestaurantDetails },
     ],
   },
   {
