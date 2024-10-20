@@ -122,8 +122,6 @@ const ImageUpload = ({ name, label, onChange, t }) => {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-slate-900 to-slate-50 opacity-50 rounded-lg"></div>
               <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
                 onClick={handleRemoveImage}
                 className="absolute bottom-2 left-1/2 transform -translate-x-1/2 bg-slate-900/50 text-white rounded-full p-2 hover:bg-slate-800 transition-colors"
                 type="button"
@@ -162,20 +160,29 @@ const ImageUpload = ({ name, label, onChange, t }) => {
         </motion.div>
       </AnimatePresence>
       {isModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-slate-800 p-4 rounded-lg max-w-3xl w-full">
+        <div className="fixed inset-0 bg-slate-900 bg-opacity-80 flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-slate-800 p-4 rounded-md border border-slate-200 dark:border-slate-700 max-w-3xl w-full max-h-[90vh] overflow-y-auto">
             <h2 className="text-xl font-bold mb-4">{t("Crop Image")}</h2>
-            <ReactCrop
-              crop={crop}
-              onChange={(_, percentCrop) => setCrop(percentCrop)}
-              onComplete={(c) => setCompletedCrop(c)}
-            >
-              <img ref={imgRef} src={preview} alt="Crop preview" />
-            </ReactCrop>
+            <div className="max-h-[60vh] overflow-hidden">
+              <ReactCrop
+                crop={crop}
+                onChange={(_, percentCrop) => setCrop(percentCrop)}
+                onComplete={(c) => setCompletedCrop(c)}
+                style={{ maxHeight: "100%", width: "auto" }}
+              >
+                <img
+                  className="rounded-md max-w-full h-auto"
+                  ref={imgRef}
+                  src={preview}
+                  alt="Crop preview"
+                  style={{ maxHeight: "60vh", width: "auto" }}
+                />
+              </ReactCrop>
+            </div>
             <div className="flex justify-end mt-4">
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="px-4 py-2 bg-gray-300 text-gray-800 rounded mr-2"
+                className="px-4 py-2 font-semibold bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded mr-2"
               >
                 {t("Cancel")}
               </button>
@@ -184,7 +191,7 @@ const ImageUpload = ({ name, label, onChange, t }) => {
                   getCroppedImg();
                   setIsModalOpen(false);
                 }}
-                className="px-4 py-2 bg-green-500 text-white rounded"
+                className="px-4 py-2 font-semibold bg-primary text-white rounded"
               >
                 {t("Apply Crop")}
               </button>

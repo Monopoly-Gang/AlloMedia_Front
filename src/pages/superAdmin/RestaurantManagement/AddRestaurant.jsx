@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ArrowRight, ArrowLeft } from "lucide-react";
+import { ArrowRight, ArrowLeft, Save } from "lucide-react";
 import ImageUpload from "../../../components/ImageUpload";
 import InputField from "../../../components/InputField";
 
@@ -167,7 +167,7 @@ const AddRestaurant = () => {
           <button
             type="button"
             onClick={() => setActiveStep((prev) => Math.max(0, prev - 1))}
-            className="flex items-center px-4 py-2 bg-slate-200 text-slate-700 rounded"
+            className="flex items-center px-4 py-2 font-semibold bg-slate-200 text-slate-700 rounded"
             disabled={activeStep === 0}
           >
             <ArrowLeft size={16} className="mr-2" />
@@ -176,9 +176,10 @@ const AddRestaurant = () => {
           {activeStep === steps.length - 1 ? (
             <button
               type="submit"
-              className="px-4 py-2 bg-blue-500 text-white rounded"
+              className="flex items-center px-4 py-2 bg-primary text-white font-semibold rounded"
             >
-              {t("Submit")}
+              <Save size={16} className="mr-2" />
+              {t("Save")}
             </button>
           ) : (
             <button
