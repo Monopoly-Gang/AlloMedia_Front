@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
+import { User, MessageCircle, DollarSign } from 'lucide-react';
 import InputField from '../../../components/InputField';
 import ImageUpload from '../../../components/ImageUpload';
 import TextArea from '../../../components/TextArea';
+import { menuItemSchema } from '../../../validation/menuItemValidation';
 
 const AddMenuItem = () => {
   const { t } = useTranslation();
@@ -14,6 +16,16 @@ const AddMenuItem = () => {
     image: null
   });
   const [errors, setErrors] = useState({});
+  const [touched, setTouched] = useState({});
+
+  const validateField = async (name, value) => {
+    try {
+      await menuItemSchema.validateAt(name, { [name]: value });
+      setErrors((prev) => ({ ...prev, [name]: '' }));
+    } catch (error) {
+      setErrors((prev) => ({ ...prev, [name]: error.message }));
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -21,13 +33,8 @@ const AddMenuItem = () => {
       ...prevData,
       [name]: value
     }));
-    // Clear error when user starts typing
-    if (errors[name]) {
-      setErrors(prevErrors => ({
-        ...prevErrors,
-        [name]: ''
-      }));
-    }
+    validateField(name, value);
+    setTouched((prev) => ({ ...prev, [name]: true }));
   };
 
   const handleImageChange = (file) => {
@@ -38,29 +45,30 @@ const AddMenuItem = () => {
           ...prevData,
           image: reader.result
         }));
+        validateField('image', reader.result);
       };
       reader.readAsDataURL(file);
     }
   };
 
-  const validateForm = () => {
-    const newErrors = {};
-    if (!formData.name) newErrors.name = t('Name is required');
-    if (formData.name.length < 2) newErrors.name = t('Name must be at least 2 characters');
-    if (formData.name.length > 50) newErrors.name = t('Name must not exceed 50 characters');
-    if (!formData.price) newErrors.price = t('Price is required');
-    if (parseFloat(formData.price) < 0) newErrors.price = t('Price must be a positive number');
-    if (parseFloat(formData.price) > 1000000) newErrors.price = t('Price must not exceed 1,000,000');
-    if (formData.description.length > 500) newErrors.description = t('Description must not exceed 500 characters');
-    if (!formData.image) newErrors.image = t('Image is required');
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+  const validateForm = async () => {
+    try {
+      await menuItemSchema.validate(formData, { abortEarly: false });
+      setErrors({});
+      return true;
+    } catch (validationErrors) {
+      const newErrors = validationErrors.inner.reduce((acc, error) => {
+        acc[error.path] = error.message;
+        return acc;
+      }, {});
+      setErrors(newErrors);
+      return false;
+    }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (validateForm()) {
-      // TODO: Implement API call to save menu item
+    if (await validateForm()) {
       console.log('Menu item data:', formData);
       toast.success(t('Menu item added successfully'));
       setFormData({ name: '', description: '', price: '', image: null });
@@ -69,40 +77,48 @@ const AddMenuItem = () => {
 
   return (
     <div className="max-w-2xl mx-auto p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg shadow-md">
-      <h1 className="text-2xl font-bold mb-6 dark:text-white">{t('Add Menu Item')}</h1>
+      <h1 className="text-2xl font-bold mb-6 dark:text-slate-400">{t('Add Menu Item')}</h1>
       <form onSubmit={handleSubmit} className="space-y-6">
         <InputField
           id="name"
+          name="name"
           type="text"
           placeholder={t('Name')}
           value={formData.name}
           onChange={handleChange}
           error={errors.name}
-          touched={true}
+          touched={touched.name}
+          icon={User}
         />
 
         <TextArea
           id="description"
+          name="description"
           placeholder={t('Description')}
           value={formData.description}
           onChange={handleChange}
           error={errors.description}
+          touched={touched.description}
+          icon={MessageCircle}
         />
 
         <InputField
           id="price"
-          type="number"
+          name="price"
+          type="text"
           placeholder={t('Price')}
           value={formData.price}
           onChange={handleChange}
           error={errors.price}
-          touched={true}
+          touched={touched.price}
+          icon={DollarSign}
         />
 
         <ImageUpload
           name="image"
           label={t('Image')}
           onChange={handleImageChange}
+          error={errors.image}
           t={t}
         />
         {errors.image && <p className="mt-1 text-sm text-red-600">{errors.image}</p>}

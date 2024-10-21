@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import ReactCrop from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
 
-const ImageUpload = ({ name, label, onChange, t, error }) => {
+const ImageUpload = ({ name, label, onChange, t }) => {
   const [preview, setPreview] = useState(null);
   const [metadata, setMetadata] = useState(null);
   const [crop, setCrop] = useState();
@@ -159,7 +159,6 @@ const ImageUpload = ({ name, label, onChange, t, error }) => {
           )}
         </motion.div>
       </AnimatePresence>
-      {error && <p className="text-red-500 mt-2">{error}</p>}
       {isModalOpen && (
         <div className="fixed inset-0 bg-slate-800 bg-opacity-80 flex items-center justify-center z-50 p-4">
           <div className="bg-white dark:bg-slate-800 p-4 rounded-md border border-slate-200 dark:border-slate-700 max-w-3xl w-full max-h-[90vh] overflow-y-auto">
@@ -209,7 +208,6 @@ ImageUpload.propTypes = {
   label: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   t: PropTypes.func.isRequired,
-  error: PropTypes.string,
 };
 
 export default ImageUpload;

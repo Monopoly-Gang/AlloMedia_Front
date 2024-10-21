@@ -257,12 +257,12 @@ const AddRestaurant = () => {
 
   return (
     <div className="p-6 bg-white dark:bg-slate-900 rounded-lg shadow-md">
-      <h1 className="text-2xl font-bold mb-4">{t("Add Restaurant")}</h1>
+      <h1 className="text-2xl dark:text-slate-400 font-bold mb-4">{t("Add Restaurant")}</h1>
       <div className="mb-6">
         <Stepper steps={steps} activeStep={activeStep} />
       </div>
       <form onSubmit={handleSubmit}>
-        {renderStepContent(activeStep)}
+        {renderStepContent(activeStep)} 
         <div className="mt-6 flex justify-between">
           <button
             type="button"
