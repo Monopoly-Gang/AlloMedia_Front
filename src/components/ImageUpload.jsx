@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import ReactCrop from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
 
-const ImageUpload = ({ name, label, onChange, t }) => {
+const ImageUpload = ({ name, label, onChange, t, error }) => {
   const [preview, setPreview] = useState(null);
   const [metadata, setMetadata] = useState(null);
   const [crop, setCrop] = useState();
@@ -18,12 +18,16 @@ const ImageUpload = ({ name, label, onChange, t }) => {
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
+      if (file.size > 5 * 1024 * 1024) { // 5MB limit
+        onChange({ target: { name, value: null, error: "File size exceeds 5MB limit" } });
+        return;
+      }
       const reader = new FileReader();
       reader.onloadend = () => {
         setPreview(reader.result);
       };
       reader.readAsDataURL(file);
-      onChange(e);
+      onChange({ target: { name, value: file, error: null } });
     }
   };
 
@@ -33,7 +37,7 @@ const ImageUpload = ({ name, label, onChange, t }) => {
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
-    onChange({ target: { name, value: null } });
+    onChange({ target: { name, value: null, error: null } });
   };
 
   const handleUploadClick = () => {
@@ -67,7 +71,7 @@ const ImageUpload = ({ name, label, onChange, t }) => {
         const croppedFile = new File([blob], "cropped-image.jpg", {
           type: "image/jpeg",
         });
-        onChange({ target: { name, files: [croppedFile] } });
+        onChange({ target: { name, value: croppedFile, error: null } });
         setPreview(URL.createObjectURL(blob));
         setIsCropping(false);
       }
@@ -102,7 +106,9 @@ const ImageUpload = ({ name, label, onChange, t }) => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
-          className="relative border-2 border-dashed bg-orange-100 dark:bg-slate-900 border-primary rounded-lg p-4 text-center cursor-pointer hover:border-primary/80 transition-colors"
+          className={`relative border-2 border-dashed bg-orange-100 dark:bg-slate-900 rounded-lg p-4 text-center cursor-pointer hover:border-primary/80 transition-colors ${
+            error ? 'border-red-500' : 'border-primary'
+          }`}
         >
           <input
             type="file"
@@ -159,6 +165,9 @@ const ImageUpload = ({ name, label, onChange, t }) => {
           )}
         </motion.div>
       </AnimatePresence>
+      {error && (
+        <p className="text-red-500 text-xs mt-1">{error}</p>
+      )}
       {isModalOpen && (
         <div className="fixed inset-0 bg-slate-800 bg-opacity-80 flex items-center justify-center z-50 p-4">
           <div className="bg-white dark:bg-slate-800 p-4 rounded-md border border-slate-200 dark:border-slate-700 max-w-3xl w-full max-h-[90vh] overflow-y-auto">
@@ -208,6 +217,7 @@ ImageUpload.propTypes = {
   label: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   t: PropTypes.func.isRequired,
+  error: PropTypes.string,
 };
 
 export default ImageUpload;
