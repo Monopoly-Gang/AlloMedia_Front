@@ -91,13 +91,20 @@ const ManageRestaurants = () => {
     navigate(`/dashboard/super-admin/restaurant-details/${id}`);
   };
 
+
+  const handleAddRestaurant = () => {
+    navigate("/dashboard/super-admin/add-restaurant");
+  };
+
   return (
     <div className="p-6 bg-white dark:bg-slate-900 rounded-lg shadow-md">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold dark:text-white">
           {t("Manage Restaurants")}
         </h1>
-        <button className="flex items-center bg-primary text-white font-semibold px-4 py-2 rounded-lg hover:bg-primary-dark transition duration-300">
+        <button className="flex items-center bg-primary text-white font-semibold px-4 py-2 rounded-lg hover:bg-primary-dark transition duration-300"
+        onClick={handleAddRestaurant}
+        >
           <Plus size={16} className="mr-2" />
           {t("Add Restaurant")}
         </button>
@@ -127,7 +134,7 @@ const ManageRestaurants = () => {
         </select>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 animate-fadeInUp">
         {currentRestaurants.map((restaurant) => (
           <RestaurantCard
             key={restaurant.id}

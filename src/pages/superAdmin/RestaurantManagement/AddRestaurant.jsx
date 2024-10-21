@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ArrowRight, ArrowLeft, Save } from "lucide-react";
+import { ArrowRight, ArrowLeft, Save, User, Mail, Lock, Phone, MapPin, Building, UtensilsCrossed } from "lucide-react";
 import ImageUpload from "../../../components/ImageUpload";
 import InputField from "../../../components/InputField";
 
@@ -54,6 +54,7 @@ const AddRestaurant = () => {
                   placeholder={t("Full Name")}
                   value={formData.fullName}
                   onChange={handleChange}
+                  icon={User}
                 />
               </div>
               <div className="flex-1">
@@ -63,6 +64,7 @@ const AddRestaurant = () => {
                   type="email"
                   value={formData.email}
                   onChange={handleChange}
+                  icon={Mail}
                 />
               </div>
             </div>
@@ -70,11 +72,13 @@ const AddRestaurant = () => {
             <div className="flex space-x-4">
               <div className="flex-1">
                 <InputField
+                  className=""
                   id="password"
                   placeholder={t("Password")}
                   type="password"
                   value={formData.password}
                   onChange={handleChange}
+                  icon={Lock}
                 />
               </div>
               <div className="flex-1">
@@ -83,6 +87,7 @@ const AddRestaurant = () => {
                   placeholder={t("Phone Number")}
                   value={formData.phoneNumber}
                   onChange={handleChange}
+                  icon={Phone}
                 />
               </div>
             </div>
@@ -91,6 +96,7 @@ const AddRestaurant = () => {
               placeholder={t("Address")}
               value={formData.address}
               onChange={handleChange}
+              icon={MapPin}
             />
           </div>
         );
@@ -104,6 +110,7 @@ const AddRestaurant = () => {
                   placeholder={t("Restaurant Name")}
                   value={formData.restaurantName}
                   onChange={handleChange}
+                  icon={Building}
                 />
               </div>
               <div className="flex-1">
@@ -112,6 +119,7 @@ const AddRestaurant = () => {
                   placeholder={t("Cuisine Type")}
                   value={formData.cuisineType}
                   onChange={handleChange}
+                  icon={UtensilsCrossed}
                 />
               </div>
             </div>
@@ -120,12 +128,14 @@ const AddRestaurant = () => {
               placeholder={t("Restaurant Address")}
               value={formData.restaurantAddress}
               onChange={handleChange}
+              icon={MapPin}
             />
             <InputField
               id="location"
               placeholder={t("Location")}
               value={formData.location}
               onChange={handleChange}
+              icon={MapPin}
             />
           </div>
         );

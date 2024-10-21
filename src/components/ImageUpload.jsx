@@ -160,7 +160,7 @@ const ImageUpload = ({ name, label, onChange, t }) => {
         </motion.div>
       </AnimatePresence>
       {isModalOpen && (
-        <div className="fixed inset-0 bg-slate-900 bg-opacity-80 flex items-center justify-center z-50 p-4">
+        <div className="fixed inset-0 bg-slate-800 bg-opacity-80 flex items-center justify-center z-50 p-4">
           <div className="bg-white dark:bg-slate-800 p-4 rounded-md border border-slate-200 dark:border-slate-700 max-w-3xl w-full max-h-[90vh] overflow-y-auto">
             <h2 className="text-xl font-bold mb-4">{t("Crop Image")}</h2>
             <div className="max-h-[60vh] overflow-hidden">

@@ -5,6 +5,7 @@ import react from '@vitejs/plugin-react-swc'
 export default defineConfig({
   plugins: [react()],
   optimizeDeps: {
-    include: ['react-image-crop']
+    include: ['react-image-crop', ]
+
   }
 })
