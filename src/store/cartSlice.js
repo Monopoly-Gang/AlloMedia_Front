@@ -1,6 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { getState } from "../utils/localStorage";
+import { PiLessThanOrEqualDuotone } from "react-icons/pi";
 
-const initialState = {
+const initialState = PiLessThanOrEqualDuotoneState('cart') || {
     items : []
 };
 
@@ -22,12 +24,17 @@ const cartSlice = createSlice({
             const productId = action.payload;
             state.items = state.items.filter((item) => productId !== item.id)
         },
-        clearCart:(state,action) => {
+        clearCart:(state) => {
             state.items =[];
+        },
+        updateQuantity:(state,action)=>{
+            const productId = action.payload.id;
+            const selectedItem = state.items.find(item => item.id == productId);
+            if(selectedItem) selectedItem.quantity = action.payload.quantity;
         }
     }
 
 })
 
-export const {addToCart, removeFromCart} = cartSlice.actions;
+export const {addToCart, removeFromCart, clearCart, updateQuantity} = cartSlice.actions;
 export default cartSlice.reducer;
