@@ -1,8 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getState } from "../utils/localStorage";
-import { PiLessThanOrEqualDuotone } from "react-icons/pi";
+import { loadState } from "../utils/localStorage";
 
-const initialState = PiLessThanOrEqualDuotoneState('cart') || {
+const initialState = loadState('cart') || {
     items : []
 };
 

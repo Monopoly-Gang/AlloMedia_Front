@@ -1,13 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
 import themeConfigReducer from './themeConfigSlice';
 import cartSlice from './cartSlice';
-import { getState, saveState } from '../utils/localStorage';
+import { saveState } from '../utils/localStorage';
 
 const store = configureStore({
   reducer: {
     themeConfig: themeConfigReducer,
     cart : cartSlice
-    
   },
 });
 
