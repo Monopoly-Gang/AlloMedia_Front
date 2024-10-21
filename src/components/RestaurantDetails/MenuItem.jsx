@@ -1,5 +1,5 @@
-import React from "react";
 import { Edit, Trash2 } from "lucide-react";
+import PropTypes from 'prop-types';
 
 const MenuItem = ({ item }) => (
   <div className="bg-white dark:bg-slate-900 p-4 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden animate-fadeInUp">
@@ -23,5 +23,9 @@ const MenuItem = ({ item }) => (
     </div>
   </div>
 );
+
+MenuItem.propTypes = {
+  item: PropTypes.object.isRequired,
+};
 
 export default MenuItem;

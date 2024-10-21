@@ -1,4 +1,5 @@
-import React from "react";
+import PropTypes from 'prop-types';
+
 import ManagerDetails from "./ManagerDetails";
 import RestaurantDetailsInfo from "./RestaurantDetailsInfo";
 
@@ -8,5 +9,9 @@ const RestaurantInfoSection = ({ restaurantData }) => (
     <RestaurantDetailsInfo restaurantData={restaurantData} />
   </div>
 );
+
+RestaurantInfoSection.propTypes = {
+  restaurantData: PropTypes.object.isRequired,
+};
 
 export default RestaurantInfoSection;

@@ -49,6 +49,7 @@ const Register = () => {
                 <div className="flex space-x-4">
                   <div className="flex-1">
                     <InputField
+                    className
                       id="firstName"
                       placeholder="First Name"
                       value={userData.firstName}
