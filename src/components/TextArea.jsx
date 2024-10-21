@@ -3,6 +3,7 @@ import { CircleX, CircleCheck } from 'lucide-react';
 
 const TextArea = ({
   id,
+  name,
   placeholder,
   value,
   onChange,
@@ -18,8 +19,8 @@ const TextArea = ({
       </label>
       <div className="relative text-white-dark">
         <textarea
+          name={name}
           id={id}
-          name={id}
           value={value}
           onChange={onChange}
           disabled={disabled}
@@ -44,6 +45,7 @@ const TextArea = ({
 
 TextArea.propTypes = {
   id: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
   placeholder: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
