@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { postRequest } from "../utils/axiosRequests";
-import { useSelector } from "react-redux";
+
 
 // Thunk functions to fetch and insert data
 
@@ -18,11 +18,10 @@ const insertOrder = createAsyncThunk(
     }
 )
 
-const cartItems = useSelector(state =>state.cart);
 
 
 const initialState = {
-    items : cartItems,
+    items : [],
     totalAmount:0,
     loading: false,
     error:null,
@@ -32,15 +31,22 @@ const orderSlice = createSlice({
     name:"order",
     initialState,
 
-    reducers :{},
+    reducers :{
+        initializeOrder:(state,action)=>{
+            state.items = action.payload.items;
+            state.totalAmount = action.payload.totalAmount;
+        }
+    },
     extraReducers: (builder) =>{
         builder
         .addCase(insertOrder.pending,(state) =>{
             state.loading=true;
         })
         .addCase(insertOrder.fulfilled,(state, action) =>{
+            const items = action.payload.items;
             state.loading=false;
-            state.items = action.payload;
+            state.items = items;
+            state.totalAmount = items.reduce((total,item)=>total+item.quantity*item.price);
         })
         .addCase(insertOrder.rejected,(state,action)=>{
             state.loading = false;
