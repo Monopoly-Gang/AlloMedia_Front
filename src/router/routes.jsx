@@ -13,6 +13,8 @@ const RestaurantDetails = lazy(() => import('../pages/superAdmin/RestaurantManag
 const AddRestaurant = lazy(() => import('../pages/superAdmin/RestaurantManagement/AddRestaurant'));
 const ApproveRestaurants = lazy(() => import('../pages/superAdmin/RestaurantManagement/ApproveRestaurants'));
 const AddMenuItem = lazy(() => import('../pages/superAdmin/RestaurantManagement/AddMenuItem'));
+const RestaurantManagerDetails = lazy(() => import('../pages/restaurantManager/RestaurantManagement/RestaurantDetails'));
+const AddMenuItemRestaurantManager = lazy(() => import('../pages/restaurantManager/MenuManagement/AddMenuItem'));
 
 export const routes = [
   {
@@ -25,6 +27,8 @@ export const routes = [
     element: (props) => <DefaultLayout {...props} userRole="restaurantManager" />,
     children: [
       { path: '/dashboard/restaurant-manager', element: RestaurantManagerDashboard },
+      { path: '/dashboard/restaurant-manager/restaurant-details', element: RestaurantManagerDetails },
+      { path: '/dashboard/restaurant-manager/add-menu-item', element: AddMenuItemRestaurantManager },
     ],
   },
   {

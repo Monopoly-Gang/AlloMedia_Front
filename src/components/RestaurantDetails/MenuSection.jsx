@@ -5,7 +5,8 @@ import { Plus } from "lucide-react";
 import MenuItem from "./MenuItem";
 import SpinnerIcon from "../../components/SpinnerIcon";
 import PropTypes from 'prop-types';
-const MenuSection = ({ menu }) => {
+
+const MenuSection = ({ menu, userRole = 'restaurantManager' }) => {
   const { t } = useTranslation();
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
@@ -29,7 +30,10 @@ const MenuSection = ({ menu }) => {
   };
 
   const handleAddMenuItem = () => {
-    navigate("/dashboard/super-admin/add-menu-item");
+    const route = userRole === 'superAdmin' 
+      ? "/dashboard/super-admin/add-menu-item"
+      : "/dashboard/restaurant-manager/add-menu-item";
+    navigate(route);
   };
 
   return (
@@ -80,6 +84,7 @@ const MenuSection = ({ menu }) => {
 
 MenuSection.propTypes = {
   menu: PropTypes.array.isRequired,
+  userRole: PropTypes.oneOf(['superAdmin', 'restaurantManager'])
 };
 
 export default MenuSection;

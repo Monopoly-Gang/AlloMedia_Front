@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import * as Yup from "yup";
 import {
   ArrowRight,
   ArrowLeft,
@@ -15,32 +14,46 @@ import {
 } from "lucide-react";
 import ImageUpload from "../../../components/ImageUpload";
 import InputField from "../../../components/InputField";
+import useForm from "../../../hooks/useForm";
 import {
-  validateStep,
   managerDetailsSchema,
   restaurantDetailsSchema,
   imageUploadSchema,
 } from "../../../validation/addRestaurantValidation";
+import Stepper from "../../../components/Stepper";
+
+const initialState = {
+  fullName: "",
+  email: "",
+  password: "",
+  phoneNumber: "",
+  address: "",
+  restaurantName: "",
+  cuisineType: "",
+  restaurantAddress: "",
+  location: "",
+  banner: null,
+  logo: null,
+};
 
 const AddRestaurant = () => {
   const { t } = useTranslation();
-  const [activeStep, setActiveStep] = useState(0);
   const [showPassword, setShowPassword] = useState(false);
-  const [formData, setFormData] = useState({
-    fullName: "",
-    email: "",
-    password: "",
-    phoneNumber: "",
-    address: "",
-    restaurantName: "",
-    cuisineType: "",
-    restaurantAddress: "",
-    location: "",
-    banner: null,
-    logo: null,
-  });
-  const [errors, setErrors] = useState({});
-  const [touched, setTouched] = useState({});
+
+  const {
+    formData,
+    errors,
+    touched,
+    isSubmitting,
+    currentStep,
+    handleChange,
+    handleSubmit,
+    handleStepChange,
+  } = useForm(
+    initialState,
+    [managerDetailsSchema, restaurantDetailsSchema, imageUploadSchema],
+    onSubmit
+  );
 
   const steps = [
     t("Manager Details"),
@@ -50,59 +63,10 @@ const AddRestaurant = () => {
 
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
-  const validateField = async (name, value) => {
-    let schema;
-    if (managerDetailsSchema.fields[name]) {
-      schema = managerDetailsSchema;
-    } else if (restaurantDetailsSchema.fields[name]) {
-      schema = restaurantDetailsSchema;
-    } else if (imageUploadSchema.fields[name]) {
-      schema = imageUploadSchema;
-    }
-
-    if (schema) {
-      try {
-        await Yup.reach(schema, name).validate(value);
-        setErrors((prev) => ({ ...prev, [name]: "" }));
-        setTouched((prev) => ({ ...prev, [name]: true }));
-      } catch (error) {
-        setErrors((prev) => ({ ...prev, [name]: error.message }));
-        setTouched((prev) => ({ ...prev, [name]: true }));
-      }
-    }
-  };
-
-  const handleChange = (e) => {
-    const { name, value, files } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: files ? files[0] : value,
-    }));
-    validateField(name, files ? files[0] : value);
-  };
-
-  const handleStepChange = async (nextStep) => {
-    const { isValid, errors } = await validateStep(activeStep, formData);
-    if (isValid) {
-      setActiveStep(nextStep);
-    } else {
-      setErrors(errors);
-      setTouched(
-        Object.keys(errors).reduce((acc, key) => ({ ...acc, [key]: true }), {})
-      );
-    }
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const { isValid, errors } = await validateStep(activeStep, formData);
-    if (isValid) {
-      console.log(formData);
-      // TODO: Send data to backend
-    } else {
-      setErrors(errors);
-    }
-  };
+  async function onSubmit(data) {
+    console.log(data);
+    // TODO: Send data to backend
+  }
 
   const renderStepContent = (step) => {
     switch (step) {
@@ -234,7 +198,9 @@ const AddRestaurant = () => {
               <ImageUpload
                 name="banner"
                 label={t("Banner")}
-                onChange={handleChange}
+                onChange={(file) =>
+                  handleChange({ target: { name: "banner", value: file } })
+                }
                 error={errors.banner}
                 t={t}
               />
@@ -243,7 +209,9 @@ const AddRestaurant = () => {
               <ImageUpload
                 name="logo"
                 label={t("Logo")}
-                onChange={handleChange}
+                onChange={(file) =>
+                  handleChange({ target: { name: "logo", value: file } })
+                }
                 error={errors.logo}
                 t={t}
               />
@@ -259,32 +227,33 @@ const AddRestaurant = () => {
     <div className="p-6 bg-white dark:bg-slate-900 rounded-lg shadow-md">
       <h1 className="text-2xl dark:text-slate-400 font-bold mb-4">{t("Add Restaurant")}</h1>
       <div className="mb-6">
-        <Stepper steps={steps} activeStep={activeStep} />
+        <Stepper steps={steps} activeStep={currentStep} />
       </div>
       <form onSubmit={handleSubmit}>
-        {renderStepContent(activeStep)} 
+        {renderStepContent(currentStep)}
         <div className="mt-6 flex justify-between">
           <button
             type="button"
-            onClick={() => handleStepChange(Math.max(0, activeStep - 1))}
+            onClick={() => handleStepChange("prev")}
             className="flex items-center px-4 py-2 font-semibold bg-slate-200 text-slate-700 rounded"
-            disabled={activeStep === 0}
+            disabled={currentStep === 0}
           >
             <ArrowLeft size={16} className="mr-2" />
             {t("Back")}
           </button>
-          {activeStep === steps.length - 1 ? (
+          {currentStep === steps.length - 1 ? (
             <button
               type="submit"
               className="flex items-center px-4 py-2 bg-primary text-white font-semibold rounded"
+              disabled={isSubmitting}
             >
               <Save size={16} className="mr-2" />
-              {t("Save")}
+              {isSubmitting ? t("Saving...") : t("Save")}
             </button>
           ) : (
             <button
               type="button"
-              onClick={() => handleStepChange(activeStep + 1)}
+              onClick={() => handleStepChange("next")}
               className="flex items-center px-4 py-2 bg-primary text-white font-semibold rounded"
             >
               {t("Next")}
@@ -297,34 +266,8 @@ const AddRestaurant = () => {
   );
 };
 
-const Stepper = ({ steps, activeStep }) => (
-  <ol className="flex items-center w-full text-sm text-gray-500 font-medium sm:text-base mb-12">
-    {steps.map((step, index) => (
-      <li
-        key={step}
-        className={`flex md:w-full items-center ${
-          index <= activeStep ? "text-primary" : "text-slate-400"
-        } ${
-          index < steps.length - 1
-            ? "sm:after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-4 xl:after:mx-8"
-            : ""
-        }`}
-      >
-        <div className="flex items-center whitespace-nowrap after:content-['/'] sm:after:hidden after:mx-2">
-          <span
-            className={`w-6 h-6 ${
-              index <= activeStep ? "bg-primary text-white" : "bg-slate-200"
-            } border ${
-              index <= activeStep ? "border-primary" : "border-gray-200"
-            } rounded-full flex justify-center items-center mr-3 text-sm lg:w-10 lg:h-10`}
-          >
-            {index + 1}
-          </span>
-          {step}
-        </div>
-      </li>
-    ))}
-  </ol>
-);
+
+
+
 
 export default AddRestaurant;
