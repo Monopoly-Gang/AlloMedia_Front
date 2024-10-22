@@ -1,14 +1,16 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Plus } from "lucide-react";
 import MenuItem from "./MenuItem";
 import SpinnerIcon from "../../components/SpinnerIcon";
-
+import PropTypes from 'prop-types';
 const MenuSection = ({ menu }) => {
   const { t } = useTranslation();
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
   const itemsPerPage = 6;
 
   const filteredMenu = menu.filter((item) =>
@@ -26,11 +28,18 @@ const MenuSection = ({ menu }) => {
     }, 1000);
   };
 
+  const handleAddMenuItem = () => {
+    navigate("/dashboard/super-admin/add-menu-item");
+  };
+
   return (
     <div className="md:col-span-2 bg-white dark:bg-slate-900 p-4 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-semibold dark:text-white">{t("Menu")}</h2>
-        <button className="flex items-center bg-primary text-white font-semibold px-4 py-2 rounded-lg hover:bg-primary-dark transition duration-300">
+        <button
+          className="flex items-center bg-primary text-white font-semibold px-4 py-2 rounded-lg hover:bg-primary-dark transition duration-300"
+          onClick={handleAddMenuItem}
+        >
           <Plus size={16} className="mr-2" />
           {t("Add Menu")}
         </button>
@@ -67,6 +76,10 @@ const MenuSection = ({ menu }) => {
       )}
     </div>
   );
+};
+
+MenuSection.propTypes = {
+  menu: PropTypes.array.isRequired,
 };
 
 export default MenuSection;
