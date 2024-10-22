@@ -106,9 +106,7 @@ const ImageUpload = ({ name, label, onChange, t, error }) => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
-          className={`relative border-2 border-dashed bg-orange-100 dark:bg-slate-900 rounded-lg p-4 text-center cursor-pointer hover:border-primary/80 transition-colors ${
-            error ? 'border-red-500' : 'border-primary'
-          }`}
+          className="relative border-2 border-dashed bg-orange-100 border-primary dark:bg-slate-900 rounded-lg p-4 text-center cursor-pointer hover:border-primary/80 transition-colors"
         >
           <input
             type="file"
