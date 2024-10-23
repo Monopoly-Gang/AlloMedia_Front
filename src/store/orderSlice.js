@@ -14,11 +14,10 @@ const insertOrder = createAsyncThunk(
         catch(error){
             return thunkApi.rejectWithValue(error.message);
         }
-
     }
 )
 
-
+// Order slice
 
 const initialState = {
     items : [],

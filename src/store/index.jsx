@@ -6,7 +6,8 @@ import { saveState } from '../utils/localStorage';
 const store = configureStore({
   reducer: {
     themeConfig: themeConfigReducer,
-    cart : cartSlice
+    cart : cartSlice,
+    order : orderSlice,
   },
 });
 
