@@ -21,6 +21,7 @@ const RestaurantMenuDetails = lazy(() => import('../pages/RestaurantDetails'));
 const EditMenuItem = lazy(() => import('../pages/restaurantManager/MenuManagement/EditMenuItem'));
 const MenuDetails = lazy(() => import('../pages/MenuDetails'));
 const Cart = lazy(() => import('../pages/Cart'));
+const OrderTracking = lazy(() => import('../pages/OrderTracking'));
 
 export const routes = [
   {
@@ -31,6 +32,7 @@ export const routes = [
       { path: '/restaurant-details/:id', element: RestaurantMenuDetails },
       { path: '/menu-details/:id', element: MenuDetails },
       { path: '/cart', element: Cart },
+      { path: '/order-tracking', element: OrderTracking },  
     ],
   },
   {

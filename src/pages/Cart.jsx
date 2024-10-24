@@ -48,6 +48,11 @@ const Cart = ({ basketItems = mockBasketItems, removeItemFromBasket }) => {
     // Implement order logic here if needed
   };
 
+  const handleClearAllItems = () => {
+    setItems([]);
+    console.log("All items cleared");
+  };
+
   return (
     <section className="bg-white py-8 antialiased dark:bg-gray-900 md:py-16">
       <div className="mx-auto max-w-screen-xl px-4 2xl:px-0">
@@ -57,54 +62,59 @@ const Cart = ({ basketItems = mockBasketItems, removeItemFromBasket }) => {
         <div className="mt-6 sm:mt-8 md:gap-6 lg:flex lg:items-start xl:gap-8">
           <div className="mx-auto w-full flex-none lg:max-w-2xl xl:max-w-4xl">
             <div className="space-y-6">
-              {items.map((item) => (
-                <div
-                  key={item.id}
-                  className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 md:p-6"
-                >
-                  <div className="space-y-4 md:flex md:items-center md:justify-between md:gap-6 md:space-y-0">
-                    <a href="#" className="shrink-0 md:order-1">
-                      <img
-                        className="h-20 w-20 rounded-full"
-                        src={item.image}
-                        alt={item.name}
-                      />
-                    </a>
-                    <div className="w-full min-w-0 flex-1 space-y-4 md:order-2 md:max-w-md">
-                      <a
-                        href="#"
-                        className="text-base font-medium text-gray-900 hover:underline dark:text-white"
-                      >
-                        {item.name}
+              {items.length === 0 ? (
+                <p className="text-center text-slate-500 dark:text-slate-400">
+                  Aucune items existe dans le panier.
+                </p>
+              ) : (
+                items.map((item) => (
+                  <div
+                    key={item.id}
+                    className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 md:p-6"
+                  >
+                    <div className="space-y-4 md:flex md:items-center md:justify-between md:gap-6 md:space-y-0">
+                      <a href="#" className="shrink-0 md:order-1">
+                        <img
+                          className="h-20 w-20 rounded-full"
+                          src={item.image}
+                          alt={item.name}
+                        />
                       </a>
-                      <div className="flex items-center gap-4">
-                        <button
-                          type="button"
-                          className="inline-flex items-center text-sm font-medium text-red-600 hover:underline dark:text-red-500"
-                          onClick={() => handleRemoveItem(item.id)}
+                      <div className="w-full min-w-0 flex-1 space-y-4 md:order-2 md:max-w-md">
+                        <a
+                          href="#"
+                          className="text-base font-medium text-gray-900 hover:underline dark:text-white"
                         >
-                          <svg
-                            className="me-1.5 h-5 w-5"
-                            aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            fill="none"
-                            viewBox="0 0 24 24"
+                          {item.name}
+                        </a>
+                        <div className="flex items-center gap-4">
+                          <button
+                            type="button"
+                            className="inline-flex items-center text-sm font-medium text-red-600 hover:underline dark:text-red-500"
+                            onClick={() => handleRemoveItem(item.id)}
                           >
-                            <path
-                              stroke="currentColor"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth="2"
-                              d="M6 18 17.94 6M18 18 6.06 6"
-                            />
-                          </svg>
-                          Remove
-                        </button>
+                            <svg
+                              className="me-1.5 h-5 w-5"
+                              aria-hidden="true"
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="24"
+                              height="24"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                stroke="currentColor"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
+                                d="M6 18 17.94 6M18 18 6.06 6"
+                              />
+                            </svg>
+                            Remove
+                          </button>
+                        </div>
                       </div>
-                    </div>
-                    <div className="flex items-center justify-between md:order-3 md:justify-end">
+                      <div className="flex items-center justify-between md:order-3 md:justify-end">
                         <div className="flex items-center">
                           <button
                             type="button"
@@ -156,14 +166,15 @@ const Cart = ({ basketItems = mockBasketItems, removeItemFromBasket }) => {
                           </button>
                         </div>
                       </div>
-                    <div className="text-end md:order-4 md:w-32">
-                      <p className="text-base font-bold text-gray-900 dark:text-white">
-                        ${(item.price * (item.quantity || 1)).toFixed(2)}
-                      </p>
+                      <div className="text-end md:order-4 md:w-32">
+                        <p className="text-base font-bold text-gray-900 dark:text-white">
+                          ${(item.price * (item.quantity || 1)).toFixed(2)}
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))
+              )}
             </div>
           </div>
           <div className="mx-auto mt-6 max-w-4xl flex-1 space-y-6 lg:mt-0 lg:w-full">
@@ -187,6 +198,12 @@ const Cart = ({ basketItems = mockBasketItems, removeItemFromBasket }) => {
                   className="flex w-full items-center justify-center rounded-md bg-primary px-5 py-2.5 text-sm font-medium text-white"
                 >
                   Order Now
+                </button>
+                <button
+                  onClick={handleClearAllItems}
+                  className="flex w-full items-center justify-center border-2 border-red-500 text-red-500 font-semibold rounded-md bg-slate-50 px-5 py-2.5 text-sm"
+                >
+                  Clear All Items
                 </button>
               </div>
             </div>
