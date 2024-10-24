@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { postRequest } from "../utils/axiosRequests";
+import { getRequest, postRequest } from "../utils/axiosRequests";
 
 
 // Thunk functions to fetch and insert data
@@ -7,9 +7,22 @@ import { postRequest } from "../utils/axiosRequests";
 const insertOrder = createAsyncThunk(
     "order/insertOrder",
     async(orderData,thunkApi)=>{
-        const uri="/api/orders";
+        const uri= "api/orders";
         try{
             return  await postRequest(uri,orderData);
+        }
+        catch(error){
+            return thunkApi.rejectWithValue(error.message);
+        }
+    }
+)
+
+const fetchOrders = createAsyncThunk(
+    "order/fetchOrders",
+    async(thunkApi)=>{
+        const uri= "api/orders";
+        try{
+            return await getRequest(uri);
         }
         catch(error){
             return thunkApi.rejectWithValue(error.message);

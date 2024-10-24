@@ -1,6 +1,6 @@
 // Axios requests utilities 
 
-import axiosClient from "../services/axiosService";
+import axiosClient from "../config/axiosConfig";
 
 
 // Get
