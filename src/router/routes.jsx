@@ -28,8 +28,8 @@ export const routes = [
     element: (props) => <DefaultLayout {...props} userRole="restaurantManager" />,
     children: [
       { path: '/dashboard/restaurant-manager', element: RestaurantManagerDashboard },
-      { path: '/dashboard/restaurant-manager/restaurant-details', element: RestaurantManagerDetails },
-      { path: '/dashboard/restaurant-manager/add-menu-item', element: AddMenuItemRestaurantManager },
+      { path: '/dashboard/restaurant-manager/restaurant-details/:id', element: RestaurantManagerDetails },
+      { path: '/dashboard/restaurant-manager/add-menu-item/:id', element: AddMenuItemRestaurantManager },
       { path: '/dashboard/restaurant-manager/view-orders', element: ViewOrders },
     ],
   },
