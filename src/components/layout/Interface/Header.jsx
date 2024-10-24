@@ -16,6 +16,7 @@ import { toggleTheme } from "../../../store/themeConfigSlice";
 import Dropdown from "../Dashboard/Dropdown";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { removeFromCart } from "../../../store/cartSlice";
 
 const Navbar = () => {
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
@@ -28,26 +29,10 @@ const Navbar = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
-  const [basketItems, setBasketItems] = useState([
-    {
-      id: 1,
-      image: "https://via.placeholder.com/40",
-      name: "Item 1",
-      price: 10.0,
-    },
-    {
-      id: 2,
-      image: "https://via.placeholder.com/40",
-      name: "Item 2",
-      price: 15.0,
-    },
-    {
-      id: 3,
-      image: "https://via.placeholder.com/40",
-      name: "Item 3",
-      price: 20.0,
-    },
-  ]);
+
+
+  const basketItems = useSelector((state)=>state.cart.items);
+  const totalAmount = useSelector((state)=>state.cart.totalAmount);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -85,8 +70,8 @@ const Navbar = () => {
     setNotifications(notifications.filter((notif) => notif.id !== id));
   };
 
-  const removeItemFromBasket = (id) => {
-    setBasketItems(basketItems.filter((item) => item.id !== id));
+  const handleRemoveFromCart = (id) => {
+    dispatch(removeFromCart(id));
   };
 
   const renderNavLinks = () => (
@@ -320,10 +305,7 @@ const Navbar = () => {
             </div>
             <div className="relative inline-block mr-8">
               <span className="absolute top-[-10px] right-[-10px] inline-flex items-center justify-center p-1 px-2 text-xs font-semibold text-white bg-primary rounded-full">
-                {basketItems.reduce(
-                  (total, item) => total + (item.quantity || 1),
-                  0
-                )}
+                {basketItems.length}
               </span>
               <button
                 onClick={toggleBasket}
@@ -356,7 +338,7 @@ const Navbar = () => {
                           </p>
                         </div>
                         <button
-                          onClick={() => removeItemFromBasket(item.id)}
+                          onClick={() => handleRemoveFromCart(item.id)}
                           className="text-red-500 hover:text-red-700"
                         >
                           <Trash2 size="18" />
@@ -370,10 +352,7 @@ const Navbar = () => {
                         Total:
                       </span>
                       <span className="text-base font-semibold text-primary">
-                        $
-                        {basketItems
-                          .reduce((total, item) => total + item.price, 0)
-                          .toFixed(2)}
+                        ${totalAmount}
                       </span>
                     </div>
                     <button
