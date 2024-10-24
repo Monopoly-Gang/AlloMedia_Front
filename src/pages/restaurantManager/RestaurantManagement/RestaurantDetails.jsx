@@ -90,12 +90,6 @@ const RestaurantDetails = () => {
                     <RestaurantInfoSection restaurantData={restaurantData} />
                 </div>
             </div>
-            <EditMenuItemModal
-                isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
-                menuItem={selectedMenuItem}
-                onSave={handleSaveMenuItem}
-            />
         </div>
     );
 };
