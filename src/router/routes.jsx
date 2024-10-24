@@ -16,21 +16,31 @@ const AddMenuItem = lazy(() => import('../pages/superAdmin/RestaurantManagement/
 const RestaurantManagerDetails = lazy(() => import('../pages/restaurantManager/RestaurantManagement/RestaurantDetails'));
 const AddMenuItemRestaurantManager = lazy(() => import('../pages/restaurantManager/MenuManagement/AddMenuItem'));
 const ViewOrders = lazy(() => import('../pages/restaurantManager/OrderManagement/ViewOrders'));
+const Restaurants = lazy(() => import('../pages/Restaurants'));
+const RestaurantMenuDetails = lazy(() => import('../pages/RestaurantDetails'));
+const EditMenuItem = lazy(() => import('../pages/restaurantManager/MenuManagement/EditMenuItem'));
+const MenuDetails = lazy(() => import('../pages/MenuDetails'));
+const Cart = lazy(() => import('../pages/Cart'));
 
 export const routes = [
   {
     element: MainLayout,
     children: [
       { path: '/', element: Home },
+      { path: '/restaurants', element: Restaurants },
+      { path: '/restaurant-details/:id', element: RestaurantMenuDetails },
+      { path: '/menu-details/:id', element: MenuDetails },
+      { path: '/cart', element: Cart },
     ],
   },
   {
     element: (props) => <DefaultLayout {...props} userRole="restaurantManager" />,
     children: [
       { path: '/dashboard/restaurant-manager', element: RestaurantManagerDashboard },
-      { path: '/dashboard/restaurant-manager/restaurant-details', element: RestaurantManagerDetails },
+      { path: '/dashboard/restaurant-manager/restaurant-details/:id', element: RestaurantManagerDetails },
       { path: '/dashboard/restaurant-manager/add-menu-item', element: AddMenuItemRestaurantManager },
       { path: '/dashboard/restaurant-manager/view-orders', element: ViewOrders },
+      { path: '/dashboard/restaurant-manager/edit-menu-item/:id', element: EditMenuItem },
     ],
   },
   {
