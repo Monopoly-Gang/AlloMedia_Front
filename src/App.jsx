@@ -1,9 +1,11 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { I18nextProvider } from 'react-i18next';
 import i18n from './i18n';
 import AppRoutes from './router/AppRoutes';
 import { toggleRTL, toggleTheme, toggleLocale, toggleMenu, toggleLayout, toggleAnimation, toggleNavbar, toggleSemidark } from './store/themeConfigSlice';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
     const themeConfig = useSelector((state) => state.themeConfig);
@@ -32,6 +34,7 @@ const App = () => {
                 } main-section antialiased relative font-nunito text-sm font-normal`}
             >
                 <AppRoutes />
+                <ToastContainer />
             </div>
         </I18nextProvider>
     );

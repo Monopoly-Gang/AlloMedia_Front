@@ -1,4 +1,4 @@
-import React from "react";
+import PropTypes from 'prop-types';
 
 const RestaurantHeader = ({ restaurantData }) => (
   <div className="relative h-64">
@@ -20,5 +20,9 @@ const RestaurantHeader = ({ restaurantData }) => (
     </div>
   </div>
 );
+
+RestaurantHeader.propTypes = {
+  restaurantData: PropTypes.object.isRequired,
+};
 
 export default RestaurantHeader;

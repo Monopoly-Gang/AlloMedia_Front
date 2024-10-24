@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import themeConfigReducer from './themeConfigSlice';
 import cartSlice from './cartSlice';
 import { saveState } from '../utils/localStorage';
+import _ from 'lodash';
 
 const store = configureStore({
   reducer: {
