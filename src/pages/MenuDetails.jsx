@@ -24,24 +24,28 @@ const MenuDetails = () => {
             {
               id: "2001",
               name: "French Fries",
+              price: 3.0,
               image: "https://via.placeholder.com/50",
               selected: false,
             },
             {
               id: "2002",
               name: "Extra Cheese",
+              price: 2.0,
               image: "https://via.placeholder.com/50",
               selected: false,
             },
             {
               id: "2003",
               name: "Coca Cola",
+              price: 1.5,
               image: "https://via.placeholder.com/50",
               selected: false,
             },
             {
               id: "2004",
               name: "Choco Lava",
+              price: 4.0,
               image: "https://via.placeholder.com/50",
               selected: false,
             },
@@ -69,12 +73,18 @@ const MenuDetails = () => {
     );
   };
 
+  const calculateTotalPrice = () => {
+    const addOnsPrice = addOns
+      .filter((addOn) => addOn.selected)
+      .reduce((total, addOn) => total + addOn.price, 0);
+    return (menuItem.price + addOnsPrice) * quantity;
+  };
+
   if (!menuItem) {
     return <div>{t("Loading...")}</div>;
   }
 
-  const price =
-    menuItem.price !== undefined ? menuItem.price.toFixed(2) : "0.00";
+  const totalPrice = calculateTotalPrice().toFixed(2);
 
   return (
     <section className="py-10 md:py-20 lg:py-14 bg-slate-50 dark:bg-slate-900">
@@ -93,7 +103,9 @@ const MenuDetails = () => {
               {menuItem.description}
             </p>
             <div className="flex items-center mb-4">
-              <span className="text-2xl font-bold text-primary">${price}</span>
+              <span className="text-2xl font-bold text-primary">
+                ${totalPrice}
+              </span>
               <div className="flex items-center ml-4">
                 <button
                   onClick={() => handleQuantityChange(-1)}
@@ -112,7 +124,9 @@ const MenuDetails = () => {
                 </button>
               </div>
             </div>
-            <h3 className="text-xl font-semibold mb-2">{t("Add On")}</h3>
+            <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-50 mb-2">
+              {t("Add On")}
+            </h3>
             <div className="grid grid-cols-2 gap-4">
               {addOns.map((addOn) => (
                 <div
@@ -127,14 +141,13 @@ const MenuDetails = () => {
                   <span className="flex-1 text-slate-900 dark:text-slate-50 font-semibold text-base">
                     {addOn.name}
                   </span>
-                  
                   <div className="form-control">
                     <label className="cursor-pointer label">
                       <input
                         type="checkbox"
                         checked={addOn.selected}
                         onChange={() => handleAddOnChange(addOn.id)}
-                        className="checkbox border-primary [--chkbg:theme(colors.primary.DEFAULT)] [--chkfg:theme(colors.primary.50)] w-5 h-5"
+                        className="checkbox border-primary [--chkbg:theme(colors.primary.DEFAULT)] [--chkfg:theme(colors.slate.50)] w-5 h-5"
                       />
                     </label>
                   </div>

@@ -1,4 +1,13 @@
-import { Menu, X, Moon, Sun, Laptop, Bell, ShoppingBasket } from "lucide-react";
+import {
+  Menu,
+  X,
+  Moon,
+  Sun,
+  Laptop,
+  Bell,
+  ShoppingBasket,
+  Trash2,
+} from "lucide-react";
 import { useState, useEffect } from "react";
 import logoLight from "../../../assets/img/logo-light.svg";
 import logoDark from "../../../assets/img/logo-dark.svg";
@@ -6,15 +15,39 @@ import { useSelector, useDispatch } from "react-redux";
 import { toggleTheme } from "../../../store/themeConfigSlice";
 import Dropdown from "../Dashboard/Dropdown";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
+  const [notifications, setNotifications] = useState([]);
+  const [basketOpen, setBasketOpen] = useState(false);
   const themeConfig = useSelector((state) => state.themeConfig);
   const dispatch = useDispatch();
   const [isScrolled, setIsScrolled] = useState(false);
   const isRtl = themeConfig.rtlClass === "rtl";
   const { t } = useTranslation();
-  const [flag, setFlag] = useState("ae");
+  const navigate = useNavigate();
+
+  const [basketItems, setBasketItems] = useState([
+    {
+      id: 1,
+      image: "https://via.placeholder.com/40",
+      name: "Item 1",
+      price: 10.0,
+    },
+    {
+      id: 2,
+      image: "https://via.placeholder.com/40",
+      name: "Item 2",
+      price: 15.0,
+    },
+    {
+      id: 3,
+      image: "https://via.placeholder.com/40",
+      name: "Item 3",
+      price: 20.0,
+    },
+  ]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -36,26 +69,24 @@ const Navbar = () => {
     }
 
     return () => {
-      document.body.style.overflow = "auto"; // Reset on component unmount
+      document.body.style.overflow = "auto";
     };
   }, [mobileDrawerOpen]);
+
+  const toggleNavbar = () => {
+    setMobileDrawerOpen(!mobileDrawerOpen);
+  };
+
+  const toggleBasket = () => {
+    setBasketOpen(!basketOpen);
+  };
 
   const removeNotification = (id) => {
     setNotifications(notifications.filter((notif) => notif.id !== id));
   };
 
-  const setLocale = (flag) => {
-    setFlag(flag);
-    dispatch(toggleRTL(flag.toLowerCase() === "ae" ? "rtl" : "ltr"));
-  };
-
-  const [notifications, setNotifications] = useState([
-    // ... notification objects ...
-  ]);
-
-  const toggleNavbar = () => {
-    console.log("Toggling Navbar, current state:", mobileDrawerOpen);
-    setMobileDrawerOpen(!mobileDrawerOpen);
+  const removeItemFromBasket = (id) => {
+    setBasketItems(basketItems.filter((item) => item.id !== id));
   };
 
   const renderNavLinks = () => (
@@ -117,7 +148,10 @@ const Navbar = () => {
                     dispatch(toggleTheme("dark"));
                   }}
                 >
-                  <Sun className="text-slate-900 dark:text-slate-50" size="20" />
+                  <Sun
+                    className="text-slate-900 dark:text-slate-50"
+                    size="20"
+                  />
                 </button>
               ) : null}
               {themeConfig.theme === "dark" && (
@@ -127,7 +161,10 @@ const Navbar = () => {
                     dispatch(toggleTheme("system"));
                   }}
                 >
-                  <Moon className="text-slate-900 dark:text-slate-50" size="20" />
+                  <Moon
+                    className="text-slate-900 dark:text-slate-50"
+                    size="20"
+                  />
                 </button>
               )}
               {themeConfig.theme === "system" && (
@@ -137,7 +174,10 @@ const Navbar = () => {
                     dispatch(toggleTheme("light"));
                   }}
                 >
-                  <Laptop className="text-slate-900 dark:text-slate-50" size="20" />
+                  <Laptop
+                    className="text-slate-900 dark:text-slate-50"
+                    size="20"
+                  />
                 </button>
               )}
             </div>
@@ -279,50 +319,77 @@ const Navbar = () => {
               </div>
             </div>
             <div className="relative inline-block mr-8">
-              <span className="absolute top-[-10px] right-[-10px] inline-flex items-center justify-center p-1 text-xs font-semibold text-white bg-primary rounded-full">
-                99
+              <span className="absolute top-[-10px] right-[-10px] inline-flex items-center justify-center p-1 px-2 text-xs font-semibold text-white bg-primary rounded-full">
+                {basketItems.reduce(
+                  (total, item) => total + (item.quantity || 1),
+                  0
+                )}
               </span>
-              <button className="flex items-center justify-center p-2 rounded-full bg-white-light/40 dark:bg-slate-800 text-gray-700 bg-white">
-                <ShoppingBasket size="20" className="text-slate-900 dark:text-slate-50" />
+              <button
+                onClick={toggleBasket}
+                className="flex items-center justify-center p-2 rounded-full bg-white-light/40 dark:bg-slate-800 text-gray-700 bg-white"
+              >
+                <ShoppingBasket
+                  size="20"
+                  className="text-slate-900 dark:text-slate-50"
+                />
               </button>
+              {basketOpen && (
+                <div className="absolute right-0 mt-2 w-64 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-md shadow-lg">
+                  <ul className="py-2">
+                    {basketItems.map((item) => (
+                      <li
+                        key={item.id}
+                        className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
+                      >
+                        <img
+                          src={item.image}
+                          alt={item.name}
+                          className="w-10 h-10 rounded-full mr-3"
+                        />
+                        <div className="flex-1 space-y-2">
+                          <h4 className="text-base font-semibold text-slate-900 dark:text-slate-50">
+                            {item.name}
+                          </h4>
+                          <p className="text-sm font-medium text-primary">
+                            ${item.price.toFixed(2)}
+                          </p>
+                        </div>
+                        <button
+                          onClick={() => removeItemFromBasket(item.id)}
+                          className="text-red-500 hover:text-red-700"
+                        >
+                          <Trash2 size="18" />
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="px-4 py-2 border-t border-slate-200 dark:border-slate-700">
+                    <div className="flex justify-between items-center">
+                      <span className="text-base font-semibold text-slate-900 dark:text-slate-50">
+                        Total:
+                      </span>
+                      <span className="text-base font-semibold text-primary">
+                        $
+                        {basketItems
+                          .reduce((total, item) => total + item.price, 0)
+                          .toFixed(2)}
+                      </span>
+                    </div>
+                    <button
+                      onClick={() => navigate("/cart")} 
+                      className="mt-2 w-full bg-primary text-white text-base font-semibold px-4 py-2 rounded-md hover:bg-primary/80 transition duration-300"
+                    >
+                      View Cart
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
             <div>{renderAuthButtons()}</div>
           </div>
 
           <div className="lg:hidden flex items-center">
-            <div>
-              {themeConfig.theme === "light" ? (
-                <button
-                  className="flex items-center p-2 mr-8 rounded-full bg-white-light/40 dark:bg-dark/40 hover:text-primary hover:bg-white-light/90 dark:hover:bg-dark/60"
-                  onClick={() => {
-                    dispatch(toggleTheme("dark"));
-                  }}
-                >
-                  <Sun className="text-slate-900 dark:text-slate-50" size="20" />
-                </button>
-              ) : null}
-              {themeConfig.theme === "dark" && (
-                <button
-                  className="flex items-center p-2 mr-8 rounded-full bg-white-light/40 dark:bg-slate-800 hover:text-primary hover:bg-white-light/90 dark:hover:bg-dark/60"
-                  onClick={() => {
-                    dispatch(toggleTheme("system"));
-                  }}
-                >
-                  <Moon className="text-slate-900 dark:text-slate-50" size="20" />
-                </button>
-              )}
-              {themeConfig.theme === "system" && (
-                <button
-                  className="flex items-center p-2 mr-8 rounded-full bg-white-light/40 dark:bg-slate-800 hover:text-primary hover:bg-white-light/90 dark:hover:bg-dark/60"
-                  onClick={() => {
-                    dispatch(toggleTheme("light"));
-                  }}
-                >
-                  <Laptop className="text-slate-900 dark:text-slate-50" size="20" />
-                </button>
-              )}
-            </div>
-
             <button onClick={toggleNavbar}>
               <Menu
                 color={themeConfig.isDarkMode ? "#f1f5f9" : "#64748b"}
