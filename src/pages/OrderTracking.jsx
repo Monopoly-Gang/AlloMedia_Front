@@ -173,7 +173,7 @@ const OrderTracking = () => {
 
           <div className="flex gap-8">
             {/* Restaurant Information */}
-            <div className="flex-1"> 
+            <div className="flex-1">
               <div className="relative h-32 bg-slate-50 dark:bg-slate-800 shadow-sm rounded-lg border border-slate-200 dark:border-slate-700 p-6 flex items-center space-x-4">
                 <div className="absolute top-[-10px] left-[-10px] rounded-full bg-primary shadow-md p-2">
                   <Store size={22} className="text-slate-50" />
@@ -270,20 +270,20 @@ const OrderTracking = () => {
           </div>
 
           {/* Order Details */}
-          <div className="relative bg-slate-50 dark:bg-slate-800 shadow-sm rounded-lg border border-slate-200 dark:border-slate-700 p-6">
+          <div className="relative bg-white dark:bg-slate-800 shadow-sm rounded-lg border border-slate-200 dark:border-slate-700 p-6">
             <div className="flex items-center space-x-4 mb-4 absolute top-[-10px] left-[-10px]">
-              <div className="rounded-full bg-primary p-2 shadow-md">
-                <Info size={22} className="text-slate-50" />
+              <div className="rounded-full bg-primary dark:bg-primary-dark p-2 shadow-md">
+                <Info size={22} className="text-white dark:text-slate-200" />
               </div>
             </div>
             <div className="ml-4">
-              <h2 className="text-xl font-semibold mb-4 text-slate-800 dark:text-slate-50">
+              <h2 className="text-xl font-semibold mb-4 text-slate-800 dark:text-white">
                 Order Details
               </h2>
-              <div className="overflow-x-auto rounded-md bg-slate-50 border border-slate-200 dark:border-slate-700 dark:bg-slate-800">
-                <table className="w-full text-sm text-left text-slate-500 dark:text-slate-400">
-                  <thead className="text-xs text-slate-50 bg-slate-50 uppercase dark:bg-slate-700 dark:text-slate-400">
-                    <tr className="bg-primary">
+              <div className="overflow-x-auto rounded-md bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+                <table className="w-full text-sm text-left text-slate-600 dark:text-slate-300">
+                  <thead className="text-xs uppercase bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
+                    <tr>
                       <th scope="col" className="px-6 py-3">
                         Item
                       </th>
@@ -305,36 +305,38 @@ const OrderTracking = () => {
                     {order.items.map((item, index) => (
                       <tr
                         key={index}
-                        className="bg-slate-50 border-b dark:bg-slate-800 dark:border-slate-700"
+                        className="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700"
                       >
-                        <td className="px-6 py-4 font-semibold text-base text-primary whitespace-nowrap dark:text-white">
+                        <td className="px-6 py-4 font-semibold text-base text-primary dark:text-primary-light whitespace-nowrap">
                           {item.menuItem.name}
                         </td>
-                        <td className="px-6 py-4 font-medium text-base">
+                        <td className="px-6 py-4 text-slate-600 dark:text-slate-300">
                           {item.menuItem.description}
                         </td>
-                        <td className="px-6 py-4 font-medium text-base">
+                        <td className="px-6 py-4 text-slate-600 dark:text-slate-300">
                           {item.quantity}
                         </td>
-                        <td className="px-6 py-4 font-medium text-base">
+                        <td className="px-6 py-4 text-slate-600 dark:text-slate-300">
                           ${item.price.toFixed(2)}
                         </td>
-                        <td className="px-6 py-4 font-medium text-base">
+                        <td className="px-6 py-4 text-slate-600 dark:text-slate-300">
                           ${(item.price * item.quantity).toFixed(2)}
                         </td>
                       </tr>
                     ))}
                   </tbody>
                   <tfoot>
-                    <tr className="font-semibold bg-primary text-slate-50">
+                    <tr className="font-semibold bg-slate-100 dark:bg-slate-700">
                       <th
                         scope="row"
-                        className="px-6 py-3 text-base"
+                        className="px-6 py-3 text-base text-slate-800 dark:text-white"
                         colSpan="4"
                       >
                         Total
                       </th>
-                      <td className="px-6 py-3">${order.total.toFixed(2)}</td>
+                      <td className="px-6 py-3 text-slate-800 dark:text-white">
+                        ${order.total.toFixed(2)}
+                      </td>
                     </tr>
                   </tfoot>
                 </table>
