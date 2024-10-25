@@ -4,6 +4,8 @@ import { Search, Grid, List, ChevronDown, MapPin } from "lucide-react";
 import RestaurantIllustration from "../assets/img/restaurants-illustration.svg";
 import SpinnerIcon from "../components/SpinnerIcon";
 import { getRequest } from "../utils/axiosRequests";
+import { useNavigate } from "react-router-dom";
+
 
 const Restaurants = () => {
   const { t } = useTranslation();
@@ -13,6 +15,7 @@ const Restaurants = () => {
   const [visibleRestaurants, setVisibleRestaurants] = useState(8);
   const [isLoading, setIsLoading] = useState(false);
   const [restaurants, setRestaurants] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -180,6 +183,8 @@ const SearchAndFilter = ({
     setDropdownOpen(false);
   };
 
+
+
   return (
     <div className="flex flex-col md:flex-row justify-between mb-6">
       <div className="relative mb-4 md:mb-0 md:w-3/4">
@@ -251,6 +256,13 @@ const SearchAndFilter = ({
 
 
 const RestaurantList = ({ restaurants, viewMode }) => {
+  const navigate = useNavigate();
+
+  const handleNavigation=(id)=>{
+    navigate(`/restaurant-details/${id}`);
+  }
+
+
   if (restaurants.length === 0) {
     return <p>No restaurants found.</p>;
   }
@@ -258,7 +270,7 @@ const RestaurantList = ({ restaurants, viewMode }) => {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {restaurants.map((restaurant) => (
-          <RestaurantCard key={restaurant.id} restaurant={restaurant} />
+          <RestaurantCard key={restaurant.id} restaurant={restaurant} handleNavigation={handleNavigation}  />
         ))}
       </div>
     );
@@ -267,15 +279,16 @@ const RestaurantList = ({ restaurants, viewMode }) => {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {restaurants.map((restaurant) => (
-          <RestaurantListItem key={restaurant.id} restaurant={restaurant} />
+          <RestaurantListItem key={restaurant.id} restaurant={restaurant} handleNavigation={handleNavigation}  />
         ))}
       </div>
     );
   }
 };
 
-const RestaurantCard = ({ restaurant }) => {
+const RestaurantCard = ({ restaurant,handleNavigation }) => {
   const { t } = useTranslation();
+  
   return (
     <div className="bg-gradient-to-t from-orange-100 to-transparent dark:bg-gradient-to-t dark:from-slate-800 dark:to-transparent rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden transition duration-300">
       <div className="flex flex-col items-center pt-4">
@@ -297,7 +310,7 @@ const RestaurantCard = ({ restaurant }) => {
         </div>
       </div>
       <div className="p-4">
-        <button className="w-full bg-primary text-white font-semibold py-2 rounded-lg hover:bg-primary-dark transition duration-300">
+        <button onClick={()=>handleNavigation(restaurant._id)} className="w-full bg-primary text-white font-semibold py-2 rounded-lg hover:bg-primary-dark transition duration-300">
           {t("View Menu")}
         </button>
       </div>
@@ -305,7 +318,7 @@ const RestaurantCard = ({ restaurant }) => {
   );
 };
 
-const RestaurantListItem = ({ restaurant }) => {
+const RestaurantListItem = ({ restaurant,handleNavigation}) => {
   const { t } = useTranslation();
   return (
     <div className="bg-white dark:bg-slate-800 rounded-md shadow-md overflow-hidden transition duration-300 flex flex-col h-full">
@@ -327,7 +340,7 @@ const RestaurantListItem = ({ restaurant }) => {
             <p className="text-sm">{restaurant.location}</p>
           </div>
           <div className="mt-auto">
-            <button className="w-full bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-dark transition duration-300">
+            <button onClick={()=>handleNavigation(restaurant.id)} className="w-full bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-dark transition duration-300">
               {t("View Menu")}
             </button>
           </div>

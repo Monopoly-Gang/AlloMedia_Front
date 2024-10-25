@@ -51,7 +51,7 @@ const MenuSection = ({ menu, userRole = 'restaurantManager' }) => {
       <input
         type="text"
         placeholder={t("Search menu...")}
-        className="w-full mb-4 p-2 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-slate-900 dark:border-slate-700 dark:text-white"
+        className="w-full mb-4 p-2 rounded-md border bg-white border-slate-200 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-slate-900 dark:border-slate-700 dark:text-white"
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
       />
