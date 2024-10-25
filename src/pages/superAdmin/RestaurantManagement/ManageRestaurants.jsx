@@ -348,7 +348,7 @@ const ManageRestaurants = () => {
           <input
             type="text"
             placeholder={t("Search restaurants...")}
-            className="w-full pl-10 pr-4 py-2 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-slate-900 dark:border-slate-700 dark:text-white"
+            className="w-full pl-10 pr-4 py-2 rounded-md border bg-white border-slate-200 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-slate-900 dark:border-slate-700 dark:text-white"
             value={searchTerm}
             onChange={handleSearch}
           />
@@ -356,7 +356,7 @@ const ManageRestaurants = () => {
         </div>
 
         <select
-          className="w-full md:w-1/4 px-4 py-2 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-slate-900 dark:border-slate-700 dark:text-white"
+          className="w-full md:w-1/4 px-4 py-2 rounded-md bg-white border border-slate-200 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-slate-900 dark:border-slate-700 dark:text-white"
           value={filterCuisine}
           onChange={handleFilterChange}
         >

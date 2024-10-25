@@ -29,7 +29,7 @@ const RestaurantManagerSidebar = () => {
   return (
     <div className={semidark ? "dark" : ""}>
       <nav
-        className={`sidebar fixed min-h-screen h-full top-0 bottom-0 w-[260px] shadow-[5px_0_25px_0_rgba(94,92,154,0.1)] z-50 transition-all duration-300 ${
+        className={`sidebar fixed min-h-screen h-full top-0 bottom-0 w-[270px] shadow-[5px_0_25px_0_rgba(94,92,154,0.1)] z-50 transition-all duration-300 ${
           semidark ? "text-white-dark" : ""
         }`}
       >
@@ -97,7 +97,7 @@ const RestaurantManagerSidebar = () => {
                   duration={300}
                   height={currentMenu === "dashboard" ? "auto" : 0}
                 >
-                  <ul className="sub-menu text-gray-500">
+                  <ul className="sub-menu text-gray-500 m-0">
                     <li>
                       <NavLink to="/analytics">{t("Analytics")}</NavLink>
                     </li>
@@ -164,12 +164,12 @@ const RestaurantManagerSidebar = () => {
                   duration={300}
                   height={currentMenu === "restaurant" ? "auto" : 0}
                 >
-                  <ul className="sub-menu text-gray-500">
+                  <ul className="sub-menu text-gray-500 m-0">
                     <li>
-                      <NavLink to="/dashboard/super-admin/manage-restaurants"> {t("List Restaurant")}</NavLink>
+                      <NavLink className="text-[0.85rem] font-semibold" to="/dashboard/super-admin/manage-restaurants"> {t("List Restaurant")}</NavLink>
                     </li>
                     <li>
-                      <NavLink to="/dashboard/super-admin/approve-restaurant"> {t("Approve Restaurant")}</NavLink>
+                      <NavLink className="text-[0.85rem] font-semibold" to="/dashboard/super-admin/approve-restaurant"> {t("Approve Restaurant")}</NavLink>
                     </li>
                   </ul>
                 </AnimateHeight>
