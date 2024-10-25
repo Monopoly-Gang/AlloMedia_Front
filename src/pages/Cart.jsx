@@ -1,5 +1,5 @@
-// src/pages/Cart.jsx
-import React, { useState } from "react";
+import { useState } from "react";
+import ConfirmationModal from "../components/ConfirmationModal";
 
 // Mock data for testing
 const mockBasketItems = [
@@ -19,8 +19,9 @@ const mockBasketItems = [
   },
 ];
 
-const Cart = ({ basketItems = mockBasketItems, removeItemFromBasket }) => {
+const Cart = ({ basketItems = mockBasketItems }) => {
   const [items, setItems] = useState(basketItems);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const calculateTotal = () => {
     return items
@@ -50,7 +51,15 @@ const Cart = ({ basketItems = mockBasketItems, removeItemFromBasket }) => {
 
   const handleClearAllItems = () => {
     setItems([]);
-    console.log("All items cleared");
+    setIsModalOpen(false);
+  };
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
   };
 
   return (
@@ -200,11 +209,18 @@ const Cart = ({ basketItems = mockBasketItems, removeItemFromBasket }) => {
                   Order Now
                 </button>
                 <button
-                  onClick={handleClearAllItems}
+                  onClick={openModal}
                   className="flex w-full items-center justify-center border-2 text-red-500 border-red-500 hover:bg-red-500 hover:text-slate-50 font-semibold rounded-md bg-slate-50 px-5 py-2.5 text-sm"
                 >
-                  Clear All 
+                  Clear All
                 </button>
+                <ConfirmationModal
+                  isOpen={isModalOpen}
+                  onClose={closeModal}
+                  onConfirm={handleClearAllItems}
+                  title="Clear Cart"
+                  message="Are you sure you want to clear all items from your cart?"
+                />
               </div>
             </div>
           </div>
