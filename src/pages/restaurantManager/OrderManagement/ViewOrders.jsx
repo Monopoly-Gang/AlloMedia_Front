@@ -67,7 +67,7 @@ const ViewOrders = () => {
           <input
             type="text"
             placeholder={t('Search orders...')}
-            className="w-full pl-10 pr-4 py-2 rounded-md border border-slate-200 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-slate-900 dark:border-slate-700 dark:text-white"
+            className="w-full pl-10 pr-4 py-2 rounded-md border bg-white border-slate-200 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-slate-900 dark:border-slate-700 dark:text-white"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
@@ -76,7 +76,7 @@ const ViewOrders = () => {
         
         <div className="flex items-center">
           <select
-            className="px-4 py-2 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-slate-900 dark:border-slate-700 dark:text-white"
+            className="px-4 py-2 rounded-lg border bg-white border-slate-200 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-slate-900 dark:border-slate-700 dark:text-white"
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
           >
