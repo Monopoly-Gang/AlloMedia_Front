@@ -168,6 +168,9 @@ const RestaurantManagerSidebar = () => {
                     <li>
                       <NavLink to="/dashboard/super-admin/manage-restaurants"> {t("List Restaurant")}</NavLink>
                     </li>
+                    <li>
+                      <NavLink to="/dashboard/super-admin/approve-restaurant"> {t("Approve Restaurant")}</NavLink>
+                    </li>
                   </ul>
                 </AnimateHeight>
               </li>

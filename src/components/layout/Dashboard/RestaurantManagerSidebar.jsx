@@ -1,4 +1,3 @@
-import React from 'react';
 import { useTranslation } from "react-i18next";
 import { NavLink } from "react-router-dom";
 import { ChevronsLeft } from "lucide-react";
@@ -9,6 +8,7 @@ import { useState, useEffect } from "react";
 import { SolarMenuDotsSquareBold } from "../../icons/SolarMenuDotsSquareBold";
 import { MaterialSymbolsDashboardCustomizeRounded } from "../../icons/MaterialSymbolsDashboardCustomizeRounded";
 import { MaterialSymbolsLightOrderApprove } from "../../icons/MaterialSymbolsLightOrderApprove";
+import { Restaurant } from "../../icons/Restaurant";
 
 const RestaurantManagerSidebar = () => {
   const [currentMenu, setCurrentMenu] = useState("");
@@ -78,67 +78,8 @@ const RestaurantManagerSidebar = () => {
                 >
                   <line x1="5" y1="12" x2="19" y2="12"></line>
                 </svg>
-                <span className='text-[0.85rem]'>{t("Menu & Orders")}</span>
+                <span className='text-[0.85rem]'>{t("Orders")}</span>
               </h2>
-              <li className="menu nav-item">
-                <button
-                  type="button"
-                  className={`${
-                    currentMenu === "menu" ? "active" : ""
-                  } nav-link group w-full`}
-                  onClick={() => toggleMenu("menu")}
-                >
-                  <div className="flex items-center">
-                  <SolarMenuDotsSquareBold className="group-hover:!text-primary shrink-0" />
-                    <span className="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">
-                      {t("Menu")}
-                    </span>
-                  </div>
-
-                  <div
-                    className={
-                      currentMenu === "menu"
-                        ? "rotate-90"
-                        : "rtl:rotate-180"
-                    }
-                  >
-                    <svg
-                      width="16"
-                      height="16"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M9 5L15 12L9 19"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </div>
-                </button>
-
-                <AnimateHeight
-                  duration={300}
-                  height={currentMenu === "menu" ? "auto" : 0}
-                >
-                  <ul className="sub-menu text-gray-500">
-                    <li>
-                      <NavLink to=""> {t("List Menu Items")}</NavLink>
-                    </li>
-                    <li>
-                      <NavLink to=""> {t("Add Menu Item")}</NavLink>
-                    </li>
-                    <li>
-                      <NavLink to="">
-                      {t("Edit Menu Item")}
-                      </NavLink>
-                    </li>
-                  </ul>
-                </AnimateHeight>
-              </li>
 
               <li className="menu nav-item">
                 <button
@@ -186,9 +127,78 @@ const RestaurantManagerSidebar = () => {
                 >
                   <ul className="sub-menu text-gray-500">
                     <li>
-                      <NavLink to=""> {t("View Orders")}</NavLink>
+                      <NavLink to="/dashboard/restaurant-manager/view-orders"> {t("View Orders")}</NavLink>
                     </li>
                    
+                  </ul>
+                </AnimateHeight>
+                
+              </li>
+
+              <h2 className="py-3 px-7 flex items-center uppercase font-extrabold bg-white-light/30 dark:bg-dark dark:bg-opacity-[0.08] -mx-4 mb-1">
+                <svg
+                  className="w-4 h-5 flex-none hidden"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  fill="none"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+                <span className="text-[0.85rem]">
+                  {t("Restaurant Management")}
+                </span>
+              </h2>
+              <li className="menu nav-item">
+                <button
+                  type="button"
+                  className={`${
+                    currentMenu === "restaurant" ? "active" : ""
+                  } nav-link group w-full`}
+                  onClick={() => toggleMenu("restaurant")}
+                >
+                  <div className="flex items-center">
+                    <Restaurant className="group-hover:!text-primary shrink-0" />
+                    <span className="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">
+                      {t("restaurant")}
+                    </span>
+                  </div>
+
+                  <div
+                    className={
+                      currentMenu === "restaurant"
+                        ? "rotate-90"
+                        : "rtl:rotate-180"
+                    }
+                  >
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M9 5L15 12L9 19"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </div>
+                </button>
+
+                <AnimateHeight
+                  duration={300}
+                  height={currentMenu === "restaurant" ? "auto" : 0}
+                >
+                  <ul className="sub-menu text-gray-500">
+                    <li>
+                      <NavLink to="/dashboard/restaurant-manager/restaurant-details/:id"> {t("Your Restaurant")}</NavLink>
+                    </li>
                   </ul>
                 </AnimateHeight>
               </li>
