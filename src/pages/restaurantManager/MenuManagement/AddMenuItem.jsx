@@ -37,12 +37,9 @@ const AddMenuItem = () => {
   async function onSubmit(data) {
     const formData = new FormData();
     
-    // Append form fields to FormData
     formData.append('name', data.name);
     formData.append('description', data.description);
     formData.append('price', data.price);
-    
-    // Append the file (image)
     if (data.image && data.image.target) {
       formData.append('image', data.image.target.value);
     }

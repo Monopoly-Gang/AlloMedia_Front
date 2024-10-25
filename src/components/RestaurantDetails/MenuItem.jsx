@@ -7,6 +7,10 @@ import { useNavigate } from 'react-router-dom';
 const MenuItem = ({ item, onDelete }) => {
   const navigate = useNavigate();
 
+  const handleEditClick = () => {
+    navigate(`/dashboard/restaurant-manager/edit-menu-item/${item._id}`, { state: { item } }); 
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -15,7 +19,7 @@ const MenuItem = ({ item, onDelete }) => {
       });
       if (response.status === 200) {
         console.log('Form submitted successfully');
-        onDelete(item._id); // Call the onDelete function to update the parent state
+        onDelete(item._id);
       } else {
         console.error('Form submission failed');
       }
@@ -23,6 +27,7 @@ const MenuItem = ({ item, onDelete }) => {
       console.error('Error submitting form:', error);
     }
   };
+
 
   return (
     <div className="bg-white dark:bg-slate-900 p-4 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden animate-fadeInUp">
@@ -38,8 +43,11 @@ const MenuItem = ({ item, onDelete }) => {
         ${item.price.toFixed(2)}
       </p>
       <div className="flex justify-end mt-2">
-        <button className="text-green-500 mr-2 rounded-full bg-slate-200 dark:bg-slate-800 p-2">
+        <button className="text-green-500 mr-2 rounded-full bg-slate-200 dark:bg-slate-800 p-2"
+        onClick={handleEditClick}
+        >
           <Edit size={16} />
+          
         </button>
         <form onSubmit={handleSubmit}>
           <input type="hidden" id="id" name="id" value={item._id} />

@@ -16,6 +16,13 @@ const AddMenuItem = lazy(() => import('../pages/superAdmin/RestaurantManagement/
 const RestaurantManagerDetails = lazy(() => import('../pages/restaurantManager/RestaurantManagement/RestaurantDetails'));
 const AddMenuItemRestaurantManager = lazy(() => import('../pages/restaurantManager/MenuManagement/AddMenuItem'));
 const ViewOrders = lazy(() => import('../pages/restaurantManager/OrderManagement/ViewOrders'));
+// const Restaurants = lazy(() => import('../pages/Restaurants'));
+// const RestaurantMenuDetails = lazy(() => import('../pages/RestaurantDetails'));
+const EditMenuItem = lazy(() => import('../pages/restaurantManager/MenuManagement/EditMenuItem'));
+// const MenuDetails = lazy(() => import('../pages/MenuDetails'));
+// const Cart = lazy(() => import('../pages/Cart'));
+// const OrderTracking = lazy(() => import('../pages/OrderTracking'));
+
 
 export const routes = [
   {
@@ -31,6 +38,7 @@ export const routes = [
       { path: '/dashboard/restaurant-manager/restaurant-details/:id', element: RestaurantManagerDetails },
       { path: '/dashboard/restaurant-manager/add-menu-item/:id', element: AddMenuItemRestaurantManager },
       { path: '/dashboard/restaurant-manager/view-orders', element: ViewOrders },
+      { path: '/dashboard/restaurant-manager/edit-menu-item/:id', element: EditMenuItem },
     ],
   },
   {
