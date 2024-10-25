@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Minus, Plus } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../store/cartSlice";
+
 
 
 const MenuDetails = () => {
@@ -14,6 +15,7 @@ const MenuDetails = () => {
   const [addOns, setAddOns] = useState([]);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const fakeMenuItem = {
     id: "1006",
@@ -25,6 +27,7 @@ const MenuDetails = () => {
   // function add to cart
   const handleAddToCart = () =>{
     dispatch(addToCart({...fakeMenuItem,quantity}));
+    navigate('/cart');
   }
 
   useEffect(() => {

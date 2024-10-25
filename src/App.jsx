@@ -4,8 +4,7 @@ import { I18nextProvider } from 'react-i18next';
 import i18n from './i18n';
 import AppRoutes from './router/AppRoutes';
 import { toggleRTL, toggleTheme, toggleLocale, toggleMenu, toggleLayout, toggleAnimation, toggleNavbar, toggleSemidark } from './store/themeConfigSlice';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { Toaster } from 'sonner';
 
 const App = () => {
     const themeConfig = useSelector((state) => state.themeConfig);
@@ -34,7 +33,7 @@ const App = () => {
                 } main-section antialiased relative font-nunito text-sm font-normal`}
             >
                 <AppRoutes />
-                <ToastContainer />
+                <Toaster richColors  position="top-center" />
             </div>
         </I18nextProvider>
     );

@@ -3,27 +3,9 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { clearCart, removeFromCart, updateQuantity } from "../store/cartSlice";
 
-// Mock data for testing
-const mockBasketItems = [
-  {
-    id: 1,
-    name: "Product 1",
-    price: 29.99,
-    quantity: 2,
-    image: "https://via.placeholder.com/150",
-  },
-  {
-    id: 2,
-    name: "Product 2",
-    price: 49.99,
-    quantity: 1,
-    image: "https://via.placeholder.com/150",
-  },
-];
 
-const Cart = ({ basketItems = mockBasketItems, removeItemFromBasket }) => {
-  // const [items, setItems] = useState(basketItems);
-
+const Cart = () => {
+ 
   const dispatch = useDispatch();
   const items = useSelector((state)=>state.cart.items);
   const totalAmount = useSelector((state)=>state.cart.totalAmount);
@@ -39,13 +21,11 @@ const Cart = ({ basketItems = mockBasketItems, removeItemFromBasket }) => {
   };
   
   const handleUpdateQuantity = (id,quantity) => {
-    console.log("clicked")
       dispatch(updateQuantity({id,quantity}));
   }
 
   const handleOrderNow = () => {
     console.log("Order Now clicked");
-    // Implement order logic here if needed
   };
 
   return (

@@ -8,7 +8,7 @@ import {
   ShoppingBasket,
   Trash2,
 } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import logoLight from "../../../assets/img/logo-light.svg";
 import logoDark from "../../../assets/img/logo-dark.svg";
 import { useSelector, useDispatch } from "react-redux";
@@ -28,9 +28,7 @@ const Navbar = () => {
   const isRtl = themeConfig.rtlClass === "rtl";
   const { t } = useTranslation();
   const navigate = useNavigate();
-
-
-
+  const basketMenuRef =useRef(null);
   const basketItems = useSelector((state)=>state.cart.items);
   const totalAmount = useSelector((state)=>state.cart.totalAmount);
 
@@ -58,6 +56,22 @@ const Navbar = () => {
     };
   }, [mobileDrawerOpen]);
 
+
+
+  useEffect(() => {
+    const handleOutsideClick = (event) => {
+      console.log("ref", basketMenuRef.current);
+      if (basketMenuRef.current && !basketMenuRef.current.contains(event.target)) {
+        setBasketOpen(prev => !prev); 
+      }
+    };
+  
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, []);
+
   const toggleNavbar = () => {
     setMobileDrawerOpen(!mobileDrawerOpen);
   };
@@ -65,6 +79,10 @@ const Navbar = () => {
   const toggleBasket = () => {
     setBasketOpen(!basketOpen);
   };
+
+  
+
+
 
   const removeNotification = (id) => {
     setNotifications(notifications.filter((notif) => notif.id !== id));
@@ -317,7 +335,7 @@ const Navbar = () => {
                 />
               </button>
               {basketOpen && (
-                <div className="absolute right-0 mt-2 w-64 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-md shadow-lg">
+                <div ref={basketMenuRef} className="absolute right-0 mt-2 w-64 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-md shadow-lg">
                   <ul className="py-2">
                     {basketItems.map((item) => (
                       <li

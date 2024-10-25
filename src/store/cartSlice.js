@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { loadState } from "../utils/localStorage";
-import { toast } from "react-toastify";
+import {  toast } from 'sonner'
+
 
 
 const initialState = loadState('cart') || {
@@ -23,6 +24,7 @@ const cartSlice = createSlice({
             if(existingItem){
                
                 existingItem.quantity = product.quantity || existingItem.quantity ;
+                toast.success("Item Quantity Updated");
             }
             // Push a new item if not
             else{
