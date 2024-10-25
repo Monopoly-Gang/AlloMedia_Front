@@ -66,7 +66,7 @@ const Cart = ({ basketItems = mockBasketItems, removeItemFromBasket }) => {
                     <a href="#" className="shrink-0 md:order-1">
                       <img
                         className="h-20 w-20 rounded-full"
-                        src={item.image}
+                        src={`http://localhost:3000/uploads/restos/${item.image}`}
                         alt={item.name}
                       />
                     </a>
@@ -183,17 +183,16 @@ const Cart = ({ basketItems = mockBasketItems, removeItemFromBasket }) => {
                 </dl>
               </div>
               <div className="flex flex-col gap-2">
-              <button
-                  onClick={handleClearCart}
-                  className="flex w-full items-center justify-center rounded-md bg-primary px-5 py-2.5 text-sm font-medium text-white"
-                >
-                  Clear cart
-                </button>
                 <button
                   onClick={handleOrderNow}
                   className="flex w-full items-center justify-center rounded-md bg-primary px-5 py-2.5 text-sm font-medium text-white"
                 >
                   Order Now
+                </button>
+                <button
+                  onClick={handleClearCart}
+                  className="flex w-full items-center justify-center border-2 text-red-500 border-red-500 hover:bg-red-500 hover:text-slate-50 font-semibold rounded-md bg-slate-50 px-5 py-2.5 text-sm">
+                  Clear All 
                 </button>
               </div>
             </div>
