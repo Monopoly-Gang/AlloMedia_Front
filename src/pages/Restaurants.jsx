@@ -249,19 +249,26 @@ const SearchAndFilter = ({
   );
 };
 
+
 const RestaurantList = ({ restaurants, viewMode }) => {
-  const { t } = useTranslation();
-  return (
-    <div className={`grid ${viewMode === "grid" ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" : "grid-cols-1"} gap-6`}>
-      {restaurants.length > 0 ? (
-        restaurants.map((restaurant) => (
+  if (viewMode === "grid") {
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {restaurants.map((restaurant) => (
           <RestaurantCard key={restaurant.id} restaurant={restaurant} />
-        ))
-      ) : (
-        <p className="text-center text-gray-500">{t("No restaurants found")}</p>
-      )}
-    </div>
-  );
+        ))}
+      </div>
+    );
+  } 
+  else {
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {restaurants.map((restaurant) => (
+          <RestaurantListItem key={restaurant.id} restaurant={restaurant} />
+        ))}
+      </div>
+    );
+  }
 };
 
 const RestaurantCard = ({ restaurant }) => {
@@ -270,7 +277,8 @@ const RestaurantCard = ({ restaurant }) => {
     <div className="bg-gradient-to-t from-orange-100 to-transparent dark:bg-gradient-to-t dark:from-slate-800 dark:to-transparent rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden transition duration-300">
       <div className="flex flex-col items-center pt-4">
         <img
-          src={restaurant.image}
+          src={`http://localhost:3000/uploads/restos/${restaurant.logo}`}
+
           alt={restaurant.name}
           className="w-24 h-24 mb-3 rounded-full shadow-md"
         />
@@ -293,5 +301,38 @@ const RestaurantCard = ({ restaurant }) => {
     </div>
   );
 };
+
+const RestaurantListItem = ({ restaurant }) => {
+  const { t } = useTranslation();
+  return (
+    <div className="bg-white dark:bg-slate-800 rounded-md shadow-md overflow-hidden transition duration-300 flex flex-col h-full">
+      <div className="flex flex-col sm:flex-row h-full">
+        <img
+           src={`http://localhost:3000/uploads/restos/${restaurant.logo}`}
+          alt={restaurant.name}
+          className="w-full sm:w-40 h-48 sm:h-full object-cover"
+        />
+        <div className="p-4 flex flex-col flex-grow">
+          <h3 className="text-xl font-semibold mb-2 dark:text-white">
+            {restaurant.name}
+          </h3>
+          <p className="text-slate-50 font-medium rounded-full w-fit bg-primary px-2 py-1 dark:text-gray-300 mb-2">
+            {t(restaurant.cuisineType)}
+          </p>
+          <div className="flex items-center text-gray-600 dark:text-gray-400 mb-2">
+            <MapPin size={16} className="mr-1 flex-shrink-0" />
+            <p className="text-sm">{restaurant.location}</p>
+          </div>
+          <div className="mt-auto">
+            <button className="w-full bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-dark transition duration-300">
+              {t("View Menu")}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 
 export default Restaurants;
