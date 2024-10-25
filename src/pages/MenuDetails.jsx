@@ -1,7 +1,11 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Minus, Plus } from "lucide-react";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../store/cartSlice";
+
+
 
 const MenuDetails = () => {
   const { t } = useTranslation();
@@ -9,6 +13,22 @@ const MenuDetails = () => {
   const [menuItem, setMenuItem] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [addOns, setAddOns] = useState([]);
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const fakeMenuItem = {
+    id: "1006",
+    name: "Double Patty Veg Burger",
+    description: "A delicious veg burger with double patty.",
+    price: 20.0,
+  };
+
+  // function add to cart
+  const handleAddToCart = () =>{
+    dispatch(addToCart({...fakeMenuItem,quantity}));
+
+  }
 
   useEffect(() => {
     const fetchMenuItem = async () => {
@@ -61,7 +81,9 @@ const MenuDetails = () => {
     fetchMenuItem();
   }, [id]);
 
-  const handleQuantityChange = (amount) => {
+  
+
+  const handleQuantityUpdate = (amount) => {
     setQuantity((prev) => Math.max(1, prev + amount));
   };
 
@@ -73,18 +95,18 @@ const MenuDetails = () => {
     );
   };
 
-  const calculateTotalPrice = () => {
-    const addOnsPrice = addOns
-      .filter((addOn) => addOn.selected)
-      .reduce((total, addOn) => total + addOn.price, 0);
-    return (menuItem.price + addOnsPrice) * quantity;
-  };
+  // const calculateTotalPrice = () => {
+  //   const addOnsPrice = addOns
+  //     .filter((addOn) => addOn.selected)
+  //     .reduce((total, addOn) => total + addOn.price, 0);
+  //   return (menuItem.price + addOnsPrice) * quantity;
+  // };
 
   if (!menuItem) {
     return <div>{t("Loading...")}</div>;
   }
 
-  const totalPrice = calculateTotalPrice().toFixed(2);
+  // const totalPrice = calculateTotalPrice().toFixed(2);
 
   return (
     <section className="py-10 md:py-20 lg:py-14 bg-slate-50 dark:bg-slate-900">
@@ -104,11 +126,11 @@ const MenuDetails = () => {
             </p>
             <div className="flex items-center mb-4">
               <span className="text-2xl font-bold text-primary">
-                ${totalPrice}
+                {/* ${totalPrice} */}
               </span>
               <div className="flex items-center ml-4">
                 <button
-                  onClick={() => handleQuantityChange(-1)}
+                  onClick={() => handleQuantityUpdate(-1)}
                   className="px-2 py-1 bg-gray-200 dark:bg-slate-800 text-slate-900 dark:text-slate-50 rounded"
                 >
                   <Minus size={18} />
@@ -117,7 +139,7 @@ const MenuDetails = () => {
                   {quantity}
                 </span>
                 <button
-                  onClick={() => handleQuantityChange(1)}
+                  onClick={() => handleQuantityUpdate(1)}
                   className="px-2 py-1 bg-gray-200 dark:bg-slate-800 text-slate-900 dark:text-slate-50 rounded"
                 >
                   <Plus size={18} />
@@ -155,8 +177,8 @@ const MenuDetails = () => {
               ))}
             </div>
             <div className="flex space-x-4 mb-4">
-              <button className="bg-primary text-white text-base font-semibold px-4 py-2 rounded-md hover:bg-primary/80 transition duration-300">
-                {t("Add To Cart")}
+              <button onClick={handleAddToCart} className="bg-primary text-white text-base font-semibold px-4 py-2 rounded-md hover:bg-primary/80 transition duration-300">
+                {t("Add To Cart")} 
               </button>
             </div>
           </div>

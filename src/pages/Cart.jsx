@@ -1,56 +1,31 @@
 // src/pages/Cart.jsx
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { clearCart, removeFromCart, updateQuantity } from "../store/cartSlice";
 
-// Mock data for testing
-const mockBasketItems = [
-  {
-    id: 1,
-    name: "Product 1",
-    price: 29.99,
-    quantity: 2,
-    image: "https://via.placeholder.com/150",
-  },
-  {
-    id: 2,
-    name: "Product 2",
-    price: 49.99,
-    quantity: 1,
-    image: "https://via.placeholder.com/150",
-  },
-];
 
-const Cart = ({ basketItems = mockBasketItems, removeItemFromBasket }) => {
-  const [items, setItems] = useState(basketItems);
+const Cart = () => {
+ 
+  const dispatch = useDispatch();
+  const items = useSelector((state)=>state.cart.items);
+  const totalAmount = useSelector((state)=>state.cart.totalAmount);
 
-  const calculateTotal = () => {
-    return items
-      .reduce((total, item) => total + item.price * (item.quantity || 1), 0)
-      .toFixed(2);
+  const handleClearCart =() =>{
+    dispatch(clearCart());
+  }
+
+
+
+  const handleRemoveFromCart = (id) => {
+    dispatch(removeFromCart(id));
   };
-
-  const handleRemoveItem = (id) => {
-    console.log(`Remove item with id: ${id}`);
-    // Implement removal logic here if needed
-  };
-
-  const handleQuantityChange = (id, delta) => {
-    setItems((prevItems) =>
-      prevItems.map((item) =>
-        item.id === id
-          ? { ...item, quantity: Math.max(1, item.quantity + delta) }
-          : item
-      )
-    );
-  };
+  
+  const handleUpdateQuantity = (id,quantity) => {
+      dispatch(updateQuantity({id,quantity}));
+  }
 
   const handleOrderNow = () => {
     console.log("Order Now clicked");
-    // Implement order logic here if needed
-  };
-
-  const handleClearAllItems = () => {
-    setItems([]);
-    console.log("All items cleared");
   };
 
   return (
@@ -62,63 +37,58 @@ const Cart = ({ basketItems = mockBasketItems, removeItemFromBasket }) => {
         <div className="mt-6 sm:mt-8 md:gap-6 lg:flex lg:items-start xl:gap-8">
           <div className="mx-auto w-full flex-none lg:max-w-2xl xl:max-w-4xl">
             <div className="space-y-6">
-              {items.length === 0 ? (
-                <p className="text-center text-slate-500 dark:text-slate-400">
-                  Aucune items existe dans le panier.
-                </p>
-              ) : (
-                items.map((item) => (
-                  <div
-                    key={item.id}
-                    className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 md:p-6"
-                  >
-                    <div className="space-y-4 md:flex md:items-center md:justify-between md:gap-6 md:space-y-0">
-                      <a href="#" className="shrink-0 md:order-1">
-                        <img
-                          className="h-20 w-20 rounded-full"
-                          src={item.image}
-                          alt={item.name}
-                        />
+              {items.map((item) => (
+                <div
+                  key={item.id}
+                  className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 md:p-6"
+                >
+                  <div className="space-y-4 md:flex md:items-center md:justify-between md:gap-6 md:space-y-0">
+                    <a href="#" className="shrink-0 md:order-1">
+                      <img
+                        className="h-20 w-20 rounded-full"
+                        src={`http://localhost:3000/uploads/restos/${item.image}`}
+                        alt={item.name}
+                      />
+                    </a>
+                    <div className="w-full min-w-0 flex-1 space-y-4 md:order-2 md:max-w-md">
+                      <a
+                        href="#"
+                        className="text-base font-medium text-gray-900 hover:underline dark:text-white"
+                      >
+                        {item.name}
                       </a>
-                      <div className="w-full min-w-0 flex-1 space-y-4 md:order-2 md:max-w-md">
-                        <a
-                          href="#"
-                          className="text-base font-medium text-gray-900 hover:underline dark:text-white"
+                      <div className="flex items-center gap-4">
+                        <button
+                          type="button"
+                          className="inline-flex items-center text-sm font-medium text-red-600 hover:underline dark:text-red-500"
+                          onClick={() => handleRemoveFromCart(item.id)}
                         >
-                          {item.name}
-                        </a>
-                        <div className="flex items-center gap-4">
-                          <button
-                            type="button"
-                            className="inline-flex items-center text-sm font-medium text-red-600 hover:underline dark:text-red-500"
-                            onClick={() => handleRemoveItem(item.id)}
+                          <svg
+                            className="me-1.5 h-5 w-5"
+                            aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            fill="none"
+                            viewBox="0 0 24 24"
                           >
-                            <svg
-                              className="me-1.5 h-5 w-5"
-                              aria-hidden="true"
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="24"
-                              height="24"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                stroke="currentColor"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                d="M6 18 17.94 6M18 18 6.06 6"
-                              />
-                            </svg>
-                            Remove
-                          </button>
-                        </div>
+                            <path
+                              stroke="currentColor"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="2"
+                              d="M6 18 17.94 6M18 18 6.06 6"
+                            />
+                          </svg>
+                          Remove
+                        </button>
                       </div>
-                      <div className="flex items-center justify-between md:order-3 md:justify-end">
+                    </div>
+                    <div className="flex items-center justify-between md:order-3 md:justify-end">
                         <div className="flex items-center">
                           <button
                             type="button"
-                            onClick={() => handleQuantityChange(item.id, -1)}
+                            onClick={()=>handleUpdateQuantity(item.id,-1)}
                             className="inline-flex h-5 w-5 items-center justify-center rounded-md border border-gray-300 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700"
                           >
                             <svg
@@ -145,7 +115,7 @@ const Cart = ({ basketItems = mockBasketItems, removeItemFromBasket }) => {
                           />
                           <button
                             type="button"
-                            onClick={() => handleQuantityChange(item.id, 1)}
+                            onClick={()=>handleUpdateQuantity(item.id,1)}
                             className="inline-flex h-5 w-5 items-center justify-center rounded-md border border-gray-300 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700"
                           >
                             <svg
@@ -166,15 +136,14 @@ const Cart = ({ basketItems = mockBasketItems, removeItemFromBasket }) => {
                           </button>
                         </div>
                       </div>
-                      <div className="text-end md:order-4 md:w-32">
-                        <p className="text-base font-bold text-gray-900 dark:text-white">
-                          ${(item.price * (item.quantity || 1)).toFixed(2)}
-                        </p>
-                      </div>
+                    <div className="text-end md:order-4 md:w-32">
+                      <p className="text-base font-bold text-gray-900 dark:text-white">
+                        ${totalAmount}
+                      </p>
                     </div>
                   </div>
-                ))
-              )}
+                </div>
+              ))}
             </div>
           </div>
           <div className="mx-auto mt-6 max-w-4xl flex-1 space-y-6 lg:mt-0 lg:w-full">
@@ -188,7 +157,7 @@ const Cart = ({ basketItems = mockBasketItems, removeItemFromBasket }) => {
                     Total
                   </dt>
                   <dd className="text-base font-bold text-gray-900 dark:text-white">
-                    ${calculateTotal()}
+                    ${totalAmount}
                   </dd>
                 </dl>
               </div>
@@ -200,10 +169,9 @@ const Cart = ({ basketItems = mockBasketItems, removeItemFromBasket }) => {
                   Order Now
                 </button>
                 <button
-                  onClick={handleClearAllItems}
-                  className="flex w-full items-center justify-center border-2 border-red-500 text-red-500 font-semibold rounded-md bg-slate-50 px-5 py-2.5 text-sm"
-                >
-                  Clear All Items
+                  onClick={handleClearCart}
+                  className="flex w-full items-center justify-center border-2 text-red-500 border-red-500 hover:bg-red-500 hover:text-slate-50 font-semibold rounded-md bg-slate-50 px-5 py-2.5 text-sm">
+                  Clear All 
                 </button>
               </div>
             </div>

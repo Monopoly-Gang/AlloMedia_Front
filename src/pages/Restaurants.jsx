@@ -251,6 +251,9 @@ const SearchAndFilter = ({
 
 
 const RestaurantList = ({ restaurants, viewMode }) => {
+  if (restaurants.length === 0) {
+    return <p>No restaurants found.</p>;
+  }
   if (viewMode === "grid") {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
