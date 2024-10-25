@@ -1,7 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { CheckCircle, XCircle, Package, Info, MapPin } from "lucide-react";
+import {
+  CheckCircle,
+  XCircle,
+  Package,
+  Info,
+  MapPin,
+  User,
+  Store,
+  Truck,
+} from "lucide-react";
 
+// Mise à jour des étapes pour correspondre exactement au modèle
 const statusSteps = [
   {
     key: "pending",
@@ -11,7 +21,7 @@ const statusSteps = [
   {
     key: "preparing",
     label: "Preparing",
-    description: "Your order has been accepted.",
+    description: "Your order is being prepared.",
   },
   {
     key: "ready_for_delivery",
@@ -70,14 +80,29 @@ const OrderTracking = () => {
   useEffect(() => {
     const fetchOrderDetails = async () => {
       try {
+        // Simuler la récupération des données de commande
+        // Dans une vraie application, vous feriez un appel API ici
         const mockOrder = {
           id: orderId,
           status: "preparing",
+          client: { name: "John Doe", phone: "123-456-7890" },
+          restaurant: { name: "Tasty Bites", phone: "987-654-3210" },
           items: [
-            { name: "Pizza", quantity: 2, price: 12.99 },
-            { name: "Burger", quantity: 1, price: 8.99 },
+            {
+              menuItem: { name: "Pizza", description: "Delicious pizza" },
+              quantity: 2,
+              price: 12.99,
+            },
+            {
+              menuItem: { name: "Burger", description: "Juicy burger" },
+              quantity: 1,
+              price: 8.99,
+            },
           ],
           total: 34.97,
+          livreur: { name: "Mike Delivery", phone: "555-123-4567" },
+          createdAt: "2023-04-15T10:30:00Z",
+          updatedAt: "2023-04-15T11:00:00Z",
           deliveryInfo: {
             address: "123 Main St, City, Country",
             estimatedDelivery: "2023-04-15 15:30",
@@ -107,19 +132,144 @@ const OrderTracking = () => {
           <Stepper currentStep={currentStepIndex} />
         </div>
         <div className="lg:col-span-2 space-y-8 bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-md shadow-sm p-10">
-          <div className="relative bg-slate-50 dark:bg-slate-800 shadow-sm rounded-lg border border-slate-200 dark:border-slate-700 p-6 flex items-center space-x-4">
-            <div className="absolute top-[-10px] left-[-10px] rounded-full bg-primary shadow-md p-2">
-              <Package size={22} className="text-slate-50" />
+          <div className="flex gap-8">
+            {/* Order Status */}
+            <div className="flex-1">
+              <div className="relative h-32 bg-slate-50 dark:bg-slate-800 shadow-sm rounded-lg border border-slate-200 dark:border-slate-700 p-6 flex items-center space-x-4">
+                <div className="absolute top-[-10px] left-[-10px] rounded-full bg-primary shadow-md p-2">
+                  <Package size={22} className="text-slate-50" />
+                </div>
+                <div>
+                  <h2 className="text-xl font-semibold mb-2 text-slate-800 dark:text-slate-50">
+                    Order Status
+                  </h2>
+                  <p className="text-lg text-slate-600 dark:text-slate-400">
+                    {statusSteps[currentStepIndex].description}
+                  </p>
+                </div>
+              </div>
             </div>
-            <div>
-              <h2 className="text-xl font-semibold mb-2 text-slate-800 dark:text-slate-50">
-                Order Status
-              </h2>
-              <p className="text-lg text-slate-600 dark:text-slate-400">
-                {statusSteps[currentStepIndex].description}
-              </p>
+
+            {/* Client Information */}
+            <div className="flex-1">
+              <div className="relative h-32 bg-slate-50 dark:bg-slate-800 shadow-sm rounded-lg border border-slate-200 dark:border-slate-700 p-6 flex items-center space-x-4">
+                <div className="absolute top-[-10px] left-[-10px] rounded-full bg-primary shadow-md p-2">
+                  <User size={22} className="text-slate-50" />
+                </div>
+                <div>
+                  <h2 className="text-xl font-semibold mb-2 text-slate-800 dark:text-slate-50">
+                    Client Information
+                  </h2>
+                  <p className="text-slate-600 dark:text-slate-400">
+                    Name: {order.client.name}
+                  </p>
+                  <p className="text-slate-600 dark:text-slate-400">
+                    Phone: {order.client.phone}
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
+
+          <div className="flex gap-8">
+            {/* Restaurant Information */}
+            <div className="flex-1"> 
+              <div className="relative h-32 bg-slate-50 dark:bg-slate-800 shadow-sm rounded-lg border border-slate-200 dark:border-slate-700 p-6 flex items-center space-x-4">
+                <div className="absolute top-[-10px] left-[-10px] rounded-full bg-primary shadow-md p-2">
+                  <Store size={22} className="text-slate-50" />
+                </div>
+                <div>
+                  <h2 className="text-xl font-semibold mb-2 text-slate-800 dark:text-slate-50">
+                    Restaurant Information
+                  </h2>
+                  <p className="text-slate-600 dark:text-slate-400">
+                    Name: {order.restaurant.name}
+                  </p>
+                  <p className="text-slate-600 dark:text-slate-400">
+                    Phone: {order.restaurant.phone}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Delivery Information */}
+            <div className="flex-1">
+              <div className="relative h-32 bg-slate-50 dark:bg-slate-800 shadow-sm rounded-lg border border-slate-200 dark:border-slate-700 p-6 flex items-center space-x-4">
+                <div className="absolute top-[-10px] left-[-10px] rounded-full bg-primary shadow-md p-2">
+                  <MapPin size={22} className="text-slate-50" />
+                </div>
+                <div className="space-y-2">
+                  <h2 className="text-xl font-semibold mb-2 text-slate-800 dark:text-slate-50">
+                    Delivery Information
+                  </h2>
+                  <p className="text-slate-600 dark:text-slate-400">
+                    <span className="font-semibold font-medium text-slate-800 dark:text-slate-50">
+                      Address:{" "}
+                    </span>
+                    {order.deliveryInfo.address}
+                  </p>
+                  <p className="text-slate-600 dark:text-slate-400">
+                    <span className="font-semibold font-medium text-slate-800 dark:text-slate-50">
+                      Estimated Delivery:{" "}
+                    </span>
+                    {order.deliveryInfo.estimatedDelivery}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex gap-8">
+            {/* Delivery Person Information */}
+            <div className="flex-1">
+              {order.livreur && (
+                <div className="relative h-32 bg-slate-50 dark:bg-slate-800 shadow-sm rounded-lg border border-slate-200 dark:border-slate-700 p-6 flex items-center space-x-4">
+                  <div className="absolute top-[-10px] left-[-10px] rounded-full bg-primary shadow-md p-2">
+                    <Truck size={22} className="text-slate-50" />
+                  </div>
+                  <div>
+                    <h2 className="text-xl font-semibold mb-2 text-slate-800 dark:text-slate-50">
+                      Delivery Person
+                    </h2>
+                    <p className="text-slate-600 dark:text-slate-400">
+                      Name: {order.livreur.name}
+                    </p>
+                    <p className="text-slate-600 dark:text-slate-400">
+                      Phone: {order.livreur.phone}
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Order Timestamps */}
+            <div className="flex-1">
+              <div className="relative h-32 bg-slate-50 dark:bg-slate-800 shadow-sm rounded-lg border border-slate-200 dark:border-slate-700 p-6 flex items-center space-x-4">
+                <div className="absolute top-[-10px] left-[-10px] rounded-full bg-primary shadow-md p-2">
+                  <Info size={22} className="text-slate-50" />
+                </div>
+                <div>
+                  <h2 className="text-xl font-semibold mb-2 text-slate-800 dark:text-slate-50">
+                    Order Timeline
+                  </h2>
+                  <p className="text-slate-600 dark:text-slate-400">
+                    <span className="font-semibold text-slate-800 dark:text-slate-50">
+                      Created:{" "}
+                    </span>
+                    {new Date(order.createdAt).toLocaleString()}
+                  </p>
+                  <p className="text-slate-600 dark:text-slate-400">
+                    <span className="font-semibold text-slate-800 dark:text-slate-50">
+                      Last Updated:{" "}
+                    </span>
+                    {new Date(order.updatedAt).toLocaleString()}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Order Details */}
           <div className="relative bg-slate-50 dark:bg-slate-800 shadow-sm rounded-lg border border-slate-200 dark:border-slate-700 p-6">
             <div className="flex items-center space-x-4 mb-4 absolute top-[-10px] left-[-10px]">
               <div className="rounded-full bg-primary p-2 shadow-md">
@@ -127,83 +277,67 @@ const OrderTracking = () => {
               </div>
             </div>
             <div className="ml-4">
-            <h2 className="text-xl font-semibold mb-4 text-slate-800 dark:text-slate-50">
-              Order Details
-            </h2>
-            <div className="overflow-x-auto rounded-md bg-slate-50 border border-slate-200 dark:border-slate-700 dark:bg-slate-800">
-              <table className="w-full text-sm text-left text-slate-500 dark:text-slate-400">
-                <thead className="text-xs text-slate-50 bg-slate-50 uppercase dark:bg-slate-700 dark:text-slate-400">
-                  <tr className="bg-primary">
-                    <th scope="col" className="px-6 py-3">
-                      Item
-                    </th>
-                    <th scope="col" className="px-6 py-3">
-                      Quantity
-                    </th>
-                    <th scope="col" className="px-6 py-3">
-                      Price
-                    </th>
-                    <th scope="col" className="px-6 py-3">
-                      Total
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {order.items.map((item, index) => (
-                    <tr
-                      key={index}
-                      className="bg-slate-50 border-b dark:bg-slate-800 dark:border-slate-700"
-                    >
-                      <td className="px-6 py-4 font-semibold text-base text-primary whitespace-nowrap dark:text-white">
-                        {item.name}
-                      </td>
-                      <td className="px-6 py-4 font-medium text-base">
-                        {item.quantity}
-                      </td>
-                      <td className="px-6 py-4 font-medium text-base">
-                        ${item.price.toFixed(2)}
-                      </td>
-                      <td className="px-6 py-4 font-medium text-base">
-                        ${(item.price * item.quantity).toFixed(2)}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-                <tfoot>
-                  <tr className="font-semibold bg-primary text-slate-50">
-                    <th scope="row" className="px-6 py-3 text-base" colSpan="3">
-                      Total
-                    </th>
-                    <td className="px-6 py-3">${order.total.toFixed(2)}</td>
-                  </tr>
-                </tfoot>
-              </table>
-            </div>
-            </div>
-          </div>
-          <div className="relative bg-slate-50 dark:bg-slate-800 shadow-sm rounded-lg border border-slate-200 dark:border-slate-700 p-6 flex items-center space-x-4">
-            <div className="absolute top-[-10px] left-[-10px] rounded-full bg-primary shadow-md p-2">
-              <MapPin size={22} className="text-slate-50" />
-            </div>
-            <div className="space-y-2">
-              <div>
-                <h2 className="text-xl font-semibold mb-2 text-slate-800 dark:text-slate-50">
-                  Delivery Information
+              <h2 className="text-xl font-semibold mb-4 text-slate-800 dark:text-slate-50">
+                Order Details
               </h2>
-             </div>
-             <div>
-              <p className="text-slate-600 dark:text-slate-400">
-                <span className="font-semibold font-medium text-slate-800 dark:text-slate-50">
-                  Address:{" "}
-                </span>
-                {order.deliveryInfo.address}
-              </p>
-              <p className="text-slate-600 dark:text-slate-400">
-                <span className="font-semibold font-medium text-slate-800 dark:text-slate-50">
-                  Estimated Delivery:{" "}
-                </span>
-                {order.deliveryInfo.estimatedDelivery}
-              </p>
+              <div className="overflow-x-auto rounded-md bg-slate-50 border border-slate-200 dark:border-slate-700 dark:bg-slate-800">
+                <table className="w-full text-sm text-left text-slate-500 dark:text-slate-400">
+                  <thead className="text-xs text-slate-50 bg-slate-50 uppercase dark:bg-slate-700 dark:text-slate-400">
+                    <tr className="bg-primary">
+                      <th scope="col" className="px-6 py-3">
+                        Item
+                      </th>
+                      <th scope="col" className="px-6 py-3">
+                        Description
+                      </th>
+                      <th scope="col" className="px-6 py-3">
+                        Quantity
+                      </th>
+                      <th scope="col" className="px-6 py-3">
+                        Price
+                      </th>
+                      <th scope="col" className="px-6 py-3">
+                        Total
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {order.items.map((item, index) => (
+                      <tr
+                        key={index}
+                        className="bg-slate-50 border-b dark:bg-slate-800 dark:border-slate-700"
+                      >
+                        <td className="px-6 py-4 font-semibold text-base text-primary whitespace-nowrap dark:text-white">
+                          {item.menuItem.name}
+                        </td>
+                        <td className="px-6 py-4 font-medium text-base">
+                          {item.menuItem.description}
+                        </td>
+                        <td className="px-6 py-4 font-medium text-base">
+                          {item.quantity}
+                        </td>
+                        <td className="px-6 py-4 font-medium text-base">
+                          ${item.price.toFixed(2)}
+                        </td>
+                        <td className="px-6 py-4 font-medium text-base">
+                          ${(item.price * item.quantity).toFixed(2)}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                  <tfoot>
+                    <tr className="font-semibold bg-primary text-slate-50">
+                      <th
+                        scope="row"
+                        className="px-6 py-3 text-base"
+                        colSpan="4"
+                      >
+                        Total
+                      </th>
+                      <td className="px-6 py-3">${order.total.toFixed(2)}</td>
+                    </tr>
+                  </tfoot>
+                </table>
               </div>
             </div>
           </div>
