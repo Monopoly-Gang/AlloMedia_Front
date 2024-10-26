@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { I18nextProvider } from 'react-i18next';
 import i18n from './i18n';
 import AppRoutes from './router/AppRoutes';
+import { Toaster } from 'sonner';
 import { toggleRTL, toggleTheme, toggleLocale, toggleMenu, toggleLayout, toggleAnimation, toggleNavbar, toggleSemidark } from './store/themeConfigSlice';
 
 const App = () => {
@@ -31,6 +32,7 @@ const App = () => {
                     themeConfig.rtlClass
                 } main-section antialiased relative font-nunito text-sm font-normal`}
             >
+                <Toaster richColors />
                 <AppRoutes />
             </div>
         </I18nextProvider>
