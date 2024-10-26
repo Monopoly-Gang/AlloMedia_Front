@@ -8,6 +8,7 @@ import TextArea from "../../../components/TextArea";
 import Button from "../../../components/Button";
 import { User, MessageCircle, DollarSign } from "lucide-react";
 import { axiosInstance } from "../../../config/axiosService";
+import { Toaster, toast } from 'sonner'
 
 const EditMenuItemPage = ({ }) => {
   const { t } = useTranslation();
@@ -43,16 +44,16 @@ const EditMenuItemPage = ({ }) => {
         formData.image = formData.image.target.value;
       }
 
-        const response = await axiosInstance.post(`/MenuItem//UpdateMenuItem`, formData, {
+        const response = await axiosInstance.post(`/MenuItem/UpdateMenuItem/${id}`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
         });
-
+        // console.log(response.data.menuItem.restaurant);
         if (response.status === 200) {
             toast.success(t("Menu item updated successfully"));
             setTimeout(() => {
-              navigate(`/dashboard/restaurant-manager/restaurant-details/${id}`);
+              navigate(`/dashboard/restaurant-manager/restaurant-details/${response.data.menuItem.restaurant}`);
             }, 1000);
         }
     } catch (error) {
@@ -66,6 +67,7 @@ const EditMenuItemPage = ({ }) => {
 
   return (
     <div className="container mx-auto p-6 bg-white dark:bg-slate-900 rounded-lg shadow-md">
+      <Toaster richColors  />
       <h2 className="text-2xl font-bold mb-6">{t("Edit Menu Item")}</h2>
       <form onSubmit={handleSubmit} className="space-y-6" encType="multipart/form-data"> 
         <div className="flex space-x-4">

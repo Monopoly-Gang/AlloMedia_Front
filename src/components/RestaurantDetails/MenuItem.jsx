@@ -1,14 +1,14 @@
 import { Edit, Trash2 } from "lucide-react";
 import PropTypes from 'prop-types';
 import axiosInstance from "../../config/axiosService";
-import { useNavigate } from 'react-router-dom';
-
+import { useNavigate , useParams } from 'react-router-dom';
 
 const MenuItem = ({ item, onDelete }) => {
   const navigate = useNavigate();
-
+ 
+  
   const handleEditClick = () => {
-    navigate(`/dashboard/restaurant-manager/edit-menu-item/${item._id}`, { state: { item } }); 
+    navigate(`edit-menu-item/${item._id}`, { state: { item } }); 
   };
 
   const handleSubmit = async (e) => {
