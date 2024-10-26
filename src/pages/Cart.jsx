@@ -9,6 +9,7 @@ const Cart = () => {
   const dispatch = useDispatch();
   const items = useSelector((state)=>state.cart.items);
   const totalAmount = useSelector((state)=>state.cart.totalAmount);
+  const [quantity, setQuantity] = useState(1);
 
   const handleClearCart =() =>{
     dispatch(clearCart());
@@ -50,7 +51,7 @@ const Cart = () => {
                     <a href="#" className="shrink-0 md:order-1">
                       <img
                         className="h-20 w-20 rounded-full"
-                        src={`http://localhost:3000/uploads/restos/${item.image}`}
+                        src={`${import.meta.env.VITE_API_HOST}/uploads/restos/${item.image}`}
                         alt={item.name}
                       />
                     </a>
