@@ -197,7 +197,7 @@ const RestaurantManagerSidebar = () => {
                 >
                   <ul className="sub-menu text-gray-500">
                     <li>
-                      <NavLink to="/dashboard/restaurant-manager/restaurant-details"> {t("Your Restaurant")}</NavLink>
+                      <NavLink to="/dashboard/restaurant-manager/restaurant-details/:id"> {t("Your Restaurant")}</NavLink>
                     </li>
                   </ul>
                 </AnimateHeight>
