@@ -27,7 +27,7 @@ class Auth {
             localStorage.setItem("ticket", data.accessToken);
             return {success: true};
         } catch (error) {
-            toast(error.response.data.message);
+            toast(error.response ? error.response.data.message : error.message);
             this.dispatch(temp({email: userData.email}));
             return {success: false, error: error.response.data.errorCode};
         }
