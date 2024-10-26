@@ -1,11 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import themeConfigReducer from './themeConfigSlice';
-import restaurantsReducer from './hundleRestosRequestSlice';
+import authReducer from './AuthSlice';
 
 const store = configureStore({
   reducer: {
     themeConfig: themeConfigReducer,
-    restaurants: restaurantsReducer, // Consistent lowercase naming
+    auth: authReducer,
   },
 });
 
