@@ -1,9 +1,23 @@
+import React, { useEffect } from 'react';
+
 const ConfirmationModal = ({ isOpen, onClose, onConfirm, title, message }) => {
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto overflow-x-hidden flex items-center justify-center bg-black bg-opacity-80">
-      <div className="relative p-4 w-full max-w-md max-h-full">
+    <div className="fixed inset-0 z-50 overflow-hidden flex items-center justify-center bg-black bg-opacity-80">
+      <div className="relative p-4 w-full max-w-md">
         <div className="relative bg-slate-50 dark:bg-slate-800 rounded-md shadow border border-slate-200 dark:border-slate-700">
           <button
             type="button"
