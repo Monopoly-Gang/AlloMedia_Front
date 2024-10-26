@@ -1,13 +1,13 @@
-// eslint-disable-next-line no-unused-vars
 import React, { useState } from "react";
 import { User, Mail, Lock, Phone, MapPin } from "lucide-react";
 import InputField from "../../components/InputField";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import IconInstagram from "../../components/icons/IconInstagram";
 import IconX from "../../components/icons/IconX.jsx";
 import IconGoogle from "../../components/icons/IconGoogle";
 import IconFacebook from "../../components/icons/IconFacebook";
-import { Toaster, toast } from "sonner";
+import AuthService from "../../services/AuthService.js";
+
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [userData, setUserData] = useState({
@@ -15,17 +15,29 @@ const Register = () => {
     lastName: "",
     email: "",
     password: "",
-    phone: "",
+    phoneNumber: "",
     address: "",
   });
+  const Auth = AuthService();
+    const navigate = useNavigate();
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    await Auth.registerClient({
+      email: userData.email,
+      password: userData.password,
+      address: userData.address,
+      fullName: `${userData.firstName} ${userData.lastName}`,
+      phoneNumber: `+212${userData.phoneNumber.substring(1)}`,
+    });
+  };
+
   return (
     <div>
-      <Toaster richColors />
       <div className="absolute inset-0">
         <img
           src="/assets/images/auth/bg-gradient.png"
@@ -45,11 +57,11 @@ const Register = () => {
                   Enter your information to create an account
                 </p>
               </div>
-              <form className="space-y-5 dark:text-white">
+              <form className="space-y-5 dark:text-white" onSubmit={handleSubmit}>
                 <div className="flex space-x-4">
                   <div className="flex-1">
                     <InputField
-                    className
+                      name="firstName"
                       id="firstName"
                       placeholder="First Name"
                       value={userData.firstName}
@@ -59,6 +71,7 @@ const Register = () => {
                   </div>
                   <div className="flex-1">
                     <InputField
+                      name="lastName"
                       id="lastName"
                       placeholder="Last Name"
                       value={userData.lastName}
@@ -68,6 +81,7 @@ const Register = () => {
                   </div>
                 </div>
                 <InputField
+                  name="email"
                   id="email"
                   type="email"
                   placeholder="Email"
@@ -77,6 +91,7 @@ const Register = () => {
                 />
                 <div className="relative text-white-dark">
                   <InputField
+                    name="password"
                     id="password"
                     type={showPassword ? "text" : "password"}
                     placeholder="Password"
@@ -88,14 +103,16 @@ const Register = () => {
                   />
                 </div>
                 <InputField
+                  name="phone"
                   id="phone"
                   type="tel"
                   placeholder="Phone Number"
-                  value={userData.phone}
-                  onChange={(e) => setUserData({ ...userData, phone: e.target.value })}
+                  value={userData.phoneNumber}
+                  onChange={(e) => setUserData({ ...userData, phoneNumber: e.target.value })}
                   icon={Phone}
                 />
                 <InputField
+                  name="address"
                   id="address"
                   placeholder="Address"
                   value={userData.address}
@@ -154,7 +171,7 @@ const Register = () => {
               <div className="text-center text-slate-600 dark:text-white">
                 Already have an account?&nbsp;
                 <Link
-                  to="/auth/login"
+                  to="/login"
                   className="uppercase text-primary underline transition hover:text-orange-600 dark:hover:text-white"
                 >
                   SIGN IN
