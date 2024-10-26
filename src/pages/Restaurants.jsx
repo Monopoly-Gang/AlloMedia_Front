@@ -293,7 +293,7 @@ const RestaurantCard = ({ restaurant,handleNavigation }) => {
     <div className="bg-gradient-to-t from-orange-100 to-transparent dark:bg-gradient-to-t dark:from-slate-800 dark:to-transparent rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden transition duration-300">
       <div className="flex flex-col items-center pt-4">
         <img
-          src={`http://localhost:3000/uploads/restos/${restaurant.logo}`}
+          src={`${import.meta.env.VITE_API_HOST}/uploads/restos/${restaurant.logo}`}
 
           alt={restaurant.name}
           className="w-24 h-24 mb-3 rounded-full shadow-md"
@@ -324,7 +324,7 @@ const RestaurantListItem = ({ restaurant,handleNavigation}) => {
     <div className="bg-white dark:bg-slate-800 rounded-md shadow-md overflow-hidden transition duration-300 flex flex-col h-full">
       <div className="flex flex-col sm:flex-row h-full">
         <img
-           src={`http://localhost:3000/uploads/restos/${restaurant.logo}`}
+           src={`${import.meta.env.VITE_API_HOST}/uploads/restos/${restaurant.logo}`}
           alt={restaurant.name}
           className="w-full sm:w-40 h-48 sm:h-full object-cover"
         />
