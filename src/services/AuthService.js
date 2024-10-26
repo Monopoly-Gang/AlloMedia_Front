@@ -23,8 +23,10 @@ class Auth {
         try {
             const response = await axiosInstance.post("auth/login", userData);
             const data = await response.data;
-            this.dispatch(login({email: userData.email, fullName: data.fullName, role: data.role}));
-            localStorage.setItem("ticket", data.accessToken);
+            this.dispatch(login({
+                user: {email: userData.email, fullName: data.fullName, role: data.role},
+                token: data.accessToken
+            }));
             return {success: true};
         } catch (error) {
             toast(error.response ? error.response.data.message : error.message);
@@ -58,47 +60,45 @@ class Auth {
 
     async resendVerificationEmail(email) {
         try {
-            // this.setLoading(true);
             const response = await axiosInstance.post(
                 "auth/send-email-verification",
                 {email}
             );
             const data = await response.data;
-            // this.setLoading(false);
             toast(data.message);
         } catch (error) {
-            // this.setLoading(false);
-            toast(error.response.data.error);
+            toast(error.response ? error.response.data.message : error.message);
         }
     }
 
-    async sendOTP(otpMethod) {
-        if (!this.user) return false;
+    async sendOTP() {
+        if (!this.user.email) {
+            return {success: false, error: "REQUIRED_LOGIN"};
+        }
         try {
-            // this.setLoading(true);
-            const response = await axiosInstance.post("auth/otp-method", {
+            const response = await axiosInstance.post("auth/send-otp", {
                 email: this.user.email,
-                method: otpMethod,
             });
             const data = await response.data;
-            // this.setLoading(false);
             toast(data.message);
-            return true;
+            return {success: true};
         } catch (error) {
-            // this.setLoading(false);
-            toast(error.response.data.error);
-            return false;
+            toast(error.response ? error.response.data.message : error.message);
+            return {success: false};
         }
     }
 
     async verifyOTP(otp) {
         try {
-            // this.setLoading(true);
             const response = await axiosInstance.post("auth/verify-otp", {otp});
-            // this.setLoading(false);
+            const data = await response.data;
+            this.dispatch(login({
+                user: {email: this.user.email, fullName: data.fullName, role: data.role},
+                token: data.accessToken
+            }));
+            toast("OTP verified successfully");
             return true;
         } catch (error) {
-            // this.setLoading(false);
             toast(error.response.data.error);
             return false;
         }
