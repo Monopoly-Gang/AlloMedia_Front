@@ -6,7 +6,9 @@ import {  toast } from 'sonner'
 
 const initialState = loadState('cart') || {
     items : [],
+    client: "507f1f77bcf86cd799439011", // fake id
     totalAmount :0,
+    restaurant:0
 };
 
 const cartSlice = createSlice({
@@ -31,12 +33,18 @@ const cartSlice = createSlice({
             }
             // Push a new item if not
             else{
+                if (state.items.length > 0 && state.restaurant !== product.restaurant) {
+                    toast.error("You can only order from one restaurant at a time.");
+                    return;
+                }
                 console.log("not existing item");
                 console.log("payload",product.id);
                 state.items.push({id:product._id,name:product.name,description:product.description,quantity:product.quantity || 1,price:product.price,image:product.image})
+                state.restaurant = product.restaurant;
+                state.client = "507f1f77bcf86cd799439011";
                 toast.success("Item added to cart");
             } 
-            console.log("state.items", JSON.stringify(state.items));
+            console.log("state.items", JSON.stringify(state));
             // calculate total
             state.totalAmount=state.items.reduce((totalAmount,item)=>totalAmount+item.quantity*item.price,0);
         },

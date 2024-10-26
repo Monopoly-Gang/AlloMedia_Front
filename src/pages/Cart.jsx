@@ -2,6 +2,8 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { clearCart, removeFromCart, updateQuantity } from "../store/cartSlice";
+import { initializeOrder,insertOrder} from "../store/orderSlice";
+import ConfirmationModal from "../components/ConfirmationModal";
 
 
 const Cart = () => {
@@ -9,7 +11,12 @@ const Cart = () => {
   const dispatch = useDispatch();
   const items = useSelector((state)=>state.cart.items);
   const totalAmount = useSelector((state)=>state.cart.totalAmount);
-  const [quantity, setQuantity] = useState(1);
+  const restaurant = useSelector((state)=>state.cart.restaurant);
+  const client = useSelector((state)=>state.cart.client);
+  const [isModalOpen,setIsModalOpen] = useState(false);
+
+  console.log("client",client);
+
 
   const handleClearCart =() =>{
     dispatch(clearCart());
@@ -32,6 +39,22 @@ const Cart = () => {
   const calculateTotaPrice = (quantity,price) =>{
     return (quantity*price).toFixed(2);
   }
+
+  const handleOrder = () =>{
+    const orderData ={items,client,restaurant,totalAmount};
+    dispatch(initializeOrder(orderData));
+    setIsModalOpen(true);
+  }
+
+  const handleConfirmOrder = () => {
+    const orderData ={items,client,restaurant,totalAmount};
+    dispatch(insertOrder(orderData));
+    setIsModalOpen(false);
+  }
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+};
 
   return (
     <section className="bg-slate-50 py-8 antialiased dark:bg-slate-900 md:py-16">
@@ -168,7 +191,7 @@ const Cart = () => {
               </div>
               <div className="flex flex-col gap-2">
                 <button
-                  onClick={handleOrderNow}
+                  onClick={handleOrder}
                   className="flex w-full items-center justify-center rounded-md bg-primary px-5 py-2.5 text-sm font-medium text-white"
                 >
                   Order Now
@@ -178,13 +201,13 @@ const Cart = () => {
                   className="flex w-full items-center justify-center border-2 text-red-500 border-red-500 hover:bg-red-500 hover:text-slate-50 font-semibold rounded-md bg-slate-50 px-5 py-2.5 text-sm">
                   Clear All 
                 </button>
-                {/* <ConfirmationModal
+                <ConfirmationModal
                   isOpen={isModalOpen}
-                  onClose={closeModal}
-                  onConfirm={handleClearAllItems}
-                  title="Clear Cart"
-                  message="Are you sure you want to clear all items from your cart?"
-                /> */}
+                  onClose={handleCloseModal}
+                  onConfirm={handleConfirmOrder}
+                  title="Confirm  Order"
+                  message="Are you sure you want to confirm order?"
+                />
               </div>
             </div>
           </div>

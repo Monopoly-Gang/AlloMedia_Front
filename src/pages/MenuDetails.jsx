@@ -45,7 +45,7 @@ const MenuDetails = () => {
 
   // function add to cart
     const handleAddToCart = () =>{
-      dispatch(addToCart({...menuItem,quantity}));
+      dispatch(addToCart({...menuItem,quantity,restaurant:id}));
     }
   
   // function to update quantity
