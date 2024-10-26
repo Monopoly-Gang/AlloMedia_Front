@@ -1,26 +1,43 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import IconInstagram from "../../components/icons/IconInstagram";
 import IconX from "../../components/icons/IconX.jsx";
 import IconGoogle from "../../components/icons/IconGoogle";
 import IconFacebook from "../../components/icons/IconFacebook";
 import { useState } from "react";
 import { Mail, Lock } from "lucide-react";
-import { Toaster } from "sonner";
 import InputField from "../../components/InputField";
 import SpinnerIcon from "../../components/SpinnerIcon";
+import AuthService from "../../services/AuthService.js";
+import { toast } from "sonner";
+
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const Auth = AuthService();
+  const navigate = useNavigate();
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    if (!email || !password) {
+      toast("Email and password are required");
+      setLoading(false);
+      return;
+    }
+    const result = await Auth.login({email, password});
+    setLoading(false);
+    if (result.success) navigate("/");
+    else if (result.error === 'OTP_REQUIRED') navigate('/verify-otp');
+  };
+
   return (
     <div>
-      <Toaster richColors />
       <div className="absolute inset-0">
         <img
           src="/assets/images/auth/bg-gradient.png"
@@ -41,9 +58,13 @@ const Login = () => {
                   Enter your email and password to login
                 </p>
               </div>
-              <form className="space-y-5 dark:text-white">
+              <form
+                className="space-y-5 dark:text-white"
+                onSubmit={handleSubmit}
+              >
                 <InputField
                   id="email"
+                  name="email"
                   type="email"
                   placeholder="Email"
                   value={email}
@@ -51,6 +72,7 @@ const Login = () => {
                   icon={Mail}
                 />
                 <InputField
+                  name="password"
                   id="password"
                   type={showPassword ? "text" : "password"}
                   placeholder="Password"
@@ -61,7 +83,7 @@ const Login = () => {
                 />
                 <div className="flex items-center justify-between">
                   <Link
-                    to="/auth/forgot-password"
+                    to="/forgot-password"
                     className="text-sm text-primary hover:underline"
                   >
                     Forgot Password?
@@ -101,7 +123,7 @@ const Login = () => {
                   <li>
                     <Link
                       to="#"
-                      className="inline-flex bg-gradient-to-r from-orange-500 to-orange-600 h-8 w-8 items-center justify-center rounded-full p-0 transition hover:scale-110"                     
+                      className="inline-flex bg-gradient-to-r from-orange-500 to-orange-600 h-8 w-8 items-center justify-center rounded-full p-0 transition hover:scale-110"
                     >
                       <IconFacebook />
                     </Link>
@@ -127,7 +149,7 @@ const Login = () => {
               <div className="text-center text-slate-500 dark:text-white">
                 Don't have an account?&nbsp;
                 <Link
-                  to="/auth/register"
+                  to="/register"
                   className="uppercase text-primary underline transition hover:text-orange-600 dark:hover:text-white"
                 >
                   SIGN UP
