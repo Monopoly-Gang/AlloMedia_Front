@@ -23,6 +23,7 @@ const MenuDetails = lazy(() => import('../pages/MenuDetails'));
 const Cart = lazy(() => import('../pages/Cart'));
 const OrderTracking = lazy(() => import('../pages/OrderTracking'));
 const OrderList = lazy(() => import('../pages/OrderList'));
+const DeliveryConfirmation = lazy(() => import('../pages/DeliveryConfirmation'));
 
 export const routes = [
   {
@@ -35,6 +36,7 @@ export const routes = [
       { path: '/cart', element: Cart },
       { path: '/order-tracking', element: OrderTracking },  
       { path: '/order-list', element: OrderList },  
+      { path: '/delivery-confirmation', element: DeliveryConfirmation },
     ],
   },
   {
