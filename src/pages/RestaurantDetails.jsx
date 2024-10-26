@@ -15,7 +15,7 @@ const RestaurantDetails = () => {
   const [visibleMenu, setVisibleMenu] = useState(6);
   const navigate = useNavigate();
   const { id } = useParams();
-  const [menuItems, setMenuItems] = useState([]); // Store fetched menu items in an array
+  const [menuItems, setMenuItems] = useState([]); 
 
   // Fetching menu items
   useEffect(() => {
@@ -24,7 +24,8 @@ const RestaurantDetails = () => {
         setIsLoading(true);
         const uri = `MenuItem/getMenuItems/${id}`;
         const data = await getRequest(uri);
-        setMenuItems(Array.isArray(data) ? data : []); // Set menuItems to the fetched data array
+        setMenuItems(Array.isArray(data) ? data : []); 
+        
       } catch (error) {
         console.error("Error fetching restaurant data:", error);
         setMenuItems([]);
@@ -239,11 +240,11 @@ const MenuListItem = ({ item, onMenuItemClick }) => {
             {item.description}
           </p>
           <div className="flex justify-between items-center">
-            <span className="text-2xl font-bold text-green-600">
+            <span className="text-2xl font-bold text-primary">
               ${item.price.toFixed(2)}
             </span>
             <button 
-              className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition duration-300"
+              className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/80 transition duration-300"
               onClick={() => onMenuItemClick(item._id)}
             >
               {t("View Details")}

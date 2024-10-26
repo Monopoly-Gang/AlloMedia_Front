@@ -28,6 +28,10 @@ const Cart = () => {
     console.log("Order Now clicked");
   };
 
+  const calculateTotaPrice = (quantity,price) =>{
+    return (quantity*price).toFixed(2);
+  }
+
   return (
     <section className="bg-slate-50 py-8 antialiased dark:bg-slate-900 md:py-16">
       <div className="mx-auto max-w-screen-xl px-4 2xl:px-0">
@@ -138,7 +142,7 @@ const Cart = () => {
                       </div>
                     <div className="text-end md:order-4 md:w-32">
                       <p className="text-base font-bold text-gray-900 dark:text-white">
-                        ${totalAmount}
+                        ${calculateTotaPrice(item.quantity,item.price)}
                       </p>
                     </div>
                   </div>

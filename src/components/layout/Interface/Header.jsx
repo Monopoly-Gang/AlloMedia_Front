@@ -32,6 +32,8 @@ const Navbar = () => {
   const basketItems = useSelector((state)=>state.cart.items);
   const totalAmount = useSelector((state)=>state.cart.totalAmount);
 
+
+
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 0);
@@ -122,6 +124,15 @@ const Navbar = () => {
       </a>
     </div>
   );
+
+  const calculateTotaPrice = (quantity,price) =>{
+    return (quantity*price).toFixed(2);
+  }
+
+  const handleViewCart = () => {
+    setBasketOpen(prev => !prev); 
+    navigate("/cart");
+  }
 
   return (
     <nav
@@ -351,7 +362,8 @@ const Navbar = () => {
                             {item.name}
                           </h4>
                           <p className="text-sm font-medium text-primary">
-                            ${item.price.toFixed(2)}
+                            ${calculateTotaPrice(item.quantity,item.price)}
+                           
                           </p>
                         </div>
                         <button
@@ -373,7 +385,7 @@ const Navbar = () => {
                       </span>
                     </div>
                     <button
-                      onClick={() => navigate("/cart")} 
+                      onClick={handleViewCart} 
                       className="mt-2 w-full bg-primary text-white text-base font-semibold px-4 py-2 rounded-md hover:bg-primary/80 transition duration-300"
                     >
                       View Cart

@@ -33,7 +33,7 @@ const App = () => {
                 } main-section antialiased relative font-nunito text-sm font-normal`}
             >
                 <AppRoutes />
-                <Toaster richColors  position="top-center" />
+                <Toaster richColors/>
             </div>
         </I18nextProvider>
     );

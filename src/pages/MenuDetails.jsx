@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { Minus, Plus } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../store/cartSlice";
+import { getRequest } from "../utils/axiosRequests";
 
 
 
@@ -12,101 +13,51 @@ const MenuDetails = () => {
   const { id } = useParams();
   const [menuItem, setMenuItem] = useState(null);
   const [quantity, setQuantity] = useState(1);
-  const [addOns, setAddOns] = useState([]);
+  const [totalPrice,setTotalPrice] =useState(null);
+  const [addOns, setAddOns] = useState([{id: "2001",name: "French Fries",price: 3.0,image: "https://via.placeholder.com/50",selected: false,},{id: "2002",name: "Extra Cheese",price: 2.0,image: "https://via.placeholder.com/50",selected: false,},{  id: "2003",  name: "Coca Cola",  price: 1.5,  image: "https://via.placeholder.com/50",  selected: false,},{  id: "2004",  name: "Choco Lava",  price: 4.0,  image: "https://via.placeholder.com/50",  selected: false,},]);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+ 
+// Fetching menu item data 
+  useEffect(()=>{
+    async function fetchData(){
+      try{
+        const uri =`MenuItem/menuItem/${id}`;
+        const data = await getRequest(uri);
+        setMenuItem(data);  
+        console.log("menuItem",menuItem);   
+      }
+      catch(error){
+        console.error("Error fetching menu data:", error);
+      }
+    }
+    fetchData();
+  },[id]);
 
-  const fakeMenuItem = {
-    id: "1006",
-    name: "Double Patty Veg Burger",
-    description: "A delicious veg burger with double patty.",
-    price: 20.0,
-  };
+// Calculating the total of the menu Item
+
+  useEffect(()=>{
+      if(menuItem){
+        setTotalPrice(((menuItem.price) * quantity).toFixed(2));
+      }
+    },[menuItem,quantity]);
 
   // function add to cart
-  const handleAddToCart = () =>{
-    dispatch(addToCart({...fakeMenuItem,quantity}));
-
-  }
-
-  useEffect(() => {
-    const fetchMenuItem = async () => {
-      try {
-        // Mock data
-        const mockData = {
-          id: "1001",
-          name: "Double Patty Veg Burger",
-          description: "A delicious veg burger with double patty.",
-          price: 20.0,
-          image: "https://via.placeholder.com/400",
-          addOns: [
-            {
-              id: "2001",
-              name: "French Fries",
-              price: 3.0,
-              image: "https://via.placeholder.com/50",
-              selected: false,
-            },
-            {
-              id: "2002",
-              name: "Extra Cheese",
-              price: 2.0,
-              image: "https://via.placeholder.com/50",
-              selected: false,
-            },
-            {
-              id: "2003",
-              name: "Coca Cola",
-              price: 1.5,
-              image: "https://via.placeholder.com/50",
-              selected: false,
-            },
-            {
-              id: "2004",
-              name: "Choco Lava",
-              price: 4.0,
-              image: "https://via.placeholder.com/50",
-              selected: false,
-            },
-          ],
-        };
-        setMenuItem(mockData);
-        setAddOns(mockData.addOns);
-      } catch (error) {
-        console.error("Error fetching menu item:", error);
-      }
+    const handleAddToCart = () =>{
+      dispatch(addToCart({...menuItem,quantity}));
+    }
+  
+  // function to update quantity
+  
+    const handleQuantityUpdate = (amount) => {
+      setQuantity((prev) => Math.max(1, prev + amount));
+      
     };
 
-    fetchMenuItem();
-  }, [id]);
-
-  
-
-  const handleQuantityUpdate = (amount) => {
-    setQuantity((prev) => Math.max(1, prev + amount));
-  };
-
-  const handleAddOnChange = (id) => {
-    setAddOns((prevAddOns) =>
-      prevAddOns.map((addOn) =>
-        addOn.id === id ? { ...addOn, selected: !addOn.selected } : addOn
-      )
-    );
-  };
-
-  // const calculateTotalPrice = () => {
-  //   const addOnsPrice = addOns
-  //     .filter((addOn) => addOn.selected)
-  //     .reduce((total, addOn) => total + addOn.price, 0);
-  //   return (menuItem.price + addOnsPrice) * quantity;
-  // };
-
-  if (!menuItem) {
-    return <div>{t("Loading...")}</div>;
-  }
-
-  // const totalPrice = calculateTotalPrice().toFixed(2);
+    if (!menuItem) {
+      return <div>{t("Loading...")}</div>;
+    }
 
   return (
     <section className="py-10 md:py-20 lg:py-14 bg-slate-50 dark:bg-slate-900">
@@ -126,7 +77,7 @@ const MenuDetails = () => {
             </p>
             <div className="flex items-center mb-4">
               <span className="text-2xl font-bold text-primary">
-                {/* ${totalPrice} */}
+                ${totalPrice}
               </span>
               <div className="flex items-center ml-4">
                 <button
