@@ -51,7 +51,7 @@ class Auth {
             toast(data.message);
             return true;
         } catch (error) {
-            toast(error.response.data.error);
+            toast(error.response ? error.response.data.message : error.message);
             return false;
         }
     }

@@ -2,6 +2,7 @@ import { lazy } from 'react';
 
 const Home = lazy(() => import('../pages/Home'));
 const Register = lazy(() => import('../pages/auth/Register'));
+const VerifyEmail = lazy(() => import('../pages/auth/VerifyEmail'));
 const RestaurantManagerDashboard = lazy(() => import('../pages/restaurantManager/Dashboard'));
 const SuperAdminDashboard = lazy(() => import('../pages/superAdmin/Dashboard'));
 const MainLayout = lazy(() => import('../components/layout/Interface/MainLayout'));
@@ -47,8 +48,9 @@ export const routes = [
   {
     element: BlankLayout,
     children: [
-      { path: '/auth/login', element: Login },
-      { path: '/auth/register', element: Register },
+      { path: '/login', element: Login },
+      { path: '/register', element: Register },
+      { path: '/verify-email', element: VerifyEmail },
     ],
   },
 ];
