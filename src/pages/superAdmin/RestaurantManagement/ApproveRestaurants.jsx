@@ -217,19 +217,6 @@ const handleReject = useCallback(async () => {
 
 
 
-
-  
-  // const handleReject = useCallback(() => {
-  //   if (selectedRestaurant) {
-  //     setRestaurants(restaurants.filter((r) => r.id !== selectedRestaurant.id));
-  //     toast.error(t("Restaurant rejected"), {
-  //       description: t("{{name}} has been rejected", { name: selectedRestaurant.name }),
-  //     });
-  //     sendNotificationToManager(selectedRestaurant.id, 'rejected');
-  //     setIsModalOpen(false);
-  //   }
-  // }, [selectedRestaurant, restaurants, t]);
-
   const sendNotificationToManager = async (restaurantId, status) => {
     try {
       await new Promise(resolve => setTimeout(resolve, 1000));
