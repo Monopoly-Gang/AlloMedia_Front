@@ -4,6 +4,8 @@ import { Search, Eye, CheckCircle, XCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast, Toaster } from 'sonner';
 import OrderDetailsModal from '../../../components/OrderDetailsModal';
+import { axiosInstance } from '../../../config/axiosService';
+import { useParams } from 'react-router-dom';
 
 const ViewOrders = () => {
   const { t } = useTranslation();
@@ -13,38 +15,42 @@ const ViewOrders = () => {
   const [statusFilter, setStatusFilter] = useState('all');
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { id } = useParams();
 
   useEffect(() => {
     const fetchOrders = async () => {
-      // Replace with actual API call
-      const mockOrders = [
-        { id: 1, customerName: 'John Doe', items: [{ name: 'Pizza', quantity: 1, price: 15.99 }, { name: 'Coke', quantity: 2, price: 5 }], total: 25.99, status: 'pending', address: '123 Main St, City, Country', phone: '+1234567890' },
-        { id: 2, customerName: 'Jane Smith', items: [{ name: 'Burger', quantity: 1, price: 10.50 }, { name: 'Fries', quantity: 1, price: 5 }], total: 15.50, status: 'completed', address: '456 Elm St, City, Country', phone: '+0987654321' },
-        { id: 3, customerName: 'Bob Johnson', items: [{ name: 'Salad', quantity: 1, price: 8.99 }, { name: 'Water', quantity: 1, price: 2 }], total: 10.99, status: 'cancelled', address: '789 Oak St, City, Country', phone: '+1122334455' },
-      ];
-      setOrders(mockOrders);
-      setFilteredOrders(mockOrders);
+      const response = await axiosInstance.get(`/Orders/GetAllOrders/${id}`);
+      setOrders(response.data);
+      // console.log(response.data)
+      setFilteredOrders(response.data);
     };
+    console.log("test  1 ",filteredOrders)
+    console.log("test  2 ",orders)
     fetchOrders();
-  }, []);
-
-  useEffect(() => {
-    const filtered = orders.filter(order => 
-      (order.customerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-       order.id.toString().includes(searchTerm)) &&
-      (statusFilter === 'all' || order.status === statusFilter)
-    );
-    setFilteredOrders(filtered);
-  }, [searchTerm, statusFilter, orders]);
-
+  }, [id]);
+  
+  // useEffect(() => {
+  //   const filtered = orders.filter(order => 
+  //     (order.customerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  //     order._id.toString().includes(searchTerm)) &&
+  //     (statusFilter === 'all' || order.status === statusFilter)
+  //   );
+  //   setFilteredOrders(filtered);
+  // }, [searchTerm, statusFilter, orders]); // Ensure this effect runs when these dependencies change
+  
   const handleStatusChange = async (orderId, newStatus) => {
-    // Update order status in API
-    // For now, we'll just update it locally
-    const updatedOrders = orders.map(order => 
-      order.id === orderId ? { ...order, status: newStatus } : order
-    );
-    setOrders(updatedOrders);
-    toast.success(t('Order status updated successfully'));
+    try {
+      // Send the status update to the backend
+      await axiosInstance.post(`/Orders/UpdateOrderStatus`, { orderId, newStatus });
+      const updatedOrders = orders.map(order => 
+        order._id === orderId ? { ...order, status: newStatus } : order
+      );
+      setOrders(updatedOrders);
+      toast.success(t('Order status updated successfully'));
+    } catch (error) {
+      toast.error(t('Failed to update order status'));
+      console.error(error);
+    }
   };
 
   const handleViewDetails = (order) => {
@@ -110,48 +116,64 @@ const ViewOrders = () => {
             </tr>
           </thead>
           <tbody className="divide-y bg-white dark:bg-slate-800 divide-slate-200 dark:divide-slate-700">
-            {filteredOrders.map((order) => (
-              <motion.tr 
-                key={order.id}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.3 }}
-                className="hover:bg-slate-50 dark:hover:bg-slate-900"
-              >
-                <td className="px-6 py-4 whitespace-nowrap dark:text-white">{order.id}</td>
-                <td className="px-6 py-4 whitespace-nowrap dark:text-white">{order.customerName}</td>
-                <td className="px-6 py-4 whitespace-nowrap dark:text-white">${order.total.toFixed(2)}</td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full 
-                    ${order.status === 'completed' ? 'bg-green-500 text-slate-50' : 
-                      order.status === 'cancelled' ? 'bg-red-500 text-slate-50' : 
-                      'bg-yellow-500 text-slate-50'}`}> 
-                    {t(order.status)}
-                  </span>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                  <button className="text-indigo-600 hover:text-indigo-700 mr-2" onClick={() => handleViewDetails(order)}>
-                    <Eye size={22} />
-                  </button>
-                  {order.status === 'pending' && (
-                    <>
+            {Array.isArray(orders)?(
+              orders.map((order) => (
+                <motion.tr 
+                  key={order._id}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.3 }}
+                  className="hover:bg-slate-50 dark:hover:bg-slate-900"
+                >
+                  <td className="px-6 py-4 whitespace-nowrap dark:text-white">{order._id}</td>
+                  <td className="px-6 py-4 whitespace-nowrap dark:text-white">{order.client}</td>
+                  <td className="px-6 py-4 whitespace-nowrap dark:text-white">${((order.items[0].menuItem.price)*(order.items[0].quantity)).toFixed(2)}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full 
+                      ${order.status === 'pending' ? 'bg-yellow-500 text-slate-50' : 
+                        order.status === 'preparing' ? 'bg-green-500 text-slate-50' : 
+                        order.status === 'completed' ? 'bg-blue-500 text-slate-50' : 
+                        order.status === 'cancelled' ? 'bg-red-500 text-slate-50' : 
+                        'bg-gray-500 text-slate-50'}`}> 
+                      {t(order.status)}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <button className="text-indigo-600 hover:text-indigo-700 mr-2" onClick={() => handleViewDetails(order)}>
+                      <Eye size={22} />
+                    </button>
+                    {order.status === 'pending' && (
+                      <>
+                        <button 
+                          className="text-green-600 hover:text-green-700 mr-2"
+                          onClick={() => handleStatusChange(order._id, 'preparing')}
+                        >
+                          <CheckCircle size={22} />
+                        </button>
+                        <button 
+                          className="text-red-600 hover:text-red-700"
+                          onClick={() => handleStatusChange(order._id, 'cancelled')}
+                        >
+                          <XCircle size={22} />
+                        </button>
+                      </>
+                    )}
+                    {order.status === 'preparing' && (
                       <button 
-                        className="text-green-600 hover:text-green-700 mr-2"
-                        onClick={() => handleStatusChange(order.id, 'completed')}
+                        className="text-blue-600 hover:text-blue-700"
+                        onClick={() => handleStatusChange(order._id, 'ready_for_delivery')}
                       >
-                        <CheckCircle size={22} />
+                         <CheckCircle size={22} />
                       </button>
-                      <button 
-                        className="text-red-600 hover:text-red-700"
-                        onClick={() => handleStatusChange(order.id, 'cancelled')}
-                      >
-                        <XCircle size={22} />
-                      </button>
-                    </>
-                  )}
-                </td>
-              </motion.tr>
-            ))}
+                    )}
+                  </td>
+                </motion.tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="5" className="text-center py-4 dark:text-white">{t('No orders found')}</td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>

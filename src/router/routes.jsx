@@ -37,7 +37,7 @@ export const routes = [
       { path: '/dashboard/restaurant-manager', element: RestaurantManagerDashboard },
       { path: '/dashboard/restaurant-manager/restaurant-details/:id', element: RestaurantManagerDetails },
       { path: '/dashboard/restaurant-manager/add-menu-item/:id', element: AddMenuItemRestaurantManager },
-      { path: '/dashboard/restaurant-manager/view-orders', element: ViewOrders },
+      { path: '/dashboard/restaurant-manager/view-orders/:id', element: ViewOrders },
       { path: '/dashboard/restaurant-manager/restaurant-details/:restorant_id/edit-menu-item/:item_id', element: EditMenuItem },
     ],
   },
