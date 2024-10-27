@@ -23,7 +23,6 @@ const Restaurants = () => {
       try {
         const uri = "restaurants/";
         const data = await getRequest(uri);
-        console.log(data);
         setRestaurants(data);
       } catch (error) {
         console.error("Error fetching restaurants: ", error);

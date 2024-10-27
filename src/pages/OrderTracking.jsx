@@ -10,6 +10,7 @@ import {
   Store,
   Truck,
 } from "lucide-react";
+import { getRequest } from "../utils/axiosRequests";
 
 // Mise à jour des étapes pour correspondre exactement au modèle
 const statusSteps = [
@@ -77,46 +78,25 @@ const OrderTracking = () => {
   const { orderId } = useParams();
   const [order, setOrder] = useState(null);
 
+  
+
   useEffect(() => {
     const fetchOrderDetails = async () => {
-      try {
-        // Simuler la récupération des données de commande
-        // Dans une vraie application, vous feriez un appel API ici
-        const mockOrder = {
-          id: orderId,
-          status: "preparing",
-          client: { name: "John Doe", phone: "123-456-7890" },
-          restaurant: { name: "Tasty Bites", phone: "987-654-3210" },
-          items: [
-            {
-              menuItem: { name: "Pizza", description: "Delicious pizza" },
-              quantity: 2,
-              price: 12.99,
-            },
-            {
-              menuItem: { name: "Burger", description: "Juicy burger" },
-              quantity: 1,
-              price: 8.99,
-            },
-          ],
-          total: 34.97,
-          livreur: { name: "Mike Delivery", phone: "555-123-4567" },
-          createdAt: "2023-04-15T10:30:00Z",
-          updatedAt: "2023-04-15T11:00:00Z",
-          deliveryInfo: {
-            address: "123 Main St, City, Country",
-            estimatedDelivery: "2023-04-15 15:30",
-          },
-        };
-        setOrder(mockOrder);
-      } catch (error) {
-        console.error("Failed to fetch order details:", error);
+      const uri =`orders/order/${orderId}`
+      try{
+        const response = await getRequest(uri);
+        const fetchedOrder = response.order;
+        setOrder(fetchedOrder);
       }
-    };
+      catch(error){
+        console.error("Error fetching order",error);
+      }
 
+    };
     fetchOrderDetails();
   }, [orderId]);
 
+  console.log(order);
   if (!order) {
     return <div>Loading...</div>;
   }
@@ -124,6 +104,10 @@ const OrderTracking = () => {
   const currentStepIndex = statusSteps.findIndex(
     (step) => step.key === order.status
   );
+
+  const totalAmount = order.items.reduce((acc, item) => {
+    return acc + (item.menuItem?.price * item.quantity);
+  }, 0);
 
   return (
     <section className="py-10 bg-slate-50 dark:bg-slate-900 md:py-20 lg:py-14">
@@ -161,10 +145,10 @@ const OrderTracking = () => {
                     Client Information
                   </h2>
                   <p className="text-slate-600 dark:text-slate-400">
-                    Name: {order.client.name}
+                    Name: {order.client?.fullName}
                   </p>
                   <p className="text-slate-600 dark:text-slate-400">
-                    Phone: {order.client.phone}
+                    Phone: {order.client?.phoneNumber}
                   </p>
                 </div>
               </div>
@@ -183,10 +167,10 @@ const OrderTracking = () => {
                     Restaurant Information
                   </h2>
                   <p className="text-slate-600 dark:text-slate-400">
-                    Name: {order.restaurant.name}
+                    Name: {order.restaurant?.name}
                   </p>
                   <p className="text-slate-600 dark:text-slate-400">
-                    Phone: {order.restaurant.phone}
+                    Address: {order.restaurant?.address}
                   </p>
                 </div>
               </div>
@@ -206,13 +190,13 @@ const OrderTracking = () => {
                     <span className="font-semibold font-medium text-slate-800 dark:text-slate-50">
                       Address:{" "}
                     </span>
-                    {order.deliveryInfo.address}
+                    {order.client?.address}
                   </p>
                   <p className="text-slate-600 dark:text-slate-400">
                     <span className="font-semibold font-medium text-slate-800 dark:text-slate-50">
-                      Estimated Delivery:{" "}
+                      Estimated Delivery:
                     </span>
-                    {order.deliveryInfo.estimatedDelivery}
+                    {/* {order.deliveryInfo.estimatedDelivery} */}
                   </p>
                 </div>
               </div>
@@ -303,24 +287,26 @@ const OrderTracking = () => {
                   </thead>
                   <tbody>
                     {order.items.map((item, index) => (
+                      
                       <tr
                         key={index}
                         className="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700"
                       >
+                        {console.log("item",item)}
                         <td className="px-6 py-4 font-semibold text-base text-primary dark:text-primary-light whitespace-nowrap">
-                          {item.menuItem.name}
+                          {item.menuItem?.name}
                         </td>
                         <td className="px-6 py-4 text-slate-600 dark:text-slate-300">
-                          {item.menuItem.description}
+                          {item.menuItem?.description}
                         </td>
                         <td className="px-6 py-4 text-slate-600 dark:text-slate-300">
                           {item.quantity}
                         </td>
                         <td className="px-6 py-4 text-slate-600 dark:text-slate-300">
-                          ${item.price.toFixed(2)}
+                        {item.menuItem?.price}
                         </td>
                         <td className="px-6 py-4 text-slate-600 dark:text-slate-300">
-                          ${(item.price * item.quantity).toFixed(2)}
+                        {item.quantity*item.menuItem?.price}
                         </td>
                       </tr>
                     ))}
@@ -335,7 +321,7 @@ const OrderTracking = () => {
                         Total
                       </th>
                       <td className="px-6 py-3 text-slate-800 dark:text-white">
-                        ${order.total.toFixed(2)}
+                        ${totalAmount.toFixed(2)}
                       </td>
                     </tr>
                   </tfoot>

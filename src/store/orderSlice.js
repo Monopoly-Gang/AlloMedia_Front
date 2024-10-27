@@ -40,7 +40,7 @@ export const fetchOrders = createAsyncThunk(
 const initialState = {
     items : [],
     restaurant:0,
-    client:0,
+    client:"6671e67909fc46a65fbda65eb",
     totalAmount:0,
     loading: false,
     error:null,

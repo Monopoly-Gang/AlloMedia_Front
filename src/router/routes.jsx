@@ -33,7 +33,7 @@ export const routes = [
       { path: '/restaurant-details/:id', element: RestaurantMenuDetails },
       { path: '/menu-details/:id', element: MenuDetails },
       { path: '/cart', element: Cart },
-      { path: '/order-tracking', element: OrderTracking },  
+      { path: '/order-tracking/:orderId', element: OrderTracking },  
       { path: '/order-list', element: OrderList },  
     ],
   },
