@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { Edit, Trash2, Plus, Search, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 const ListDeliveryDrivers = () => {
   const { t } = useTranslation();
@@ -14,30 +15,24 @@ const ListDeliveryDrivers = () => {
   useEffect(() => {
     const fetchDrivers = async () => {
       try {
-        // API call to fetch drivers would go here
-        await new Promise(resolve => setTimeout(resolve, 1000)); // Simulating API call
-        const mockDrivers = Array.from({ length: 50 }, (_, index) => ({
-          id: index + 1,
-          fullName: `Driver ${index + 1}`,
-          email: `driver${index + 1}@example.com`,
-          phoneNumber: `+1234567${index.toString().padStart(3, '0')}`,
-        }));
-        setDrivers(mockDrivers);
+        const response = await axios.get("http://localhost:3000/api/livreurs");
+        setDrivers(response.data.users);
       } catch (error) {
         console.error('Error fetching delivery drivers:', error);
         toast.error(t('Failed to load delivery drivers'));
       }
     };
-
+  
     fetchDrivers();
-  }, [t]);
+  }, [t,drivers]);
+  
 
   const handleDelete = async (id) => {
+    console.log(id);
     if (window.confirm(t('Are you sure you want to delete this driver?'))) {
       try {
-        // API call to delete driver would go here
-        await new Promise(resolve => setTimeout(resolve, 1000)); // Simulating API call
-        setDrivers(drivers.filter(driver => driver.id !== id));
+        await axios.delete(`http://localhost:3000/api/livreurs/${id}`);
+        setDrivers((prevDrivers) => prevDrivers.filter(driver => driver.id !== id));
         toast.success(t('Delivery driver deleted successfully'));
       } catch (error) {
         console.error('Error deleting delivery driver:', error);
@@ -45,6 +40,7 @@ const ListDeliveryDrivers = () => {
       }
     }
   };
+  
 
   const filteredDrivers = drivers.filter(driver =>
     driver.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -89,23 +85,69 @@ const ListDeliveryDrivers = () => {
               <th className="px-6 py-3 text-right text-xs font-medium text-slate-500 dark:text-slate-300 uppercase tracking-wider">{t('Actions')}</th>
             </tr>
           </thead>
-          <tbody className="bg-white dark:bg-slate-800 divide-y divide-slate-200 dark:divide-slate-700">
-            {currentDrivers.map((driver) => (
+          {/* <tbody className="bg-white dark:bg-slate-800 divide-y divide-slate-200 dark:divide-slate-700">
+           {drivers?currentDrivers.map((driver) => (
               <tr key={driver.id}>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900 dark:text-slate-100">{driver.fullName}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500 dark:text-slate-400">{driver.email}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500 dark:text-slate-400">{driver.phoneNumber}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium flex justify-end">
-                  <Link to={`/dashboard/super-admin/edit-delivery-driver/${driver.id}`} className="text-green-500 hover:text-green-900 dark:text-green-400 dark:hover:text-green-300 mr-4">
-                    <Edit size={18} />
-                  </Link>
-                  <button onClick={() => handleDelete(driver.id)} className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300">
+                <Link
+  to={{
+    pathname: `/dashboard/super-admin/edit-delivery-driver/${driver._id}`, // Make sure driver._id is correct
+    state: { driverData: driver }  // Passing the driver object
+  }}
+  className="text-green-500 hover:text-green-900 dark:text-green-400 dark:hover:text-green-300 mr-4"
+>
+  <Edit size={18} />
+</Link>
+
+
+                  <button onClick={() => handleDelete(driver._id)} className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300">
                     <Trash2 size={18} />
                   </button>
                 </td>
               </tr>
-            ))}
-          </tbody>
+            ))
+            :<tr>dfghjkl</tr>}
+          </tbody> */}
+
+<tbody className="bg-white dark:bg-slate-800 divide-y divide-slate-200 dark:divide-slate-700">
+  {drivers ? (
+    currentDrivers.map((driver) => (
+      <tr key={driver._id}> {/* Ensure you are using the correct key */}
+        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900 dark:text-slate-100">
+          {driver.fullName}
+        </td>
+        <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500 dark:text-slate-400">
+          {driver.email}
+        </td>
+        <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500 dark:text-slate-400">
+          {driver.phoneNumber}
+        </td>
+        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium flex justify-end">
+        <Link
+  to={`/dashboard/super-admin/edit-delivery-driver/${driver._id}`}
+  state={{ driverData: driver }}
+  className="text-green-500 hover:text-green-900 dark:text-green-400 dark:hover:text-green-300 mr-4"
+>
+  <Edit size={18} />
+</Link>
+
+          <button onClick={() => handleDelete(driver._id)} className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300">
+            <Trash2 size={18} />
+          </button>
+        </td>
+      </tr>
+    ))
+  ) : (
+    <tr>
+      <td colSpan="4">No drivers available.</td>
+    </tr>
+  )}
+</tbody>
+
+
         </table>
       </div>
       <div className="mt-4 flex justify-between items-center">
