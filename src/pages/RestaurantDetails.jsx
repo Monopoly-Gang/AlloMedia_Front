@@ -4,6 +4,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Search, Grid, List, Filter } from "lucide-react";
 import SpinnerIcon from "../components/SpinnerIcon";
 import { getRequest } from "../utils/axiosRequests";
+import { useDispatch } from "react-redux";
+import { updateRestaurant, updateRestaurantAndClearCart } from "../store/cartSlice";
+
 
 const RestaurantDetails = () => {
   const { t } = useTranslation();
@@ -16,6 +19,7 @@ const RestaurantDetails = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [menuItems, setMenuItems] = useState([]); 
+  const dispatch =useDispatch();
 
   // Fetching menu items
   useEffect(() => {
@@ -37,6 +41,8 @@ const RestaurantDetails = () => {
   }, [id]);
 
   const handleMenuItemClick = (itemId) => {
+  
+    dispatch(updateRestaurantAndClearCart(id));
     navigate(`/menu-details/${itemId}`);
   };
 

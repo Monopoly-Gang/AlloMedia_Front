@@ -1,50 +1,51 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { loadState } from "../utils/localStorage";
+import { deleteState, loadState } from "../utils/localStorage";
 import {  toast } from 'sonner'
+import { useDispatch } from "react-redux";
 
 
 
 const initialState = loadState('cart') || {
     items : [],
-    client: "507f1f77bcf86cd799439011", // fake id
+    client: "6719727e647e5b19caaae823", // fake id
     totalAmount :0,
     restaurant:0
+};
+
+export const updateRestaurantAndClearCart = (restaurantId) => (dispatch, getState) => {
+    const { cart } = getState(); 
+    if (cart.restaurant !== restaurantId) {
+        dispatch(clearCart()); 
+    }
+    dispatch(updateRestaurant(restaurantId));
 };
 
 const cartSlice = createSlice({
     name:"cart",
     initialState,
+    
 
     reducers : {
         addToCart:(state, action) => {  
+    
             const product = action.payload;
 
-            
-            
             // Check if item already in cart 
-            const existingItem = state.items.find(item=>item.id == product._id);       
-            
+            const existingItem = state.items.find(item=>item.id == product._id);               
             // Update quantity if item exists
             if(existingItem){
-                console.log("existing item");
-                console.log("payload",product);
                 existingItem.quantity = product.quantity || existingItem.quantity ;
                 toast.success("Item Quantity Updated");
             }
             // Push a new item if not
             else{
-                if (state.items.length > 0 && state.restaurant !== product.restaurant) {
-                    toast.error("You can only order from one restaurant at a time.");
-                    return;
-                }
-                console.log("not existing item");
-                console.log("payload",product.id);
-                state.items.push({id:product._id,name:product.name,description:product.description,quantity:product.quantity || 1,price:product.price,image:product.image})
-                state.restaurant = product.restaurant;
-                state.client = "507f1f77bcf86cd799439011";
+                
+                state.items.push({id:product._id,name:product.name,description:product.description,quantity:product.quantity || 1,price:product.price,image:product.image,restaurant:product.restaurant})
+                state.client = "6719727e647e5b19caaae823";
+                console.log("state.items",JSON.stringify(state.items));
                 toast.success("Item added to cart");
             } 
-            console.log("state.items", JSON.stringify(state));
+            
             // calculate total
             state.totalAmount=state.items.reduce((totalAmount,item)=>totalAmount+item.quantity*item.price,0);
         },
@@ -56,8 +57,10 @@ const cartSlice = createSlice({
         },
         clearCart:(state) => {
             state.items =[];
-            toast.warning("Cart cleared");
-            state.totalAmount = 0;
+            state.client = 0;
+            state.totalAmount =0;
+            state.restaurant=0;
+            deleteState("cart");       
         },
         updateQuantity:(state,action)=>{
             const productId = action.payload.id;
@@ -66,10 +69,13 @@ const cartSlice = createSlice({
                 selectedItem.quantity = selectedItem.quantity+=action.payload.quantity;
                 state.totalAmount=state.items.reduce((totalAmount,item)=>totalAmount+item.quantity*item.price,0);
             }
+        },
+        updateRestaurant:(state,action)=>{
+            state.restaurant = action.payload;
         }
     }
 
 })
 
-export const {addToCart, removeFromCart, clearCart, updateQuantity} = cartSlice.actions;
+export const {addToCart, removeFromCart, clearCart, updateQuantity, updateRestaurant} = cartSlice.actions;
 export default cartSlice.reducer;

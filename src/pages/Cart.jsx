@@ -1,9 +1,10 @@
-// src/pages/Cart.jsx
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { clearCart, removeFromCart, updateQuantity } from "../store/cartSlice";
 import { initializeOrder,insertOrder} from "../store/orderSlice";
 import ConfirmationModal from "../components/ConfirmationModal";
+import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 
 const Cart = () => {
@@ -14,12 +15,14 @@ const Cart = () => {
   const restaurant = useSelector((state)=>state.cart.restaurant);
   const client = useSelector((state)=>state.cart.client);
   const [isModalOpen,setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
 
-  console.log("client",client);
+  console.log("items",items);
 
 
   const handleClearCart =() =>{
     dispatch(clearCart());
+    toast.warning("Cart cleared");
   }
 
 
@@ -29,32 +32,50 @@ const Cart = () => {
   };
   
   const handleUpdateQuantity = (id,quantity) => {
-      dispatch(updateQuantity({id,quantity}));
+      const currentItem = items.find(item => item.id === id);
+      if (currentItem && (currentItem.quantity + quantity) > 0) {
+          dispatch(updateQuantity({id,quantity}));
+      }
   }
 
-  const handleOrderNow = () => {
-    console.log("Order Now clicked");
-  };
 
   const calculateTotaPrice = (quantity,price) =>{
     return (quantity*price).toFixed(2);
   }
 
   const handleOrder = () =>{
-    const orderData ={items,client,restaurant,totalAmount};
+    console.log("item inside hand",items);
+    const orderData = {
+      client,
+      restaurant,
+      items: items.map((item) => ({
+          quantity: item.quantity,
+          menuItem: item.id,
+      })),
+  };
+    console.log("orderData dipatche to init",orderData);
     dispatch(initializeOrder(orderData));
     setIsModalOpen(true);
   }
 
   const handleConfirmOrder = () => {
-    const orderData ={items,client,restaurant,totalAmount};
+    const orderData = {
+        client,
+        restaurant,
+        items: items.map((item) => ({
+            quantity: item.quantity,
+            menuItem: item.id,
+        })),
+    };
     dispatch(insertOrder(orderData));
     setIsModalOpen(false);
-  }
+    navigate("/restaurants");
+};
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
 };
+
 
   return (
     <section className="bg-slate-50 py-8 antialiased dark:bg-slate-900 md:py-16">
@@ -62,8 +83,17 @@ const Cart = () => {
         <h2 className="text-xl font-semibold text-slate-800 dark:text-slate-50 sm:text-2xl">
           Shopping Cart
         </h2>
+        {
+          items.length == 0 ?(
+            <div className="mt-6 text-center text-gray-500 dark:text-gray-400">
+                <p>Your cart is currently empty.</p>
+            </div>
+          )
+
+        :(
         <div className="mt-6 sm:mt-8 md:gap-6 lg:flex lg:items-start xl:gap-8">
           <div className="mx-auto w-full flex-none lg:max-w-2xl xl:max-w-4xl">
+    
             <div className="space-y-6">
               {items.map((item) => (
                 <div
@@ -212,10 +242,10 @@ const Cart = () => {
             </div>
           </div>
         </div>
+        )}
       </div>
     </section>
   );
 };
 
 export default Cart;
-

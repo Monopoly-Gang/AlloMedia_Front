@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getRequest, postRequest } from "../utils/axiosRequests";
 import { toast } from "sonner";
+import { clearCart } from "./cartSlice";
 
 
 // Thunk functions to fetch and insert data
@@ -10,7 +11,10 @@ export const insertOrder = createAsyncThunk(
     async(orderData,thunkApi)=>{
         const uri= "orders";
         try{
-            return  await postRequest(uri,orderData);
+
+            const response =  await postRequest(uri,orderData);
+            thunkApi.dispatch(clearCart());
+            return response;
         }
         catch(error){
             return thunkApi.rejectWithValue(error.message);
@@ -52,7 +56,7 @@ const orderSlice = createSlice({
             state.totalAmount = action.payload.totalAmount;
             state.restaurant = action.payload.restaurant;
             state.client = action.payload.client;
-
+            console.log('initize payload',action.payload);
         }
     },
     extraReducers: (builder) =>{
@@ -61,15 +65,14 @@ const orderSlice = createSlice({
             state.loading=true;
         })
         .addCase(insertOrder.fulfilled,(state, action) =>{
-            const items = action.payload.items;
-            const restaurant = action.payload.restaurant;
-            const client = action.payload.client;
+            console.log("action.payload",action.payload)
+            const items = action.payload.order.items;
+            const restaurant = action.payload.order.restaurant;
+            const client = action.payload.order.client;
             state.loading=false;
             state.items = items;
             state.restaurant = restaurant;
-            state.client = client;
-            state.totalAmount = items.reduce((total,item)=>total+item.quantity*item.price);
-            console.log("mmmmmmmmmmmmmmmmmmmmmmmm");
+            state.client = client;           
             toast.success("Order passed");
         })
         .addCase(insertOrder.rejected,(state,action)=>{
@@ -79,5 +82,5 @@ const orderSlice = createSlice({
     }
 })
 
-export const { initializeOrder } = orderSlice.actions; // Only export initializeOrder
+export const { initializeOrder } = orderSlice.actions; 
 export default orderSlice.reducer;

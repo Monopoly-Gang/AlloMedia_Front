@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Minus, Plus } from "lucide-react";
 import { useDispatch } from "react-redux";
@@ -17,7 +17,7 @@ const MenuDetails = () => {
   const [addOns, setAddOns] = useState([{id: "2001",name: "French Fries",price: 3.0,image: "https://via.placeholder.com/50",selected: false,},{id: "2002",name: "Extra Cheese",price: 2.0,image: "https://via.placeholder.com/50",selected: false,},{  id: "2003",  name: "Coca Cola",  price: 1.5,  image: "https://via.placeholder.com/50",  selected: false,},{  id: "2004",  name: "Choco Lava",  price: 4.0,  image: "https://via.placeholder.com/50",  selected: false,},]);
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+ 
  
 // Fetching menu item data 
   useEffect(()=>{
@@ -35,6 +35,7 @@ const MenuDetails = () => {
     fetchData();
   },[id]);
 
+  console.log(menuItem);
 // Calculating the total of the menu Item
 
   useEffect(()=>{
@@ -45,14 +46,16 @@ const MenuDetails = () => {
 
   // function add to cart
     const handleAddToCart = () =>{
-      dispatch(addToCart({...menuItem,quantity,restaurant:id}));
+      dispatch(addToCart({...menuItem,quantity}));
     }
   
   // function to update quantity
   
     const handleQuantityUpdate = (amount) => {
-      setQuantity((prev) => Math.max(1, prev + amount));
-      
+      const newQuantity = quantity + amount;
+      if (newQuantity >= 1) {
+        setQuantity(newQuantity);
+      }
     };
 
     if (!menuItem) {

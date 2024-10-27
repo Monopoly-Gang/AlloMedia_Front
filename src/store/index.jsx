@@ -1,13 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit';
 import themeConfigReducer from './themeConfigSlice';
 import cartSlice from './cartSlice';
+import orderSlice from './orderSlice';
 import { saveState } from '../utils/localStorage';
 import _ from 'lodash';
 
 const store = configureStore({
   reducer: {
     themeConfig: themeConfigReducer,
-    cart : cartSlice
+    cart : cartSlice,
+    order : orderSlice
   },
 });
 
@@ -16,7 +18,7 @@ let previousCartState = store.getState().cart;
 // Subscription 
 store.subscribe(() =>{
   const state = store.getState().cart;
-  if(! _.isEqual(state,previousCartState)) {
+  if(! _.isEqual(state,previousCartState && state.items.length > 0)) {
     previousCartState = state;
     saveState('cart',state);
   }

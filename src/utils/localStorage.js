@@ -18,3 +18,13 @@ export const loadState = (key) => {
         console.error("error loading state from localstorage",error);
     }
 }
+
+export const deleteState = (key) =>{
+    try{
+        localStorage.removeItem(key);
+        
+    }
+    catch(error){
+        console.error("error deleting state from local storage",error);
+    }
+}
