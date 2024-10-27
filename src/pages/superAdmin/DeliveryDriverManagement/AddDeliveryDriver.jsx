@@ -3,6 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { User, Mail, Phone, MapPin, Lock } from 'lucide-react';
 import InputField from '../../../components/InputField';
+import axios from 'axios';
+import { i } from 'framer-motion/client';
 
 const AddDeliveryDriver = () => {
   const { t } = useTranslation();
@@ -17,20 +19,34 @@ const AddDeliveryDriver = () => {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // API call to add new delivery driver would go here
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulating API call
-      console.log('New delivery driver added:', formData);
-      toast.success(t('Delivery driver added successfully'));
-      setFormData({ fullName: '', email: '', phoneNumber: '', address: '', password: '' });
+        console.log('Form data:', formData);
+
+        // Send the form data to the server
+        await axios.post('http://localhost:3000/api/livreurs', formData);
+
+        // Success message
+        toast.success(t('Delivery driver added successfully'));
+
+        // Reset form fields
+        setFormData({ fullName: '', email: '', phoneNumber: '', address: '', password: '' });
     } catch (error) {
-      console.error('Error adding delivery driver:', error);
-      toast.error(t('Failed to add delivery driver'));
+        const errorMessage = error.response?.data?.error;
+
+        // Handle duplicate key errors for both email and phone number
+        if (errorMessage === 'Email already exists') {
+            toast.error(t('Email already exists. Please use a different email.'));
+        } else if (errorMessage.includes('phoneNumber')) {
+            toast.error(t('Phone number already exists. Please use a different number.'));
+        } else {
+            toast.error(t('Failed to add delivery driver. Please try again.'));
+        }
     }
-  };
+};
+
+  
 
   return (
     <div className="max-w-xl mx-auto border border-slate-200 dark:border-slate-800 rounded-md bg-slate-50 dark:bg-slate-900 p-6">
