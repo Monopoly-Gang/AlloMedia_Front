@@ -2,6 +2,8 @@ import { lazy } from 'react';
 
 const Home = lazy(() => import('../pages/Home'));
 const Register = lazy(() => import('../pages/auth/Register'));
+const RegisterClient = lazy(() => import('../pages/auth/RegisterClient'));
+const RegisterRestaurant = lazy(() => import('../pages/auth/RegisterRestaurant'));
 const VerifyEmail = lazy(() => import('../pages/auth/VerifyEmail'));
 const VerifyOtp = lazy(() => import('../pages/auth/VerifyOtp'));
 const RestaurantManagerDashboard = lazy(() => import('../pages/restaurantManager/Dashboard'));
@@ -51,6 +53,8 @@ export const routes = [
     children: [
       { path: '/login', element: Login },
       { path: '/register', element: Register },
+      { path: '/register-client', element: RegisterClient },
+      { path: '/register-restaurant', element: RegisterRestaurant },
       { path: '/verify-email', element: VerifyEmail },
       { path: '/verify-otp', element: VerifyOtp },
     ],
