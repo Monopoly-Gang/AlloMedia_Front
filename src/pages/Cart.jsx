@@ -30,8 +30,6 @@ const Cart = ({ basketItems = mockBasketItems }) => {
   };
 
   const handleRemoveItem = (id) => {
-    console.log(`Remove item with id: ${id}`);
-    // Implement removal logic here if needed
   };
 
   const handleQuantityChange = (id, delta) => {
@@ -45,7 +43,6 @@ const Cart = ({ basketItems = mockBasketItems }) => {
   };
 
   const handleOrderNow = () => {
-    console.log("Order Now clicked");
     // Implement order logic here if needed
   };
 

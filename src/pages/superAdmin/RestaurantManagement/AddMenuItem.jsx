@@ -28,7 +28,6 @@ const AddMenuItem = () => {
   } = useForm(initialState, menuItemSchema, onSubmit);
 
   async function onSubmit(data) {
-    console.log(data);
   }
 
   return (

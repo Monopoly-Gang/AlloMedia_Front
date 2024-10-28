@@ -97,14 +97,12 @@ const Navbar = () => {
   };
 
   const handleConfirmOrder = () => {
-    console.log('Order confirmed:', confirmationMessage);
     setShowConfirmation(false);
     setIsModalOpen(false);
     // Add logic to handle order confirmation
   };
 
   const handleDismissConfirmation = () => {
-    console.log('Order dismissed:', confirmationMessage);
     setShowConfirmation(false);
     setIsModalOpen(false);
     // Add logic to handle order dismissal

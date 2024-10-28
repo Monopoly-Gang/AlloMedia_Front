@@ -28,7 +28,6 @@ const DeliveryConfirmation = () => {
 
   const handleOtpConfirmation = async (otp) => {
     // This should be an API call to confirm delivery with OTP
-    console.log(`Confirming delivery for order ${selectedOrder.id} with OTP: ${otp}`);
     // Simulating successful confirmation
     setCapturedOrders(capturedOrders.filter(order => order.id !== selectedOrder.id));
     setIsModalOpen(false);
