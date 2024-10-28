@@ -21,12 +21,10 @@ const ViewOrders = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       const response = await axiosInstance.get(`/Orders/GetAllOrders/${id}`);
+      console.log(response.data)
       setOrders(response.data);
-      // console.log(response.data)
       setFilteredOrders(response.data);
     };
-    console.log("test  1 ",filteredOrders)
-    console.log("test  2 ",orders)
     fetchOrders();
   }, [id]);
   
@@ -45,7 +43,6 @@ const ViewOrders = () => {
 
   const handleStatusChange = async (orderId, newStatus) => {
     try {
-      // Send the status update to the backend
       await axiosInstance.post(`/Orders/UpdateOrderStatus`, { orderId, newStatus });
       const updatedOrders = orders.map(order => 
         order._id === orderId ? { ...order, status: newStatus } : order
@@ -78,7 +75,7 @@ const ViewOrders = () => {
           <input
             type="text"
             placeholder={t('Search orders...')}
-            className="w-full pl-10 pr-4 py-2 rounded-md border border-slate-200 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-slate-900 dark:border-slate-700 dark:text-white"
+            className="w-full pl-10 pr-4 py-2 rounded-md border bg-white border-slate-200 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-slate-900 dark:border-slate-700 dark:text-white"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
@@ -87,7 +84,7 @@ const ViewOrders = () => {
         
         <div className="flex items-center">
           <select
-            className="px-4 py-2 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-slate-900 dark:border-slate-700 dark:text-white"
+            className="px-4 py-2 rounded-lg border bg-white border-slate-200 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-slate-900 dark:border-slate-700 dark:text-white"
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
           >
@@ -131,7 +128,7 @@ const ViewOrders = () => {
                   className="hover:bg-slate-50 dark:hover:bg-slate-900"
                 >
                   <td className="px-6 py-4 whitespace-nowrap dark:text-white">{order._id}</td>
-                  <td className="px-6 py-4 whitespace-nowrap dark:text-white">{order.client}</td>
+                  <td className="px-6 py-4 whitespace-nowrap dark:text-white">{order.client.fullName}</td>
                   <td className="px-6 py-4 whitespace-nowrap dark:text-white">${((order.items[0].menuItem.price)*(order.items[0].quantity)).toFixed(2)}</td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full 

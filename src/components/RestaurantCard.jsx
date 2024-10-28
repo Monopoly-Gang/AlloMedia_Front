@@ -1,19 +1,21 @@
-import { MapPin, Mail, Phone, Edit, Trash2 } from "lucide-react";
+import React from "react";
+import { MapPin, Mail, Phone } from "lucide-react";
 import PropTypes from 'prop-types';
 import { useTranslation } from "react-i18next";
-const Image_URL = import.meta.env.VITE_RESTO_IMG_SERVER;
+
 const RestaurantCard = ({ restaurant, onViewDetails }) => {
   const { t } = useTranslation();
 
   return (
     <div className="bg-white dark:bg-slate-900 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
       <div className="p-4 flex flex-col items-center">
-      <img
-        src={`${Image_URL}/${restaurant.logo}`}
-  alt={`${restaurant.name} logo`}
-  className="w-24 h-24 rounded-full mb-4"
-/>
-
+        <div className="w-24 h-24 rounded-full overflow-hidden mb-4 border-4 border-primary">
+          <img
+            src={restaurant.logo}
+            alt={`${restaurant.name} logo`}
+            className="w-full h-full object-cover"
+          />
+        </div>
         <h2 className="text-xl font-semibold text-center dark:text-white mb-1 line-clamp-1">
           {restaurant.name}
         </h2>
@@ -46,29 +48,27 @@ const RestaurantCard = ({ restaurant, onViewDetails }) => {
             </p>
           </div>
         </div>
-        <div className="flex justify-between items-center w-full mt-8">
-          <button
-            className="w-1/2 bg-primary text-white py-2 rounded-lg hover:bg-primary-dark transition duration-300"
-            onClick={() => onViewDetails(restaurant.id)}
-          >
-            {t("View Details")}
-          </button>
-          <div className="flex flex-row items-center justify-center">
-            <button className="flex items-center text-green-500 mr-2 rounded-full bg-slate-200 dark:bg-slate-800 p-2">
-              <Edit size={16} />
-            </button>
-            <button className="flex items-center text-red-500 rounded-full bg-slate-200 dark:bg-slate-800 p-2">
-              <Trash2 size={16} />
-            </button>
-          </div>
-        </div>
+        <button
+          onClick={() => onViewDetails(restaurant.id)}
+          className="mt-4 bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-dark transition duration-300"
+        >
+          {t("View Details")}
+        </button>
       </div>
     </div>
   );
 };
 
 RestaurantCard.propTypes = {
-  restaurant: PropTypes.object.isRequired,
+  restaurant: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+    owner: PropTypes.string.isRequired,
+    address: PropTypes.string.isRequired,
+    email: PropTypes.string.isRequired,
+    phone: PropTypes.string.isRequired,
+    logo: PropTypes.string.isRequired,
+  }).isRequired,
   onViewDetails: PropTypes.func.isRequired,
 };
 

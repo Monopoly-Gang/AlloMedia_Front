@@ -12,15 +12,15 @@ import {
   Building,
   UtensilsCrossed,
 } from "lucide-react";
-import ImageUpload from "../../../components/ImageUpload";
-import InputField from "../../../components/InputField";
-import useForm from "../../../hooks/useForm";
+import ImageUpload from "../../components/ImageUpload";
+import InputField from "../../components/InputField";
+import useForm from "../../hooks/useForm";
 import {
   managerDetailsSchema,
   restaurantDetailsSchema,
   imageUploadSchema,
-} from "../../../validation/addRestaurantValidation";
-import Stepper from "../../../components/Stepper";
+} from "../../validation/addRestaurantValidation";
+import Stepper from "../../components/Stepper";
 
 const initialState = {
   fullName: "",
@@ -35,10 +35,14 @@ const initialState = {
   banner: null,
   logo: null,
 };
+import { useNavigate } from "react-router-dom";
+import AuthService from "../../services/AuthService";
 
-const AddRestaurant = () => {
+const RegisterRestaurant = () => {
   const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
+  const Auth = AuthService();
+  const navigate = useNavigate();
 
   const {
     formData,
@@ -64,7 +68,10 @@ const AddRestaurant = () => {
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
   async function onSubmit(data) {
-    // TODO: Send data to backend
+    const isRegistered = await Auth.registerRestaurant({
+      ...data, logo: data.logo.target.value, banner: data.banner.target.value
+    });
+    if (isRegistered) navigate("/login");
   }
 
   const renderStepContent = (step) => {
@@ -265,8 +272,4 @@ const AddRestaurant = () => {
   );
 };
 
-
-
-
-
-export default AddRestaurant;
+export default RegisterRestaurant;

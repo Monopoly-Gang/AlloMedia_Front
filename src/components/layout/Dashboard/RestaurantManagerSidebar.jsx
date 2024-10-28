@@ -29,7 +29,7 @@ const RestaurantManagerSidebar = () => {
 
   return (
     <div className={semidark ? "dark" : ""}>
-      <nav className={`sidebar fixed min-h-screen h-full top-0 bottom-0 w-[260px] shadow-[5px_0_25px_0_rgba(94,92,154,0.1)] z-50 transition-all duration-300 ${semidark ? "text-white-dark" : ""}`}>
+      <nav className={`sidebar fixed min-h-screen h-full top-0 bottom-0 w-[270px] shadow-[5px_0_25px_0_rgba(94,92,154,0.1)] z-50 transition-all duration-300 ${semidark ? "text-white-dark" : ""}`}>
         <div className="bg-white dark:bg-black h-full">
           <div className="flex justify-between items-center px-4 py-3">
             <NavLink to="/" className="main-logo flex items-center shrink-0">
@@ -59,14 +59,14 @@ const RestaurantManagerSidebar = () => {
                   </div>
                 </button>
                 <AnimateHeight duration={300} height={currentMenu === "dashboard" ? "auto" : 0}>
-                  <ul className="sub-menu text-gray-500">
+                  <ul className="sub-menu text-gray-500 m-0">
                     <li>
                       <NavLink to="/analytics">{t("Analytics")}</NavLink>
                     </li>
                   </ul>
                 </AnimateHeight>
               </li>
-              <h2 className="py-3 px-7 flex items-center uppercase font-extrabold bg-white-light/30 dark:bg-dark dark:bg-opacity-[0.08] -mx-4 mb-1">
+              <h2 className="py-3 px-7 text-sm flex items-center uppercase font-extrabold bg-white-light/30 dark:bg-dark dark:bg-opacity-[0.08] -mx-4 mb-1">
                 <svg
                   className="w-4 h-5 flex-none hidden"
                   viewBox="0 0 24 24"
@@ -125,7 +125,7 @@ const RestaurantManagerSidebar = () => {
                   duration={300}
                   height={currentMenu === "orders" ? "auto" : 0}
                 >
-                  <ul className="sub-menu text-gray-500">
+                  <ul className="sub-menu text-gray-500 m-0">
                     <li>
                       <NavLink to="/dashboard/restaurant-manager/view-orders"> {t("View Orders")}</NavLink>
                     </li>
@@ -195,9 +195,9 @@ const RestaurantManagerSidebar = () => {
                   duration={300}
                   height={currentMenu === "restaurant" ? "auto" : 0}
                 >
-                  <ul className="sub-menu text-gray-500">
+                  <ul className="sub-menu text-gray-500 m-0">
                     <li>
-                      <NavLink to="/dashboard/restaurant-manager/restaurant-details"> {t("Your Restaurant")}</NavLink>
+                      <NavLink className="text-[0.85rem] font-semibold" to="/dashboard/restaurant-manager/restaurant-details/:id"> {t("Your Restaurant")}</NavLink>
                     </li>
                   </ul>
                 </AnimateHeight>

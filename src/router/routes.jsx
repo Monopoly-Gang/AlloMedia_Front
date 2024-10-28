@@ -2,6 +2,10 @@ import { lazy } from 'react';
 
 const Home = lazy(() => import('../pages/Home'));
 const Register = lazy(() => import('../pages/auth/Register'));
+const RegisterClient = lazy(() => import('../pages/auth/RegisterClient'));
+const RegisterRestaurant = lazy(() => import('../pages/auth/RegisterRestaurant'));
+const VerifyEmail = lazy(() => import('../pages/auth/VerifyEmail'));
+const VerifyOtp = lazy(() => import('../pages/auth/VerifyOtp'));
 const RestaurantManagerDashboard = lazy(() => import('../pages/restaurantManager/Dashboard'));
 const SuperAdminDashboard = lazy(() => import('../pages/superAdmin/Dashboard'));
 const MainLayout = lazy(() => import('../components/layout/Interface/MainLayout'));
@@ -29,6 +33,13 @@ export const routes = [
     element: MainLayout,
     children: [
       { path: '/', element: Home },
+      // { path: '/restaurants', element: Restaurants },
+      // { path: '/restaurant-details/:id', element: RestaurantMenuDetails },
+      // { path: '/menu-details/:id', element: MenuDetails },
+      // { path: '/cart', element: Cart },
+      // { path: '/order-tracking', element: OrderTracking },  
+      // { path: '/order-list', element: OrderList },  
+      // { path: '/delivery-confirmation', element: DeliveryConfirmation },
     ],
   },
   {
@@ -50,13 +61,20 @@ export const routes = [
       { path: '/dashboard/super-admin/add-restaurant', element: AddRestaurant },
       { path: '/dashboard/super-admin/approve-restaurant', element: ApproveRestaurants },
       { path: '/dashboard/super-admin/add-menu-item', element: AddMenuItem },
+      // { path: '/dashboard/super-admin/delivery-drivers', element: ListDeliveryDrivers },
+      // { path: '/dashboard/super-admin/add-delivery-driver', element: AddDeliveryDriver },
+      // { path: '/dashboard/super-admin/edit-delivery-driver/:id', element: EditDeliveryDriver }, 
     ],
   },
   {
     element: BlankLayout,
     children: [
-      { path: '/auth/login', element: Login },
-      { path: '/auth/register', element: Register },
+      { path: '/login', element: Login },
+      { path: '/register', element: Register },
+      { path: '/register-client', element: RegisterClient },
+      { path: '/register-restaurant', element: RegisterRestaurant },
+      { path: '/verify-email', element: VerifyEmail },
+      { path: '/verify-otp', element: VerifyOtp },
     ],
   },
 ];
