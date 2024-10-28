@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { toast } from 'sonner';
+import { toast, Toaster } from 'sonner';
 import { Edit, Trash2, Plus, Search, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
@@ -58,6 +58,7 @@ const ListDeliveryDrivers = () => {
 
   return (
     <div className="max-w-6xl mx-auto p-6 border border-slate-200 dark:border-slate-800 rounded-md bg-slate-50 dark:bg-slate-900">
+      <Toaster richColors />
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold text-slate-800 dark:text-slate-100">{t('Delivery Drivers')}</h1>
         <Link to="/dashboard/super-admin/add-delivery-driver" className="bg-primary text-white py-2 px-4 rounded-md hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 transition-colors flex items-center">
