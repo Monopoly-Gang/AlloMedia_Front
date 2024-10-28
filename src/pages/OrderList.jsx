@@ -8,11 +8,14 @@ import { loadState } from "../utils/localStorage";
 
 const OrderList = () => {
   const [orders, setOrders] = useState([]);
-  const userId = useSelector(state=>state.order.client) || JSON.parse(localStorage.getItem('user'));
+  const user = useSelector(state => state.order.client) || JSON.parse(localStorage.getItem('user'));
+  const userId = user.id;
+
 
 
   useEffect(() => {
 
+    
      const fetchData = async () => {
       const uri=`orders/${userId}`;
       try{
