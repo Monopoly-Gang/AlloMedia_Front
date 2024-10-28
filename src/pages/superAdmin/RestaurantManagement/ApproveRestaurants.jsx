@@ -143,8 +143,9 @@ const ApproveRestaurants = () => {
   useEffect(() => {
     const fetchRestaurants = async () => {
       try {
-        const { data } = await axios.get('http://localhost:3000/api/restaurants');
-        setRestaurants(data);
+        const { data } = await axios.get(`http://localhost:3000/api/restaurants/restosForApproval`);
+        const restaurantsArray = Array.isArray(data) ? data : [];
+        setRestaurants(restaurantsArray);
       } catch (error) {
         console.error('Failed to fetch restaurants:', error);
       }
@@ -285,7 +286,7 @@ const handleReject = useCallback(async () => {
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-8">
             {currentRestaurants.map((restaurant) => (
               <motion.div
-                key={restaurant.id}
+                key={restaurant._id}
                 className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-md shadow-md overflow-hidden"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
