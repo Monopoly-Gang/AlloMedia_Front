@@ -1,62 +1,87 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
-import { User, Mail, Phone, MapPin } from 'lucide-react';
+import { User, Mail, Phone, MapPin, Lock } from 'lucide-react';
 import InputField from '../../../components/InputField';
+import axiosInstance from '../../../config/axios';
 
 const EditDeliveryDriver = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const { id } = useParams();
+  
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
     phoneNumber: '',
     address: '',
+    password: ''
   });
 
   useEffect(() => {
-    const fetchDriverData = async () => {
-      try {
-        // API call to fetch driver data would go here
-        await new Promise(resolve => setTimeout(resolve, 1000)); // Simulating API call
-        const mockData = {
-          fullName: 'John Doe',
-          email: 'john.doe@example.com',
-          phoneNumber: '+1234567890',
-          address: '123 Delivery St, City, Country',
-        };
-        setFormData(mockData);
-      } catch (error) {
-        console.error('Error fetching delivery driver data:', error);
-        toast.error(t('Failed to load delivery driver data'));
-      }
-    };
+    if (!location.state?.driverData) {
+      toast.error(t('No driver data available'));
+      navigate('/dashboard/super-admin/delivery-drivers');
+      return;
+    }
+    // Extract only the fields we need
+    const { 
+      fullName, 
+      email, 
+      phoneNumber, 
+      address 
+    } = location.state.driverData;
 
-    fetchDriverData();
-  }, [id, t]);
+    setFormData({
+      fullName,
+      email,
+      phoneNumber,
+      address,
+      password: ''
+    });
+  }, [location.state, navigate, t]);
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData(prevData => ({
+      ...prevData,
+      [name]: value,
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // API call to update delivery driver would go here
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulating API call
-      console.log('Updated delivery driver:', formData);
+      // Create update object with only allowed fields
+      const updateData = {
+        fullName: formData.fullName,
+        email: formData.email,
+        phoneNumber: formData.phoneNumber,
+        address: formData.address
+      };
+
+      // Only add password if it's not empty
+      if (formData.password) {
+        updateData.password = formData.password;
+      }
+
+ 
+      await axiosInstance.put(`/livreurs/${id}`, updateData);
       toast.success(t('Delivery driver updated successfully'));
+      navigate('/dashboard/super-admin/delivery-drivers');
     } catch (error) {
       console.error('Error updating delivery driver:', error);
       toast.error(t('Failed to update delivery driver'));
     }
   };
 
- 
   return (
     <div className="max-w-xl mx-auto border border-slate-200 dark:border-slate-800 rounded-md bg-slate-50 dark:bg-slate-900 p-6">
-      <h1 className="text-2xl font-bold mb-6 text-slate-800 dark:text-slate-100">{t('Edit Delivery Driver')}</h1>
+      <h1 className="text-2xl font-bold mb-6 text-slate-800 dark:text-slate-100">
+        {t('Edit Delivery Driver')}
+      </h1>
       <form onSubmit={handleSubmit} className="space-y-6">
         <InputField
           id="fullName"
@@ -97,6 +122,16 @@ const EditDeliveryDriver = () => {
           placeholder={t('Address')}
           icon={() => <MapPin size={20} />}
           required
+        />
+        <InputField
+          id="password"
+          name="password"
+          type="password"
+          value={formData.password}
+          onChange={handleChange}
+          placeholder={t('Password (leave empty to keep current)')}
+          icon={() => <Lock size={20} />}
+          required={false}
         />
         <button
           type="submit"

@@ -1,214 +1,22 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Check, X, ChevronLeft, ChevronRight, User, Utensils, Mail, Phone, MapPin, Bell } from "lucide-react";
 import { Toaster, toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 import PropTypes from 'prop-types';
+import axiosInstance from "../../../config/axios";
+const Image_URL = import.meta.env.VITE_RESTO_IMG_SERVER;
 
-const mockRestaurants = [
-    {
-      id: 1,
-      name: "HEALTHY FEAST CORNER",
-      owner: "Hollie Bruggen",
-      address: "2123 Osprey the Blue Mountains, Townline, Feversham, ON NOC 1CO, Canada",
-      email: "hbruggen0@narod.ru",
-      phone: "1078832848",
-      logo: "https://via.placeholder.com/150?text=Healthy+Feast+Corner",
-      cuisineType: "Healthy",
-    },
-    {
-      id: 2,
-      name: "FARMHOUSE DISH HEAVEN",
-      owner: "Delainey Soden",
-      address: "2045 Scotch Line, Essa, Ontario, L9R 1V2, Alliston, CA",
-      email: "dsoden1@fda.gov",
-      phone: "2847899814",
-      logo: "https://via.placeholder.com/150?text=Farmhouse+Dish+Heaven",
-      cuisineType: "American",
-    },
-    {
-      id: 3,
-      name: "KITCHEN CREATION",
-      owner: "Lou Hillen",
-      address: "6058 Townhigh Mountains, Sideroad, Clarksburg, ON.",
-      email: "lhillen2@dyndns.org",
-      phone: "2816686226",
-      logo: "https://via.placeholder.com/150?text=Kitchen+Creation",
-      cuisineType: "Italian",
-    },
-    {
-      id: 4,
-      name: "COUNTRY COOKING COVE",
-      owner: "Karlyn Newsome",
-      address: "A-67 Concession 8, Nottawasaga RD, Glen Huron, Poland",
-      email: "knewsome3@alexa.com",
-      phone: "1102607941",
-      logo: "https://via.placeholder.com/150?text=Country+Cooking+Cove",
-      cuisineType: "Mexican",
-    },
-    {
-      id: 5,
-      name: "URBAN TASTE BISTRO",
-      owner: "Jordan Smith",
-      address: "123 Main St, Toronto, ON M5H 2N2, Canada",
-      email: "jsmith@urbantaste.com",
-      phone: "4165551234",
-      logo: "https://via.placeholder.com/150?text=Urban+Taste+Bistro",
-      cuisineType: "Fusion",
-    },
-    {
-      id: 6,
-      name: "SEAFOOD DELIGHT",
-      owner: "Marina Fisher",
-      address: "456 Ocean Ave, Vancouver, BC V6Z 2Y7, Canada",
-      email: "mfisher@seafooddelight.com",
-      phone: "6045555678",
-      logo: "https://via.placeholder.com/150?text=Seafood+Delight",
-      cuisineType: "Seafood",
-    },
-    {
-      id: 7,
-      name: "VEGAN VIBES",
-      owner: "Ella Green",
-      address: "789 Greenway Blvd, Ottawa, ON K1A 0B1, Canada",
-      email: "egreen@veganvibes.com",
-      phone: "6135557890",
-      logo: "https://via.placeholder.com/150?text=Vegan+Vibes",
-      cuisineType: "Vegan",
-    },
-    {
-      id: 8,
-      name: "SPICE ROUTE",
-      owner: "Raj Patel",
-      address: "101 Curry Ln, Calgary, AB T2P 3G7, Canada",
-      email: "rpatel@spiceroute.com",
-      phone: "4035551010",
-      logo: "https://via.placeholder.com/150?text=Spice+Route",
-      cuisineType: "Indian",
-    },
-    {
-      id: 9,
-      name: "SUSHI SENSATION",
-      owner: "Akira Tanaka",
-      address: "202 Sushi St, Montreal, QC H3B 1A1, Canada",
-      email: "atanaka@sushisensation.com",
-      phone: "5145552020",
-      logo: "https://via.placeholder.com/150?text=Sushi+Sensation",
-      cuisineType: "Japanese",
-    },
-    {
-      id: 10,
-      name: "TACO TOWN",
-      owner: "Carlos Ramirez",
-      address: "303 Fiesta Rd, Edmonton, AB T5J 3N8, Canada",
-      email: "cramirez@tacotown.com",
-      phone: "7805553030",
-      logo: "https://via.placeholder.com/150?text=Taco+Town",
-      cuisineType: "Mexican",
-    },
-    {
-      id: 11,
-      name: "PASTA PARADISE",
-      owner: "Giovanni Rossi",
-      address: "404 Pasta Pl, Winnipeg, MB R3C 4T3, Canada",
-      email: "grossi@pastaparadise.com",
-      phone: "2045554040",
-      logo: "https://via.placeholder.com/150?text=Pasta+Paradise",
-      cuisineType: "Italian",
-    },
-    {
-      id: 12,
-      name: "BURGER BARN",
-      owner: "Sam Johnson",
-      address: "505 Burger Blvd, Halifax, NS B3J 2K9, Canada",
-      email: "sjohnson@burgerbarn.com",
-      phone: "9025555050",
-      logo: "https://via.placeholder.com/150?text=Burger+Barn",
-      cuisineType: "American",
-    },
-    {
-      id: 13,
-      name: "THAI TREATS",
-      owner: "Nina Chai",
-      address: "606 Thai St, Victoria, BC V8W 1N6, Canada",
-      email: "nchai@thaitreats.com",
-      phone: "2505556060",
-      logo: "https://via.placeholder.com/150?text=Thai+Treats",
-      cuisineType: "Thai",
-    },
-    {
-      id: 14,
-      name: "FRENCH FLAIR",
-      owner: "Pierre Dubois",
-      address: "707 Paris Ave, Quebec City, QC G1R 4P5, Canada",
-      email: "pdubois@frenchflair.com",
-      phone: "4185557070",
-      logo: "https://via.placeholder.com/150?text=French+Flair",
-      cuisineType: "French",
-    },
-    {
-      id: 15,
-      name: "MEDITERRANEAN MAGIC",
-      owner: "Sophia Papadopoulos",
-      address: "808 Olive Rd, Hamilton, ON L8P 1A1, Canada",
-      email: "spapadopoulos@mediterraneanmagic.com",
-      phone: "9055558080",
-      logo: "https://via.placeholder.com/150?text=Mediterranean+Magic",
-      cuisineType: "Mediterranean",
-    },
-    {
-      id: 16,
-      name: "BBQ BLISS",
-      owner: "Tommy Lee",
-      address: "909 Grill St, Regina, SK S4P 3Y2, Canada",
-      email: "tlee@bbqbliss.com",
-      phone: "3065559090",
-      logo: "https://via.placeholder.com/150?text=BBQ+Bliss",
-      cuisineType: "BBQ",
-    },
-    {
-      id: 17,
-      name: "GREEK GARDEN",
-      owner: "Dimitri Kosta",
-      address: "1010 Athens Ln, St. John's, NL A1C 1A1, Canada",
-      email: "dkosta@greekgarden.com",
-      phone: "7095551010",
-      logo: "https://via.placeholder.com/150?text=Greek+Garden",
-      cuisineType: "Greek",
-    },
-    {
-      id: 18,
-      name: "CHINESE CHOW",
-      owner: "Li Wei",
-      address: "1111 Dragon Rd, Saskatoon, SK S7K 1N2, Canada",
-      email: "lwei@chinesechow.com",
-      phone: "3065551111",
-      logo: "https://via.placeholder.com/150?text=Chinese+Chow",
-      cuisineType: "Chinese",
-    },
-    {
-      id: 19,
-      name: "PIZZA PALACE",
-      owner: "Mario Bianchi",
-      address: "1212 Slice St, London, ON N6A 3K7, Canada",
-      email: "mbianchi@pizzapalace.com",
-      phone: "5195551212",
-      logo: "https://via.placeholder.com/150?text=Pizza+Palace",
-      cuisineType: "Pizza",
-    },
-    {
-      id: 20,
-      name: "SOUTHERN SOUL",
-      owner: "Georgia Brown",
-      address: "1313 Soul Ave, Charlottetown, PE C1A 1A1, Canada",
-      email: "gbrown@southernsoul.com",
-      phone: "9025551313",
-      logo: "https://via.placeholder.com/150?text=Southern+Soul",
-      cuisineType: "Southern",
-    },
-  ];
+
+
+
 
 const Modal = ({ isOpen, onClose, restaurant, onApprove, onReject }) => {
+
+
+  
+
+
   const { t } = useTranslation();
   if (!isOpen || !restaurant) return null;
 
@@ -237,7 +45,13 @@ const Modal = ({ isOpen, onClose, restaurant, onApprove, onReject }) => {
           </div>
           
           <div className="flex flex-col items-center mb-6">
-            <img src={restaurant.logo} alt={restaurant.name} className="w-32 h-32 object-cover rounded-full mb-4" />
+            
+          <img
+    src={`${Image_URL}/${restaurant.logo}`}
+  alt={`${restaurant.name} logo`}
+  className="w-24 h-24 rounded-full mb-4"
+/>
+
             <span className="px-3 py-1 bg-primary text-white text-sm font-semibold rounded-full">
               {restaurant.cuisineType}
             </span>
@@ -305,9 +119,16 @@ const Button = ({ children, onClick, variant }) => {
   );
 };
 
+
+
+
+
+
 const ApproveRestaurants = () => {
+  
+
   const { t } = useTranslation();
-  const [restaurants, setRestaurants] = useState(mockRestaurants);
+  const [restaurants, setRestaurants] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRestaurant, setSelectedRestaurant] = useState(null);
@@ -318,34 +139,88 @@ const ApproveRestaurants = () => {
     setIsModalOpen(true);
   };
 
-  const handleApprove = useCallback(() => {
-    if (selectedRestaurant) {
-      setRestaurants(restaurants.filter((r) => r.id !== selectedRestaurant.id));
-      toast.success(t("Restaurant approved"), {
-        description: t("{{name}} has been successfully approved", {
-          name: selectedRestaurant.name,
-        }),
-      });
-      sendNotificationToManager(selectedRestaurant.id, 'approved');
-      setIsModalOpen(false);
-    }
-  }, [selectedRestaurant, restaurants, t]);
-  
-  const handleReject = useCallback(() => {
-    if (selectedRestaurant) {
-      setRestaurants(restaurants.filter((r) => r.id !== selectedRestaurant.id));
-      toast.error(t("Restaurant rejected"), {
-        description: t("{{name}} has been rejected", { name: selectedRestaurant.name }),
-      });
-      sendNotificationToManager(selectedRestaurant.id, 'rejected');
-      setIsModalOpen(false);
-    }
-  }, [selectedRestaurant, restaurants, t]);
+  useEffect(() => {
+    const fetchRestaurants = async () => {
+      try {
+        const { data } = await axiosInstance.get(`/restaurants/restosForApproval`);
+        
+        const restaurantsArray = Array.isArray(data) ? data : [];
+        setRestaurants(restaurantsArray);
+      } catch (error) {
+        console.error('Failed to fetch restaurants:', error);
+      }
+    };
+
+    fetchRestaurants();
+  }, [restaurants]);
+// axios for approve
+
+
+// API call to approve restaurant
+const approveRestaurant = async (id) => {
+  try {
+    const { data } = await axiosInstance.put(`/restaurants/approveRestaurant/${id}`);
+    return data;
+  } catch (error) {
+    console.error('Failed to approve restaurant:', error);
+    throw error; // Throw error to handle it outside if needed
+  }
+};
+
+// API call to reject restaurant
+const rejectRestaurant = async (id) => {
+  try {
+    const { data } = await axiosInstance.delete(`/restaurants/refuseRestaurant/${id}`);
+    return data;
+  } catch (error) {
+    console.error('Failed to reject restaurant:', error);
+    throw error; // Throw error to handle it outside if needed
+  }
+};
+
+// Handler to approve restaurant
+const handleApprove = useCallback(async () => {
+  if (!selectedRestaurant) return;
+
+  // Optimistically update UI before approval
+  setRestaurants((prev) => prev.filter((r) => r._id !== selectedRestaurant._id));
+  toast.success(t("Restaurant approved"), {
+    description: t("{{name}} has been approved", { name: selectedRestaurant.name }),
+  });
+  setIsModalOpen(false);
+
+  try {
+    await approveRestaurant(selectedRestaurant._id);
+  } catch (error) {
+    console.error('Approval failed on backend:', error);
+  }
+}, [selectedRestaurant, setRestaurants, setIsModalOpen, t]);
+
+// Handler to reject restaurant
+const handleReject = useCallback(async () => {
+  if (!selectedRestaurant) return;
+
+  // Optimistically update UI before rejection
+  setRestaurants((prev) => prev.filter((r) => r._id !== selectedRestaurant._id));
+  toast.error(t("Restaurant rejected"), {
+    description: t("{{name}} has been rejected", { name: selectedRestaurant.name }),
+  });
+  sendNotificationToManager(selectedRestaurant._id, 'rejected');
+  setIsModalOpen(false);
+
+  try {
+    await rejectRestaurant(selectedRestaurant._id);
+  } catch (error) {
+    console.error('Rejection failed on backend:', error);
+  }
+}, [selectedRestaurant, setRestaurants, setIsModalOpen, t]);
+
+
+
 
   const sendNotificationToManager = async (restaurantId, status) => {
     try {
       await new Promise(resolve => setTimeout(resolve, 1000));
-      console.log(`Notification sent to manager of restaurant ${restaurantId}: Status - ${status}`);
       toast.success(t("Notification sent to manager"), {
         icon: <Bell size={18} />,
       });
@@ -410,18 +285,19 @@ const ApproveRestaurants = () => {
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-8">
             {currentRestaurants.map((restaurant) => (
               <motion.div
-                key={restaurant.id}
+                key={restaurant._id}
                 className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-md shadow-md overflow-hidden"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3 }}
               >
                 <div className="p-4 flex flex-col items-center">
-                  <img
-                    src={restaurant.logo}
-                    alt={restaurant.name}
-                    className="w-24 h-24 object-cover rounded-full mb-4"
-                  />
+                <img
+  src={`${Image_URL}/${restaurant.logo}`}
+  alt={`${restaurant.name} logo`}
+  className="w-24 h-24 rounded-full mb-4"
+/>
+
                   <h2 className="text-xl font-semibold mb-2 text-center">{restaurant.name}</h2>
                   <p className="text-gray-600 dark:text-gray-300 mb-4 text-center">{restaurant.cuisineType}</p>
                   <button
@@ -471,6 +347,8 @@ const ApproveRestaurants = () => {
     </div>
   );
 };
+
+
 
 Modal.propTypes = {
   isOpen: PropTypes.bool.isRequired,

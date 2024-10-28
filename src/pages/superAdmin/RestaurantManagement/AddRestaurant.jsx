@@ -64,7 +64,6 @@ const AddRestaurant = () => {
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
   async function onSubmit(data) {
-    console.log(data);
     // TODO: Send data to backend
   }
 
