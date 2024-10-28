@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { User, Mail, Phone, MapPin, Lock } from 'lucide-react';
@@ -22,7 +22,7 @@ const AddDeliveryDriver = () => {
     e.preventDefault();
     try {
       // API call to add new delivery driver would go here
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulating API call
+      await new Promise(resolve => setTimeout(resolve, 1000)); 
       console.log('New delivery driver added:', formData);
       toast.success(t('Delivery driver added successfully'));
       setFormData({ fullName: '', email: '', phoneNumber: '', address: '', password: '' });
