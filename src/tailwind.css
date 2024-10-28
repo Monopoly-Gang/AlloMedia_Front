@@ -52,12 +52,12 @@
 
     .sidebar ul.sub-menu li button,
     .sidebar ul.sub-menu li a {
-        @apply flex items-center px-9 py-2.5 before:h-0.5 before:w-2 before:rounded before:bg-gray-300 hover:bg-gray-100
+        @apply flex items-center px-2 py-2.5 before:h-0.5 before:w-2 before:rounded before:bg-gray-300 hover:bg-gray-100
       hover:text-primary hover:before:!bg-primary ltr:before:mr-2 rtl:before:ml-2 dark:before:bg-gray-500 dark:hover:bg-gray-900 dark:hover:text-primary;
     }
     .sidebar ul.sub-menu li button.active,
     .sidebar ul.sub-menu li a.active {
-        @apply text-primary before:bg-primary;
+        @apply text-primary bg-white dark:bg-black-dark-light before:bg-primary;
     }
 
     .sidebar .nav-item a div:first-child svg,
@@ -78,6 +78,17 @@
         [&::-webkit-scrollbar-thumb]:bg-slate-200
         dark:[&::-webkit-scrollbar-track]:bg-slate-800
         dark:[&::-webkit-scrollbar-thumb]:bg-slate-700;
+    }
+
+    .scroll {
+        @apply max-h-max overflow-y-auto
+        [&::-webkit-scrollbar]:w-2
+        [&::-webkit-scrollbar-track]:rounded-full
+        [&::-webkit-scrollbar-track]:bg-slate-100
+        [&::-webkit-scrollbar-thumb]:rounded-full
+        [&::-webkit-scrollbar-thumb]:bg-slate-200
+        dark:[&::-webkit-scrollbar-track]:bg-slate-700
+        dark:[&::-webkit-scrollbar-thumb]:bg-slate-600;
     }
 
     /* Horizontal layouts */
@@ -224,7 +235,7 @@
 
     /* Buttons */
     .btn {
-        @apply relative flex items-center justify-center rounded-md border px-4 py-2 text-sm font-semibold shadow-[0_10px_20px_-10px] outline-none transition duration-300 hover:shadow-none;
+        @apply relative flex items-center justify-center bg-white rounded-md border px-4 py-1 text-sm font-semibold shadow-[0_10px_20px_-10px] outline-none transition duration-300 hover:shadow-none;
     }
     .btn-lg {
         @apply px-7 py-2.5 text-base;
@@ -237,10 +248,10 @@
     }
 
     .btn-primary {
-        @apply border-primary bg-primary text-white shadow-primary/60;
+        @apply border-primary bg-primary text-white hover:bg-primary hover:border-primary shadow-primary/60;
     }
     .btn-outline-primary {
-        @apply border-primary text-primary shadow-none hover:bg-primary hover:text-white;
+        @apply border-primary text-primary shadow-none hover:bg-primary hover:border-primary hover:text-white;
     }
 
     .btn-secondary {
@@ -383,8 +394,8 @@
     /* checkbox & radio */
     .form-radio,
     .form-checkbox {
-        @apply h-4 w-4 cursor-pointer rounded border-2 border-white-light bg-transparent accent-primary checked:text-slate-50 !shadow-none !outline-none !ring-0 !ring-offset-0 checked:bg-[length:90%_90%] disabled:cursor-not-allowed disabled:bg-[#eee] ltr:mr-1.5 rtl:ml-1.5
-      dark:border-[#253b5c] dark:checked:border-transparent dark:disabled:bg-[#1b2e4b];
+        @apply h-4 w-4 cursor-pointer rounded border-2 border-white-light bg-transparent text-primary !shadow-none !outline-none !ring-0 !ring-offset-0 checked:bg-[length:90%_90%] disabled:cursor-not-allowed disabled:bg-[#eee] ltr:mr-1.5 rtl:ml-1.5
+      dark:border-primary dark:checked:border-transparent dark:disabled:bg-primary;
     }
 
     .form-checkbox.outline-primary:checked {

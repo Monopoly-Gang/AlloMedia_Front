@@ -39,9 +39,7 @@ const Sidebar = () => {
   }, []);
 
   useEffect(() => {
-    console.log(themeConfig.sidebar)
     if (window.innerWidth < 1024 && themeConfig.sidebar) {
-        console.log(themeConfig.sidebar);
       dispatch(toggleSidebar());
     }
   }, [location, dispatch, themeConfig.sidebar]);

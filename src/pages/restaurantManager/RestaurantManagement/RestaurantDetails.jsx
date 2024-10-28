@@ -5,10 +5,12 @@ import MenuSection from "../../../components/RestaurantDetails/MenuSection";
 import RestaurantInfoSection from "../../../components/RestaurantDetails/RestaurantInfoSection";
 import { toast, Toaster } from "sonner";
 
-const RestaurantManagerDashboard = () => {
+const RestaurantDetails = () => {
     const { t } = useTranslation();
     const [restaurantData, setRestaurantData] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedMenuItem, setSelectedMenuItem] = useState(null);
 
     useEffect(() => {
         fetchRestaurantData();
@@ -16,7 +18,6 @@ const RestaurantManagerDashboard = () => {
 
     const fetchRestaurantData = async () => {
         try {
-
             const mockData = {
                 name: "Healthy Feast Corner",
                 cuisineType: "Healthy",
@@ -32,14 +33,14 @@ const RestaurantManagerDashboard = () => {
                     {
                         id: "1001",
                         name: "Italian Pizza",
-                        category: "Pizza",
+                        description: "Lorem ipsum dolor sit amet consectetur adipiscing.",
                         price: 79,
                         image: "https://via.placeholder.com/100?text=Pizza",
                     },
                     {
                         id: "1002",
                         name: "Veg Burger",
-                        category: "Burger",
+                        description: "Lorem ipsum dolor sit amet consectetur adipiscing.",
                         price: 488,
                         image: "https://via.placeholder.com/100?text=Burger",
                     },
@@ -56,6 +57,20 @@ const RestaurantManagerDashboard = () => {
         }
     };
 
+    const handleEditMenuItem = (menuItem) => {
+        setSelectedMenuItem(menuItem);
+        setIsModalOpen(true);
+    };
+
+    const handleSaveMenuItem = (updatedItem) => {
+        setRestaurantData((prevData) => ({
+            ...prevData,
+            menu: prevData.menu.map((item) =>
+                item.id === updatedItem.id ? updatedItem : item
+            ),
+        }));
+    };
+
     if (loading) {
         return <div className="flex justify-center items-center h-screen">{t("Loading...")}</div>;
     }
@@ -70,7 +85,7 @@ const RestaurantManagerDashboard = () => {
             <RestaurantHeader restaurantData={restaurantData} />
             <div className="p-6">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <MenuSection menu={restaurantData.menu} userRole="restaurantManager" />
+                    <MenuSection menu={restaurantData.menu} userRole="restaurantManager" onEdit={handleEditMenuItem} />
                     <RestaurantInfoSection restaurantData={restaurantData} />
                 </div>
             </div>
@@ -78,4 +93,4 @@ const RestaurantManagerDashboard = () => {
     );
 };
 
-export default RestaurantManagerDashboard;
+export default RestaurantDetails;
