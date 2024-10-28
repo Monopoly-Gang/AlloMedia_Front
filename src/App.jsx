@@ -6,6 +6,7 @@ import AppRoutes from './router/AppRoutes';
 import { Toaster } from 'sonner';
 import { toggleRTL, toggleTheme, toggleLocale, toggleMenu, toggleLayout, toggleAnimation, toggleNavbar, toggleSemidark } from './store/themeConfigSlice';
 
+
 const App = () => {
     const themeConfig = useSelector((state) => state.themeConfig);
     const dispatch = useDispatch();

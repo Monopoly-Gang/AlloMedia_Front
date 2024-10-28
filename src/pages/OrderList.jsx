@@ -2,20 +2,37 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Clock, CheckCircle, XCircle } from 'lucide-react'; // Importing icons from Lucide
+import { getRequest } from "../utils/axiosRequests";
+import { useSelector } from "react-redux";
+import { loadState } from "../utils/localStorage";
 
 const OrderList = () => {
   const [orders, setOrders] = useState([]);
+  const user = useSelector(state => state.order.client) || JSON.parse(localStorage.getItem('user'));
+  const userId = user.id;
+
+
 
   useEffect(() => {
-    // Fetch orders from API or local storage
-    // For now, we'll use mock data
-    const mockOrders = [
-      { id: 1, status: "pending", createdAt: "2023-04-15T10:00:00Z" },
-      { id: 2, status: "preparing", createdAt: "2023-04-14T12:00:00Z" },
-      // Add more mock orders as needed
-    ];
-    setOrders(mockOrders);
-  }, []);
+
+    
+     const fetchData = async () => {
+      const uri=`orders/${userId}`;
+      try{
+        const response = await getRequest(uri);
+        const fetchedOrders = response.orders;
+        setOrders(fetchedOrders);
+      }
+      catch(error){
+        console.error("error fetching order",error);
+      }
+     }
+    fetchData();
+  }, [userId]);
+
+
+
+  {console.log("userId",userId)}
 
   const getStatusIcon = (status) => {
     switch (status) {
@@ -67,16 +84,16 @@ const OrderList = () => {
           {orders.map((order) => (
             <Link
               key={order.id}
-              to={`/order/${order.id}`}
+              to={`/order-tracking/${order._id}`}
               className="bg-slate-100 dark:bg-slate-800 shadow-sm border border-slate-200 dark:border-slate-700 rounded-lg p-6 hover:shadow-md flex items-center transition duration-300 ease-in-out transform hover:scale-105"
             >
               <div className="mr-4">
                 {getStatusIcon(order.status)}
               </div>
               <div className="space-y-2">
-                <p className="font-semibold text-lg">Order #{order.id}</p>
+                <p className="font-semibold text-lg">Order #{order._id}</p>
                 <p className="text-slate-900 dark:text-slate-50 text-sm font-semibold">Status: {getStatusBadge(order.status)}</p>
-                <p className="text-slate-900 dark:text-slate-50 text-sm font-semibold">Date: <span className="text-slate-500 dark:text-slate-50 text-sm font-normal">{new Date(order.createdAt).toLocaleDateString()}</span></p>
+                <p className="text-slate-900 dark:text-slate-50 text-sm font-semibold">Date: <span className="text-slate-500 dark:text-slate-50 text-sm font-normal">{new Date(order.createdAt).toLocaleString()}</span></p>
               </div>
             </Link>
           ))}
