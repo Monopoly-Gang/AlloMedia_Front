@@ -6,6 +6,7 @@ import { toast, Toaster } from 'sonner';
 import OrderDetailsModal from '../../../components/OrderDetailsModal';
 import { axiosInstance } from '../../../config/axiosService';
 import { useParams } from 'react-router-dom';
+import { io } from "https://cdn.socket.io/4.8.0/socket.io.esm.min.js";
 
 const ViewOrders = () => {
   const { t } = useTranslation();
@@ -29,15 +30,19 @@ const ViewOrders = () => {
     fetchOrders();
   }, [id]);
   
-  // useEffect(() => {
-  //   const filtered = orders.filter(order => 
-  //     (order.customerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-  //     order._id.toString().includes(searchTerm)) &&
-  //     (statusFilter === 'all' || order.status === statusFilter)
-  //   );
-  //   setFilteredOrders(filtered);
-  // }, [searchTerm, statusFilter, orders]); // Ensure this effect runs when these dependencies change
-  
+  useEffect(() => {
+    if (orders.length > 0) { 
+      const filtered = orders.filter(order => 
+        (order.client && typeof order.client === 'string' && order.client.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        order._id.toString().includes(searchTerm)) &&
+        (statusFilter === 'all' || order.status === statusFilter)
+      );
+      setFilteredOrders(filtered);
+    } else {
+      setFilteredOrders([]);
+    }
+  }, [searchTerm, statusFilter, orders]);
+
   const handleStatusChange = async (orderId, newStatus) => {
     try {
       // Send the status update to the backend
