@@ -5,6 +5,7 @@ import { User, Mail, Phone, MapPin, Lock } from 'lucide-react';
 import InputField from '../../../components/InputField';
 import axios from 'axios';
 import { i } from 'framer-motion/client';
+import axiosInstance from '../../../config/axios';
 
 const AddDeliveryDriver = () => {
   const { t } = useTranslation();
@@ -25,7 +26,7 @@ const AddDeliveryDriver = () => {
         console.log('Form data:', formData);
 
         // Send the form data to the server
-        await axios.post('http://localhost:3000/api/livreurs', formData);
+        await  axiosInstance.post('/livreurs', formData);
 
         // Success message
         toast.success(t('Delivery driver added successfully'));

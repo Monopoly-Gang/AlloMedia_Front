@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { toast, Toaster } from 'sonner';
 import { Edit, Trash2, Plus, Search, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import axiosInstance from '../../../config/axios';
 
 const ListDeliveryDrivers = () => {
   const { t } = useTranslation();
@@ -15,7 +15,8 @@ const ListDeliveryDrivers = () => {
   useEffect(() => {
     const fetchDrivers = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/api/livreurs");
+        // const response = await axios.get("http://localhost:3000/api/livreurs");
+        const response = await axiosInstance.get('/livreurs');
         setDrivers(response.data.users);
       } catch (error) {
         console.error('Error fetching delivery drivers:', error);
@@ -24,15 +25,22 @@ const ListDeliveryDrivers = () => {
     };
   
     fetchDrivers();
-  }, [t,drivers]);
+  }, []);
   
 
   const handleDelete = async (id) => {
     console.log(id);
     if (window.confirm(t('Are you sure you want to delete this driver?'))) {
       try {
-        await axios.delete(`http://localhost:3000/api/livreurs/${id}`);
-        setDrivers((prevDrivers) => prevDrivers.filter(driver => driver.id !== id));
+        await axiosInstance.delete(`/livreurs/${id}`);
+        setDrivers((prevDrivers) => {
+          const updatedDrivers = [...prevDrivers];
+          const index = updatedDrivers.findIndex(driver => driver._id === id);
+          if (index !== -1) {
+            updatedDrivers.splice(index, 1);
+          }
+          return updatedDrivers;
+        });
         toast.success(t('Delivery driver deleted successfully'));
       } catch (error) {
         console.error('Error deleting delivery driver:', error);
@@ -86,32 +94,7 @@ const ListDeliveryDrivers = () => {
               <th className="px-6 py-3 text-right text-xs font-medium text-slate-500 dark:text-slate-300 uppercase tracking-wider">{t('Actions')}</th>
             </tr>
           </thead>
-          {/* <tbody className="bg-white dark:bg-slate-800 divide-y divide-slate-200 dark:divide-slate-700">
-           {drivers?currentDrivers.map((driver) => (
-              <tr key={driver.id}>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900 dark:text-slate-100">{driver.fullName}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500 dark:text-slate-400">{driver.email}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500 dark:text-slate-400">{driver.phoneNumber}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium flex justify-end">
-                <Link
-  to={{
-    pathname: `/dashboard/super-admin/edit-delivery-driver/${driver._id}`, // Make sure driver._id is correct
-    state: { driverData: driver }  // Passing the driver object
-  }}
-  className="text-green-500 hover:text-green-900 dark:text-green-400 dark:hover:text-green-300 mr-4"
->
-  <Edit size={18} />
-</Link>
-
-
-                  <button onClick={() => handleDelete(driver._id)} className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300">
-                    <Trash2 size={18} />
-                  </button>
-                </td>
-              </tr>
-            ))
-            :<tr>dfghjkl</tr>}
-          </tbody> */}
+     
 
 <tbody className="bg-white dark:bg-slate-800 divide-y divide-slate-200 dark:divide-slate-700">
   {drivers ? (

@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { User, Mail, Phone, MapPin, Lock } from 'lucide-react';
 import InputField from '../../../components/InputField';
-import axios from 'axios';
+import axiosInstance from '../../../config/axios';
 
 const EditDeliveryDriver = () => {
   const location = useLocation();
@@ -67,7 +67,8 @@ const EditDeliveryDriver = () => {
         updateData.password = formData.password;
       }
 
-      await axios.put(`http://localhost:3000/api/livreurs/${id}`, updateData);
+ 
+      await axiosInstance.put(`/livreurs/${id}`, updateData);
       toast.success(t('Delivery driver updated successfully'));
       navigate('/dashboard/super-admin/delivery-drivers');
     } catch (error) {

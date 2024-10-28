@@ -5,6 +5,7 @@ import { Search, ChevronLeft, ChevronRight, Plus } from "lucide-react"
 import axios from "axios";
 
 import RestaurantCard from "../../../components/RestaurantDetails/RestaurantCard";
+import axiosInstance from "../../../config/axios";
 
 
 const ManageRestaurants = () => {
@@ -21,7 +22,7 @@ const ManageRestaurants = () => {
 
   const getRestos = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/api/restaurants');
+      const response = await axiosInstance.get('/restaurants');
       console.log('this is the response', response);
       return response.data;  // Return data instead of whole response
     } catch (error) {
