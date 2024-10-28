@@ -4,10 +4,11 @@ import { Link } from "react-router-dom";
 import { Clock, CheckCircle, XCircle } from 'lucide-react'; // Importing icons from Lucide
 import { getRequest } from "../utils/axiosRequests";
 import { useSelector } from "react-redux";
+import { loadState } from "../utils/localStorage";
 
 const OrderList = () => {
   const [orders, setOrders] = useState([]);
-  const userId = useSelector(state=>state.order.client);
+  const userId = useSelector(state=>state.order.client) || loadState("userId");
 
   useEffect(() => {
 
@@ -24,6 +25,8 @@ const OrderList = () => {
      }
     fetchData();
   }, [userId]);
+
+  {console.log("orders",orders)}
 
   const getStatusIcon = (status) => {
     switch (status) {
@@ -75,7 +78,7 @@ const OrderList = () => {
           {orders.map((order) => (
             <Link
               key={order.id}
-              to={`/order/${order.id}`}
+              to={`/order-tracking/${order._id}`}
               className="bg-slate-100 dark:bg-slate-800 shadow-sm border border-slate-200 dark:border-slate-700 rounded-lg p-6 hover:shadow-md flex items-center transition duration-300 ease-in-out transform hover:scale-105"
             >
               <div className="mr-4">
@@ -84,7 +87,7 @@ const OrderList = () => {
               <div className="space-y-2">
                 <p className="font-semibold text-lg">Order #{order._id}</p>
                 <p className="text-slate-900 dark:text-slate-50 text-sm font-semibold">Status: {getStatusBadge(order.status)}</p>
-                <p className="text-slate-900 dark:text-slate-50 text-sm font-semibold">Date: <span className="text-slate-500 dark:text-slate-50 text-sm font-normal">{new Date(order.createdAt).toLocaleDateString()}</span></p>
+                <p className="text-slate-900 dark:text-slate-50 text-sm font-semibold">Date: <span className="text-slate-500 dark:text-slate-50 text-sm font-normal">{new Date(order.createdAt).toLocaleString()}</span></p>
               </div>
             </Link>
           ))}

@@ -69,7 +69,7 @@ const Cart = () => {
     };
     dispatch(insertOrder(orderData));
     setIsModalOpen(false);
-    navigate("/restaurants");
+    navigate("/order-list");
 };
 
   const handleCloseModal = () => {
