@@ -7,6 +7,8 @@ const Image_URL = import.meta.env.VITE_RESTO_IMG_SERVER;
 
 
 const RestaurantCard = ({ restaurant, onViewDetails ,setRestaurants}) => {
+
+  console.log(restaurant);
   const { t } = useTranslation();
 
 
@@ -32,6 +34,7 @@ const RestaurantCard = ({ restaurant, onViewDetails ,setRestaurants}) => {
         <h2 className="text-xl font-semibold text-center dark:text-white mb-1 line-clamp-1">
           {restaurant.name}
         </h2>
+        
         <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
           {restaurant.owner}
         </p>
@@ -48,7 +51,7 @@ const RestaurantCard = ({ restaurant, onViewDetails ,setRestaurants}) => {
           <div className="flex items-center">
             <Mail size={16} className="text-primary mr-2 flex-shrink-0" />
             <p className="text-sm text-gray-600 dark:text-gray-300">
-              {restaurant.email}
+              {restaurant.manager?.email}
             </p>
           </div>
           <div className="flex items-center">
@@ -57,7 +60,7 @@ const RestaurantCard = ({ restaurant, onViewDetails ,setRestaurants}) => {
               className="text-primary mr-2 flex-shrink-0"
             />
             <p className="text-sm text-gray-600 dark:text-gray-300">
-              {restaurant.phone}
+              {restaurant.manager?.phoneNumber}
             </p>
           </div>
         </div>
@@ -71,7 +74,7 @@ const RestaurantCard = ({ restaurant, onViewDetails ,setRestaurants}) => {
           
           <div className="flex flex-row items-center justify-center">
             <button className="flex items-center text-green-500 mr-2 rounded-full bg-slate-200 dark:bg-slate-800 p-2">
-              <Edit size={16} />
+              {/* <Edit size={16} /> */}
             </button>
             <button className="flex items-center text-red-500 rounded-full bg-slate-200 dark:bg-slate-800 p-2">
               <Trash2 size={16}  onClick={()=>handelDelete(restaurant._id)} />

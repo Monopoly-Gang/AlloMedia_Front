@@ -59,13 +59,13 @@ const Modal = ({ isOpen, onClose, restaurant, onApprove, onReject }) => {
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
             <div className="p-2 bg-slate-100 dark:bg-slate-700 rounded-md"> 
-              <InfoItem icon={<User size={18} />} label={t("Owner")} value={restaurant.owner} />
+              <InfoItem icon={<User size={18} />} label={t("Owner")} value={restaurant.manager.fullName} />
             </div>
             <div className="p-2 bg-slate-100 dark:bg-slate-700 rounded-md"> 
-              <InfoItem icon={<Mail size={18} />} label={t("Email")} value={restaurant.email} />
+              <InfoItem icon={<Mail size={18} />} label={t("Email")} value={restaurant.manager.email} />
             </div>
             <div className="p-2 bg-slate-100 dark:bg-slate-700 rounded-md"> 
-              <InfoItem icon={<Phone size={18} />} label={t("Phone")} value={restaurant.phone} />
+              <InfoItem icon={<Phone size={18} />} label={t("Phone")} value={restaurant.manager.phoneNumber} />
             </div>
             <div className="p-2 bg-slate-100 dark:bg-slate-700 rounded-md"> 
               <InfoItem icon={<Utensils size={18} />} label={t("Cuisine Type")} value={restaurant.cuisineType} />
