@@ -1,7 +1,7 @@
 import { MapPin, Mail, Phone, Edit, Trash2 } from "lucide-react";
 import PropTypes from 'prop-types';
 import { useTranslation } from "react-i18next";
-
+const Image_URL = import.meta.env.VITE_API_HOST;
 const RestaurantCard = ({ restaurant, onViewDetails }) => {
   const { t } = useTranslation();
 
@@ -9,16 +9,11 @@ const RestaurantCard = ({ restaurant, onViewDetails }) => {
     <div className="bg-white dark:bg-slate-900 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
       <div className="p-4 flex flex-col items-center">
       <img
-  src={`http://localhost:3000/uploads/restos/${restaurant.logo}`}
+        src={`${Image_URL}/${restaurant.logo}`}
   alt={`${restaurant.name} logo`}
   className="w-24 h-24 rounded-full mb-4"
 />
 
-        {/* <img
-          src={restaurant.logo}
-          alt={`${restaurant.name} logo`}
-          className="w-24 h-24 rounded-full mb-4"
-        /> */}
         <h2 className="text-xl font-semibold text-center dark:text-white mb-1 line-clamp-1">
           {restaurant.name}
         </h2>

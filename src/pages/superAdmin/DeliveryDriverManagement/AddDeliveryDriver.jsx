@@ -3,8 +3,6 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { User, Mail, Phone, MapPin, Lock } from 'lucide-react';
 import InputField from '../../../components/InputField';
-import axios from 'axios';
-import { i } from 'framer-motion/client';
 import axiosInstance from '../../../config/axios';
 
 const AddDeliveryDriver = () => {

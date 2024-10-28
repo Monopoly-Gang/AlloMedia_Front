@@ -3,10 +3,9 @@ import { useTranslation } from "react-i18next";
 import { Check, X, ChevronLeft, ChevronRight, User, Utensils, Mail, Phone, MapPin, Bell } from "lucide-react";
 import { Toaster, toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
-import axios from "axios";
 import PropTypes from 'prop-types';
-import { set } from "react-hook-form";
-
+import axiosInstance from "../../../config/axios";
+const Image_URL = import.meta.env.VITE_RESTO_IMG_SERVER;
 
 
 
@@ -48,7 +47,7 @@ const Modal = ({ isOpen, onClose, restaurant, onApprove, onReject }) => {
           <div className="flex flex-col items-center mb-6">
             
           <img
-  src={`http://localhost:3000/uploads/restos/${restaurant.logo}`}
+    src={`${Image_URL}/${restaurant.logo}`}
   alt={`${restaurant.name} logo`}
   className="w-24 h-24 rounded-full mb-4"
 />
@@ -143,7 +142,8 @@ const ApproveRestaurants = () => {
   useEffect(() => {
     const fetchRestaurants = async () => {
       try {
-        const { data } = await axios.get(`http://localhost:3000/api/restaurants/restosForApproval`);
+        const { data } = await axiosInstance.get(`/restaurants/restosForApproval`);
+        
         const restaurantsArray = Array.isArray(data) ? data : [];
         setRestaurants(restaurantsArray);
       } catch (error) {
@@ -159,7 +159,7 @@ const ApproveRestaurants = () => {
 // API call to approve restaurant
 const approveRestaurant = async (id) => {
   try {
-    const { data } = await axios.put(`http://localhost:3000/api/restaurants/approveRestaurant/${id}`);
+    const { data } = await axiosInstance.put(`/restaurants/approveRestaurant/${id}`);
     return data;
   } catch (error) {
     console.error('Failed to approve restaurant:', error);
@@ -170,7 +170,7 @@ const approveRestaurant = async (id) => {
 // API call to reject restaurant
 const rejectRestaurant = async (id) => {
   try {
-    const { data } = await axios.delete(`http://localhost:3000/api/restaurants/refuseRestaurant/${id}`);
+    const { data } = await axiosInstance.delete(`/restaurants/refuseRestaurant/${id}`);
     return data;
   } catch (error) {
     console.error('Failed to reject restaurant:', error);
@@ -294,7 +294,7 @@ const handleReject = useCallback(async () => {
               >
                 <div className="p-4 flex flex-col items-center">
                 <img
-  src={`http://localhost:3000/uploads/restos/${restaurant.logo}`}
+  src={`${Image_URL}/${restaurant.logo}`}
   alt={`${restaurant.name} logo`}
   className="w-24 h-24 rounded-full mb-4"
 />

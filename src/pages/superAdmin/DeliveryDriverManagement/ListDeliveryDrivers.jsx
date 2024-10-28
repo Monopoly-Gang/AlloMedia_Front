@@ -15,7 +15,6 @@ const ListDeliveryDrivers = () => {
   useEffect(() => {
     const fetchDrivers = async () => {
       try {
-        // const response = await axios.get("http://localhost:3000/api/livreurs");
         const response = await axiosInstance.get('/livreurs');
         setDrivers(response.data.users);
       } catch (error) {

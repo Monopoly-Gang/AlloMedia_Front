@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Search, ChevronLeft, ChevronRight, Plus } from "lucide-react"
-import axios from "axios";
 
 import RestaurantCard from "../../../components/RestaurantDetails/RestaurantCard";
 import axiosInstance from "../../../config/axios";
