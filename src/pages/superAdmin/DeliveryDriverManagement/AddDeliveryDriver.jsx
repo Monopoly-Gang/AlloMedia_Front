@@ -21,26 +21,23 @@ const AddDeliveryDriver = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      // Send the form data to the server
+      await axiosInstance.post('/livreurs', formData);
 
-        // Send the form data to the server
-        await  axiosInstance.post('/livreurs', formData);
+      // Success message
+      toast.success(t('Delivery driver added successfully'));
 
-        // Success message
-        toast.success(t('Delivery driver added successfully'));
-
-        // Reset form fields
-        setFormData({ fullName: '', email: '', phoneNumber: '', address: '', password: '' });
+      // Reset form fields
+      setFormData({ fullName: '', email: '', phoneNumber: '', address: '', password: '' });
     } catch (error) {
-        const errorMessage = error.response?.data?.error;
+      const errorMessage = error.response?.data?.error;
 
-        // Handle duplicate key errors for both email and phone number
-        if (errorMessage === 'Email already exists') {
-            toast.error(t('Email already exists. Please use a different email.'));
-        } else if (errorMessage.includes('phoneNumber')) {
-            toast.error(t('Phone number already exists. Please use a different number.'));
-        } else {
-            toast.error(t('Failed to add delivery driver. Please try again.'));
-        }
+      // Handle duplicate key errors for both email and phone number
+      if (errorMessage === 'Email already exists' || errorMessage.includes('phoneNumber')) {
+        toast.error(t(errorMessage));
+      } else {
+        toast.error(t('Failed to add delivery driver. Please try again.'));
+      }
     }
 };
 

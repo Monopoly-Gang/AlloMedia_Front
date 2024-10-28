@@ -1,7 +1,7 @@
 import { MapPin, Mail, Phone, Edit, Trash2 } from "lucide-react";
 import PropTypes from 'prop-types';
 import { useTranslation } from "react-i18next";
-const Image_URL = import.meta.env.VITE_API_HOST;
+const Image_URL = import.meta.env.VITE_RESTO_IMG_SERVER;
 const RestaurantCard = ({ restaurant, onViewDetails }) => {
   const { t } = useTranslation();
 
