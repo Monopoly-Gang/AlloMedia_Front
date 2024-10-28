@@ -221,7 +221,6 @@ const handleReject = useCallback(async () => {
   const sendNotificationToManager = async (restaurantId, status) => {
     try {
       await new Promise(resolve => setTimeout(resolve, 1000));
-      console.log(`Notification sent to manager of restaurant ${restaurantId}: Status - ${status}`);
       toast.success(t("Notification sent to manager"), {
         icon: <Bell size={18} />,
       });

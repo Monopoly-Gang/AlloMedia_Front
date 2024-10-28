@@ -22,7 +22,6 @@ const ManageRestaurants = () => {
   const getRestos = async () => {
     try {
       const response = await axiosInstance.get('/restaurants');
-      console.log('this is the response', response);
       return response.data;  // Return data instead of whole response
     } catch (error) {
       console.error("Error fetching restaurant data: ", error);
@@ -38,7 +37,6 @@ const ManageRestaurants = () => {
   
   useEffect(() => {
     fetchRestaurants();
-// console.log(getRestos())    
   }, []);
 
   useEffect(() => {

@@ -21,7 +21,6 @@ const AddDeliveryDriver = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-        console.log('Form data:', formData);
 
         // Send the form data to the server
         await  axiosInstance.post('/livreurs', formData);

@@ -28,7 +28,6 @@ const ListDeliveryDrivers = () => {
   
 
   const handleDelete = async (id) => {
-    console.log(id);
     if (window.confirm(t('Are you sure you want to delete this driver?'))) {
       try {
         await axiosInstance.delete(`/livreurs/${id}`);
