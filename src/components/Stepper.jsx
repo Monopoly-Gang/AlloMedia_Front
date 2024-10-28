@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 
 const Stepper = ({ steps, activeStep }) => (
-    <ol className="flex items-center w-full text-sm text-gray-500 font-medium sm:text-base mb-12">
+    <ol className="flex items-center w-full text-sm text-gray-500 font-medium sm:text-base m-2">
       {steps.map((step, index) => (
         <li
           key={step}
