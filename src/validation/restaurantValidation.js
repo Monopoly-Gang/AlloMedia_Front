@@ -18,14 +18,16 @@ export const restaurantValidationSchema = Yup.object().shape({
     .min(2, 'Location must be at least 2 characters')
     .max(50, 'Location must not exceed 50 characters'),
   banner: Yup.mixed()
-    .test('fileSize', 'File too large', (value) => !value || (value && value.size <= 5242880)) // 5MB
-    .test('fileFormat', 'Unsupported Format', (value) => 
-      !value || (value && ['image/jpg', 'image/jpeg', 'image/png'].includes(value.type))
+    .required('Banner is required')
+    .test('fileSize', 'File too large', (target) => !target.value || (target.value && target.value.size <= 5242880)) // 5MB
+    .test('fileFormat', 'Unsupported Format', (target) => 
+      !target.value || (target.value && ['image/jpg', 'image/jpeg', 'image/png'].includes(target.value.type))
     ),
   logo: Yup.mixed()
-    .test('fileSize', 'File too large', (value) => !value || (value && value.size <= 2097152)) // 2MB
-    .test('fileFormat', 'Unsupported Format', (value) => 
-      !value || (value && ['image/jpg', 'image/jpeg', 'image/png'].includes(value.type))
+    .required('Logo is required')
+    .test('fileSize', 'File too large', (target) => !target.value || (target.value && target.value.size <= 2097152)) // 2MB
+    .test('fileFormat', 'Unsupported Format', (target) => 
+      !target.value || (target.value && ['image/jpg', 'image/jpeg', 'image/png'].includes(target.value.type))
     ),
   manager: Yup.string().required('Manager is required'),
 });
