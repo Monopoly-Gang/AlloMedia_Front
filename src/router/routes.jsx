@@ -2,6 +2,10 @@ import { lazy } from 'react';
 
 const Home = lazy(() => import('../pages/Home'));
 const Register = lazy(() => import('../pages/auth/Register'));
+const RegisterClient = lazy(() => import('../pages/auth/RegisterClient'));
+const RegisterRestaurant = lazy(() => import('../pages/auth/RegisterRestaurant'));
+const VerifyEmail = lazy(() => import('../pages/auth/VerifyEmail'));
+const VerifyOtp = lazy(() => import('../pages/auth/VerifyOtp'));
 const RestaurantManagerDashboard = lazy(() => import('../pages/restaurantManager/Dashboard'));
 const SuperAdminDashboard = lazy(() => import('../pages/superAdmin/Dashboard'));
 const MainLayout = lazy(() => import('../components/layout/Interface/MainLayout'));
@@ -23,6 +27,12 @@ const MenuDetails = lazy(() => import('../pages/MenuDetails'));
 const Cart = lazy(() => import('../pages/Cart'));
 const OrderTracking = lazy(() => import('../pages/OrderTracking'));
 const OrderList = lazy(() => import('../pages/OrderList'));
+const DeliveryConfirmation = lazy(() => import('../pages/DeliveryConfirmation'));
+const ListDeliveryDrivers = lazy(() => import('../pages/superAdmin/DeliveryDriverManagement/ListDeliveryDrivers'));
+const AddDeliveryDriver = lazy(() => import('../pages/superAdmin/DeliveryDriverManagement/AddDeliveryDriver'));
+const EditDeliveryDriver = lazy(() => import('../pages/superAdmin/DeliveryDriverManagement/EditDeliveryDriver'));
+
+
 
 export const routes = [
   {
@@ -35,6 +45,7 @@ export const routes = [
       { path: '/cart', element: Cart },
       { path: '/order-tracking/:orderId', element: OrderTracking },  
       { path: '/order-list', element: OrderList },  
+      { path: '/delivery-confirmation', element: DeliveryConfirmation },
     ],
   },
   {
@@ -60,16 +71,20 @@ export const routes = [
       { path: '/dashboard/super-admin/add-restaurant', element: AddRestaurant },
       { path: '/dashboard/super-admin/approve-restaurant', element: ApproveRestaurants },
       { path: '/dashboard/super-admin/add-menu-item', element: AddMenuItem },
-      { path: '/dashboard/super-admin/add-restaurant', element: AddRestaurant },
-      { path: '/dashboard/super-admin/approve-restaurant', element: ApproveRestaurants },
-      { path: '/dashboard/super-admin/add-menu-item', element: AddMenuItem },
+      { path: '/dashboard/super-admin/delivery-drivers', element: ListDeliveryDrivers },
+      { path: '/dashboard/super-admin/add-delivery-driver', element: AddDeliveryDriver },
+      { path: '/dashboard/super-admin/edit-delivery-driver/:id', element: EditDeliveryDriver }, 
     ],
   },
   {
     element: BlankLayout,
     children: [
-      { path: '/auth/login', element: Login },
-      { path: '/auth/register', element: Register },
+      { path: '/login', element: Login },
+      { path: '/register', element: Register },
+      { path: '/register-client', element: RegisterClient },
+      { path: '/register-restaurant', element: RegisterRestaurant },
+      { path: '/verify-email', element: VerifyEmail },
+      { path: '/verify-otp', element: VerifyOtp },
     ],
   },
 ];

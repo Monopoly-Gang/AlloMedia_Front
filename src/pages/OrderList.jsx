@@ -8,7 +8,8 @@ import { loadState } from "../utils/localStorage";
 
 const OrderList = () => {
   const [orders, setOrders] = useState([]);
-  const userId = useSelector(state=>state.order.client) || loadState("userId");
+  const userId = useSelector(state=>state.order.client) || JSON.parse(localStorage.getItem('user'));
+
 
   useEffect(() => {
 
@@ -26,7 +27,9 @@ const OrderList = () => {
     fetchData();
   }, [userId]);
 
-  {console.log("orders",orders)}
+
+
+  {console.log("userId",userId)}
 
   const getStatusIcon = (status) => {
     switch (status) {

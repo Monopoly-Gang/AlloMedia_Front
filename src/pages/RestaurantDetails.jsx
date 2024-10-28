@@ -25,9 +25,11 @@ const RestaurantDetails = () => {
   useEffect(() => {
     async function fetchData() {
       try {
+        
         setIsLoading(true);
         const uri = `MenuItem/getMenuItems/${id}`;
         const data = await getRequest(uri);
+        console.log(data);
         setMenuItems(Array.isArray(data) ? data : []); 
         
       } catch (error) {

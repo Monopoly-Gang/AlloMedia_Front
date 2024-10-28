@@ -12,16 +12,23 @@ const Home = () => {
       <HeroSection />
 
       {/* About Section */}
-      <AboutSection />
+      <div id="about">
+        <AboutSection />
+      </div>
+      
 
       {/* Services Section */}
-      <ServiceCards />
+      <div id="services">
+        <ServiceCards />
+      </div>
 
       {/* Delivery Tracking Section */}
       <DeliveryTracking />
 
       {/* Contact Section */}
-      <Contact />
+      <div id="contact">
+        <Contact />
+      </div>
     </div>
   );
 };

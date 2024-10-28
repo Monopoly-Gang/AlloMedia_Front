@@ -7,7 +7,7 @@ import { useDispatch } from "react-redux";
 
 const initialState = loadState('cart') || {
     items : [],
-    client: "671e67909fc46a65fbda65eb", // fake id
+    client: JSON.parse(localStorage.getItem('user')), 
     totalAmount :0,
     restaurant:0
 };
@@ -41,7 +41,7 @@ const cartSlice = createSlice({
             else{
                 
                 state.items.push({id:product._id,name:product.name,description:product.description,quantity:product.quantity || 1,price:product.price,image:product.image,restaurant:product.restaurant})
-                state.client = "671e67909fc46a65fbda65eb";
+                state.client = JSON.parse(localStorage.getItem('user'));
                 console.log("state.items",JSON.stringify(state.items));
                 toast.success("Item added to cart");
             } 

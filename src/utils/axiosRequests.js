@@ -1,12 +1,14 @@
 // Axios requests utilities 
 
-import axiosClient from "../config/axiosConfig";
+import axiosInstance from "../config/axios";
+
+// import axiosInstance from "../config/axiosConfig";
 
 
 // Get
 export const getRequest = async (Uri) => {
     try{
-        const response = await axiosClient.get(`/${Uri}`);
+        const response = await axiosInstance.get(`/${Uri}`);
         return response.data;
     }
     catch(error){
@@ -18,7 +20,7 @@ export const getRequest = async (Uri) => {
 // Post 
 export const postRequest = async (Uri,payload) => {
     try{
-        const response = await axiosClient.post(`/${Uri}`,payload, {
+        const response = await axiosInstance.post(`/${Uri}`,payload, {
             validateStatus: () => true,
         });
         return response.data;
@@ -30,7 +32,7 @@ export const postRequest = async (Uri,payload) => {
 // Put
 export const putRequest = async (Uri,payload) => {
     try{
-        const response = await axiosClient.put(`/${Uri}`,payload);
+        const response = await axiosInstance.put(`/${Uri}`,payload);
         return response.data;
     }
     catch(error){
@@ -41,7 +43,7 @@ export const putRequest = async (Uri,payload) => {
 // Delete 
 export const deleteRequest = async (Uri) => {
     try{
-        const response = await axiosClient.delete(`/${Uri}`);
+        const response = await axiosInstance.delete(`/${Uri}`);
         return response.data;
     }
     catch(error){

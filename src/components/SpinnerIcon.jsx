@@ -25,7 +25,7 @@ const SpinnerIcon = ({ className = "" }) => {
   );
 };
 
-SpinnerIcon.propTypes = {
+SpinnerIcon.prototype = {
   className: PropTypes.string,
 };
 
