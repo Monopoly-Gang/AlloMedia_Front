@@ -83,7 +83,7 @@ const SuperAdminSidebar = () => {
                                 </AnimateHeight>
                             </li>
 
-                            <h2 className="py-3 px-7 flex items-center uppercase font-extrabold bg-white-light/30 dark:bg-dark dark:bg-opacity-[0.08] -mx-4 mb-1">
+                            <h2 className="py-3 px-7 text-xs flex items-center uppercase font-extrabold bg-white-light/30 dark:bg-dark dark:bg-opacity-[0.08] -mx-4 mb-1">
                                 <span>{t('Restaurant Management')}</span>
                             </h2>
 
@@ -109,7 +109,7 @@ const SuperAdminSidebar = () => {
                                 </AnimateHeight>
                             </li>
 
-                            <h2 className="py-3 px-7 flex items-center uppercase font-extrabold bg-white-light/30 dark:bg-dark dark:bg-opacity-[0.08] -mx-4 mb-1">
+                            <h2 className="py-3 px-7 text-sm flex items-center uppercase font-extrabold bg-white-light/30 dark:bg-dark dark:bg-opacity-[0.08] -mx-4 mb-1">
                                 <span>{t('Delivery Management')}</span>
                             </h2>
 

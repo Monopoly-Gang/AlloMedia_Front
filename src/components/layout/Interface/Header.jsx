@@ -116,13 +116,32 @@ const Navbar = () => {
 
   const renderNavLinks = () => (
     <>
-      {["Home", "Services", "About Us", "Contact Us", "FAQ"].map((link) => (
-        <li key={link}>
-          <a href="#" className="hover:text-orange-500 transition-colors duration-300">
-            {link}
-          </a>
-        </li>
-      ))}
+      <li>
+        <a href="/" className="hover:text-orange-500 transition-colors duration-300 text-slate-900 dark:text-slate-50 font-medium">
+          Home
+        </a>
+      </li>
+      <li>
+        <a href="/restaurants" className="hover:text-orange-500 transition-colors duration-300 text-slate-900 dark:text-slate-50 font-medium">
+          Restaurants
+        </a>
+      </li>
+      <li>
+        <a href="/#about" className="hover:text-orange-500 transition-colors duration-300 text-slate-900 dark:text-slate-50 font-medium">
+          About Us
+        </a>
+      </li>
+      <li>
+        <a href="/#services" className="hover:text-orange-500 transition-colors duration-300 text-slate-900 dark:text-slate-50 font-medium">
+          Services
+        </a>
+      </li>
+      
+      <li>
+        <a href="/#contact" className="hover:text-orange-500 transition-colors duration-300 text-slate-900 dark:text-slate-50 font-medium">
+          Contact Us
+        </a>
+      </li>
     </>
   );
 

@@ -147,7 +147,7 @@ const MenuDetails = () => {
                         type="checkbox"
                         checked={addOn.selected}
                         onChange={() => handleAddOnChange(addOn.id)}
-                        className="checkbox border-primary [--chkbg:theme(colors.primary.DEFAULT)] [--chkfg:theme(colors.slate.50)] w-5 h-5"
+                        className="border-primary accent-primary text-slate-50 checked:bg-primary w-4 h-4"
                       />
                     </label>
                   </div>
