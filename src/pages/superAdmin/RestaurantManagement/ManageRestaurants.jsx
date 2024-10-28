@@ -148,6 +148,7 @@ const ManageRestaurants = () => {
           <RestaurantCard
             key={restaurant.id}
             restaurant={restaurant}
+            setRestaurants={setRestaurants}
             onViewDetails={handleViewDetails}
           />
         ))}

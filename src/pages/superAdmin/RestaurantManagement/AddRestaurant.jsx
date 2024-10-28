@@ -21,6 +21,8 @@ import {
   imageUploadSchema,
 } from "../../../validation/addRestaurantValidation";
 import Stepper from "../../../components/Stepper";
+import axiosInstance from './../../../config/axios';
+import { toast } from "sonner";
 
 const initialState = {
   fullName: "",
@@ -65,7 +67,25 @@ const AddRestaurant = () => {
 
   async function onSubmit(data) {
     // TODO: Send data to backend
+    console.log({...data, logo: data.logo.target.value, banner: data.banner.target.value});
+    try {
+      await axiosInstance.post('/restaurants', {...data, logo: data.logo.target.value, banner: data.banner.target.value}, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+        },
+    });
+      
+      toast.success(t('Restaurant added successfully'));
+    } catch (error) { 
+      if (error.response?.data?.error) {
+        toast.error(t(error.response.data.error));
+      }
+      toast.error(t('Failed to add restaurant. Please try again.'));
+    }
   }
+    
+
+  
 
   const renderStepContent = (step) => {
     switch (step) {
