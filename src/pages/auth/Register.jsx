@@ -1,186 +1,105 @@
-import React, { useState } from "react";
-import { User, Mail, Lock, Phone, MapPin } from "lucide-react";
-import InputField from "../../components/InputField";
-import { Link, useNavigate } from "react-router-dom";
-import IconInstagram from "../../components/icons/IconInstagram";
-import IconX from "../../components/icons/IconX.jsx";
-import IconGoogle from "../../components/icons/IconGoogle";
-import IconFacebook from "../../components/icons/IconFacebook";
-import AuthService from "../../services/AuthService.js";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom"; 
+import { User } from "lucide-react";
+import { toast } from "sonner";
 
 const Register = () => {
-  const [showPassword, setShowPassword] = useState(false);
-  const [userData, setUserData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-    phoneNumber: "",
-    address: "",
-  });
-  const Auth = AuthService();
-    const navigate = useNavigate();
+  const [selectedRole, setSelectedRole] = useState("");
+  const navigate = useNavigate(); 
 
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
+  const handleRoleChange = (event) => {
+    setSelectedRole(event.target.value);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    await Auth.registerClient({
-      email: userData.email,
-      password: userData.password,
-      address: userData.address,
-      fullName: `${userData.firstName} ${userData.lastName}`,
-      phoneNumber: `+212${userData.phoneNumber.substring(1)}`,
-    });
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (selectedRole === "client") {
+      navigate("/register-client");
+    } else if (selectedRole === "deliverer") {
+      navigate("/register-restaurant");
+    } else {
+      toast.error("Please select a role to continue.");
+    }
   };
 
   return (
     <div>
-      <div className="absolute inset-0">
-        <img
-          src="/assets/images/auth/bg-gradient.png"
-          alt="Background gradient"
-          className="h-full w-full object-cover"
-        />
-      </div>
-      <div className="relative flex min-h-screen items-center justify-center px-6 py-10 bg-slate-50 dark:bg-slate-900 sm:px-16">
-        <div className="relative w-full max-w-[750px] rounded-md bg-[linear-gradient(45deg,#f97316_0%,rgba(255,255,255,0)_25%,rgba(255,255,255,0)_75%,_#f97316_100%)] p-2 dark:bg-[linear-gradient(45deg,#f97316_0%,rgba(255,255,255,0)_25%,rgba(255,255,255,0)_75%,_#f97316_100%)]">
-          <div className="relative flex flex-col justify-center rounded-md bg-white/80 backdrop-blur-lg dark:bg-slate-900/80 px-6 lg:min-h-[500px] py-10">
-            <div className="mx-auto w-full max-w-[500px]">
-              <div className="mb-10">
-                <h1 className="text-3xl font-extrabold uppercase !leading-snug text-primary md:text-4xl">
-                  Sign up
-                </h1>
-                <p className="text-base font-semibold leading-normal text-slate-400">
-                  Enter your information to create an account
-                </p>
-              </div>
-              <form className="space-y-5 dark:text-white" onSubmit={handleSubmit}>
-                <div className="flex space-x-4">
-                  <div className="flex-1">
-                    <InputField
-                      name="firstName"
-                      id="firstName"
-                      placeholder="First Name"
-                      value={userData.firstName}
-                      onChange={(e) => setUserData({ ...userData, firstName: e.target.value })}
-                      icon={User}
-                    />
-                  </div>
-                  <div className="flex-1">
-                    <InputField
-                      name="lastName"
-                      id="lastName"
-                      placeholder="Last Name"
-                      value={userData.lastName}
-                      onChange={(e) => setUserData({ ...userData, lastName: e.target.value })}
-                      icon={User}
-                    />
-                  </div>
-                </div>
-                <InputField
-                  name="email"
-                  id="email"
-                  type="email"
-                  placeholder="Email"
-                  value={userData.email}
-                  onChange={(e) => setUserData({ ...userData, email: e.target.value })}
-                  icon={Mail}
-                />
-                <div className="relative text-white-dark">
-                  <InputField
-                    name="password"
-                    id="password"
-                    type={showPassword ? "text" : "password"}
-                    placeholder="Password"
-                    value={userData.password}
-                    onChange={(e) => setUserData({ ...userData, password: e.target.value })}
-                    icon={Lock}
-                    showPassword={showPassword}
-                    togglePasswordVisibility={togglePasswordVisibility}
+    <div className="relative flex min-h-screen items-center justify-center px-6 py-10 bg-slate-50 dark:bg-slate-900 sm:px-16">
+      <div className="relative w-full max-w-[750px] rounded-md bg-[linear-gradient(45deg,#f97316_0%,rgba(255,255,255,0)_25%,rgba(255,255,255,0)_75%,_#f97316_100%)] p-2 dark:bg-[linear-gradient(45deg,#f97316_0%,rgba(255,255,255,0)_25%,rgba(255,255,255,0)_75%,_#f97316_100%)]">
+        <div className="relative flex flex-col justify-center rounded-md bg-white/80 backdrop-blur-lg dark:bg-slate-900/80 px-6 lg:min-h-[500px] py-10">
+          <div className="mx-auto w-full max-w-[500px]">
+            <h1 className="text-3xl font-extrabold uppercase text-primary mb-10 text-center">
+              Join as a client or manager
+            </h1>
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="flex space-x-4 justify-center">
+                <label
+                  className={`relative flex flex-col items-center p-4 border rounded-lg cursor-pointer ${
+                    selectedRole === "client" ? "border-orange-500 border-2" : "border-slate-600"
+                  } bg-white dark:bg-slate-800 text-orange-500 h-40`}>
+                  <input
+                    type="radio"
+                    name="role"
+                    value="client"
+                    checked={selectedRole === "client"}
+                    onChange={handleRoleChange}
+                    className="hidden"
                   />
-                </div>
-                <InputField
-                  name="phone"
-                  id="phone"
-                  type="tel"
-                  placeholder="Phone Number"
-                  value={userData.phoneNumber}
-                  onChange={(e) => setUserData({ ...userData, phoneNumber: e.target.value })}
-                  icon={Phone}
-                />
-                <InputField
-                  name="address"
-                  id="address"
-                  placeholder="Address"
-                  value={userData.address}
-                  onChange={(e) => setUserData({ ...userData, address: e.target.value })}
-                  icon={MapPin}
-                />
-                <button
-                  type="submit"
-                  className="relative flex items-center bg-orange-500 hover:bg-gradient-to-r hover:from-orange-500 hover:to-orange-600 justify-center rounded-md px-5 py-2 font-semibold outline-none transition duration-300 hover:shadow-none text-white !mt-6 w-full border-0 shadow-[0_10px_20px_-10px_rgba(249,115,22,1)]"
+                  <div className="absolute top-2 right-2">
+                    <span
+                      className={`w-4 h-4 inline-block rounded-full border-2 ${
+                        selectedRole === "client" ? "border-orange-500 bg-orange-500 text-orange-500" : "border-slate-600"
+                      }`}
+                    />
+                  </div>
+                  <User size={48} className={`mb-2 ${selectedRole === "client" ? "text-orange-500" : "text-slate-600 dark:text-slate-300"}`} />
+                  <span className={`font-semibold text-center ${selectedRole === "client" ? "text-orange-500" : "text-slate-600 dark:text-slate-300"}`}>I'm a client, searching for restaurants</span>
+                </label>
+                <label
+                  className={`relative flex flex-col items-center p-4 border rounded-lg cursor-pointer ${
+                    selectedRole === "deliverer" ? "border-orange-500 bg-orange-500 text-orange-500 border-2" : "border-slate-600"
+                  } bg-white dark:bg-slate-800 text-orange-500 h-40`}
                 >
-                  Sign up
-                </button>
-              </form>
-              <div className="relative my-7 text-center md:mb-9">
-                <span className="absolute inset-x-0 top-1/2 h-px w-full -translate-y-1/2 bg-white-light dark:bg-white-dark"></span>
-                <span className="relative text-sm bg-orange-500 dark:bg-slate-700 rounded-full px-2 font-bold uppercase text-white">
-                  or
-                </span>
+                  <input
+                    type="radio"
+                    name="role"
+                    value="deliverer"
+                    checked={selectedRole === "deliverer"}
+                    onChange={handleRoleChange}
+                    className="hidden"
+                  />
+                  <div className="absolute top-2 right-2">
+                    <span
+                      className={`w-4 h-4 inline-block rounded-full border-2 ${
+                        selectedRole === "deliverer" ? "bg-orange-500 border-orange-500" : "border-slate-600"
+                      }`}
+                    />
+                  </div>
+                  <User size={48} className={`mb-2 ${selectedRole === "deliverer" ? "text-orange-500" : "text-slate-600 dark:text-slate-300"}`} />
+                  <span className={`font-semibold text-center ${selectedRole === "deliverer" ? "text-orange-500" : "text-slate-600 dark:text-slate-300"}`}>I'm a manager, owner of restaurant</span>
+                </label>
               </div>
-              <div className="mb-10 md:mb-[30px]">
-                <ul className="flex justify-center gap-3.5 text-white">
-                  <li>
-                    <Link
-                      to="#"
-                      className="inline-flex bg-gradient-to-r from-orange-500 to-orange-600 h-8 w-8 items-center justify-center rounded-full p-0 transition hover:scale-110"
-                    >
-                      <IconInstagram />
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      to="#"
-                      className="inline-flex bg-gradient-to-r from-orange-500 to-orange-600 h-8 w-8 items-center justify-center rounded-full p-0 transition hover:scale-110"
-                    >
-                      <IconFacebook />
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      to="#"
-                      className="inline-flex bg-gradient-to-r from-orange-500 to-orange-600 h-8 w-8 items-center justify-center rounded-full p-0 transition hover:scale-110"
-                    >
-                      <IconX />
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      to="#"
-                      className="inline-flex bg-gradient-to-r from-orange-500 to-orange-600 h-8 w-8 items-center justify-center rounded-full p-0 transition hover:scale-110"
-                    >
-                      <IconGoogle />
-                    </Link>
-                  </li>
-                </ul>
-              </div>
-              <div className="text-center text-slate-600 dark:text-white">
-                Already have an account?&nbsp;
-                <Link
-                  to="/login"
-                  className="uppercase text-primary underline transition hover:text-orange-600 dark:hover:text-white"
-                >
-                  SIGN IN
-                </Link>
-              </div>
-            </div>
+              <button
+                type="submit"
+                className={`w-full py-2 px-4 text-white font-semibold rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-opacity-75 ${
+                  selectedRole ? "bg-orange-500 hover:bg-gradient-to-r hover:from-orange-500 hover:to-orange-600 shadow-[0_10px_20px_-10px_rgba(249,115,22,1)" : "bg-slate-700 cursor-not-allowed"
+                }`}
+                disabled={!selectedRole}
+              >
+                    Create Account
+              
+              </button>
+            </form>
+            <p className="mt-4 text-slate-600 dark:text-slate-300 text-center">
+              Already have an account?&nbsp;
+              <a href="/login" className="uppercase text-primary underline transition hover:text-orange-600 dark:hover:text-white">
+                Log In
+              </a>
+            </p>
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 };

@@ -19,6 +19,22 @@ class Auth {
         }
     }
 
+    async registerRestaurant(restaurantData) {
+        try {
+            const response = await axiosInstance.post("auth/register-restaurant", restaurantData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            });
+            const data = await response.data;
+            toast(data.message);
+            return true;
+        } catch (error) {
+            toast(error.response ? error.response.data.message : error.message);
+            return false;
+        }
+    }
+
     async login(userData) {
         try {
             const response = await axiosInstance.post("auth/login", userData);
