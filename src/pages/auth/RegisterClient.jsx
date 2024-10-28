@@ -1,39 +1,57 @@
 import { useState } from "react";
 import { User, Mail, Lock, Phone, MapPin } from "lucide-react";
 import InputField from "../../components/InputField.jsx";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import IconInstagram from "../../components/icons/IconInstagram.jsx";
 import IconX from "../../components/icons/IconX.jsx";
 import IconGoogle from "../../components/icons/IconGoogle.jsx";
 import IconFacebook from "../../components/icons/IconFacebook.jsx";
 import AuthService from "../../services/AuthService.js";
+import { userValidationSchema } from "../../validation/userValidation.js";
+import { toast } from "sonner";
+import useForm from "../../hooks/useForm";
+
+const initialState = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  password: "",
+  phoneNumber: "",
+  address: "",
+};
 
 const RegisterClient = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [userData, setUserData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-    phoneNumber: "",
-    address: "",
-  });
+  const navigate = useNavigate();
   const Auth = AuthService();
+
+  const {
+    formData,
+    errors,
+    touched,
+    isSubmitting,
+    handleChange,
+    handleSubmit,
+  } = useForm(initialState, [userValidationSchema], onSubmit);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    await Auth.registerClient({
-      email: userData.email,
-      password: userData.password,
-      address: userData.address,
-      fullName: `${userData.firstName} ${userData.lastName}`,
-      phoneNumber: `+212${userData.phoneNumber.substring(1)}`,
-    });
-  };
+  async function onSubmit(data) {
+    try {
+      await Auth.registerClient({
+        email: data.email,
+        password: data.password,
+        address: data.address,
+        fullName: `${data.firstName} ${data.lastName}`,
+        phoneNumber: `+212${data.phoneNumber.substring(1)}`,
+      });
+      navigate("/login");
+    } catch (error) {
+      toast.error(error.message);
+    }
+  }
 
   return (
     <div>
@@ -63,9 +81,11 @@ const RegisterClient = () => {
                       name="firstName"
                       id="firstName"
                       placeholder="First Name"
-                      value={userData.firstName}
-                      onChange={(e) => setUserData({ ...userData, firstName: e.target.value })}
+                      value={formData.firstName}
+                      onChange={handleChange}
                       icon={User}
+                      error={errors.firstName}
+                      touched={touched.firstName}
                     />
                   </div>
                   <div className="flex-1">
@@ -73,9 +93,11 @@ const RegisterClient = () => {
                       name="lastName"
                       id="lastName"
                       placeholder="Last Name"
-                      value={userData.lastName}
-                      onChange={(e) => setUserData({ ...userData, lastName: e.target.value })}
+                      value={formData.lastName}
+                      onChange={handleChange}
                       icon={User}
+                      error={errors.lastName}
+                      touched={touched.lastName}
                     />
                   </div>
                 </div>
@@ -84,9 +106,11 @@ const RegisterClient = () => {
                   id="email"
                   type="email"
                   placeholder="Email"
-                  value={userData.email}
-                  onChange={(e) => setUserData({ ...userData, email: e.target.value })}
+                  value={formData.email}
+                  onChange={handleChange}
                   icon={Mail}
+                  error={errors.email}
+                  touched={touched.email}
                 />
                 <div className="relative text-white-dark">
                   <InputField
@@ -94,35 +118,42 @@ const RegisterClient = () => {
                     id="password"
                     type={showPassword ? "text" : "password"}
                     placeholder="Password"
-                    value={userData.password}
-                    onChange={(e) => setUserData({ ...userData, password: e.target.value })}
+                    value={formData.password}
+                    onChange={handleChange}
                     icon={Lock}
                     showPassword={showPassword}
                     togglePasswordVisibility={togglePasswordVisibility}
+                    error={errors.password}
+                    touched={touched.password}
                   />
                 </div>
                 <InputField
-                  name="phone"
-                  id="phone"
+                  name="phoneNumber"
+                  id="phoneNumber"
                   type="tel"
                   placeholder="Phone Number"
-                  value={userData.phoneNumber}
-                  onChange={(e) => setUserData({ ...userData, phoneNumber: e.target.value })}
+                  value={formData.phoneNumber}
+                  onChange={handleChange}
                   icon={Phone}
+                  error={errors.phoneNumber}
+                  touched={touched.phoneNumber}
                 />
                 <InputField
                   name="address"
                   id="address"
                   placeholder="Address"
-                  value={userData.address}
-                  onChange={(e) => setUserData({ ...userData, address: e.target.value })}
+                  value={formData.address}
+                  onChange={handleChange}
                   icon={MapPin}
+                  error={errors.address}
+                  touched={touched.address}
                 />
                 <button
                   type="submit"
+                  disabled={isSubmitting}
                   className="relative flex items-center bg-orange-500 hover:bg-gradient-to-r hover:from-orange-500 hover:to-orange-600 justify-center rounded-md px-5 py-2 font-semibold outline-none transition duration-300 hover:shadow-none text-white !mt-6 w-full border-0 shadow-[0_10px_20px_-10px_rgba(249,115,22,1)]"
                 >
-                  Sign up
+                  {isSubmitting ? "Signing up..." : "Sign up"}
                 </button>
               </form>
               <div className="relative my-7 text-center md:mb-9">
