@@ -4,8 +4,9 @@ import {temp, login, logout} from "../store/AuthSlice";
 import {toast} from "sonner";
 
 class Auth {
-    constructor(user, dispatch) {
+    constructor(user, authenticated, dispatch) {
         this.user = user;
+        this.authenticated = authenticated;
         this.dispatch = dispatch;
     }
 
@@ -40,7 +41,7 @@ class Auth {
             const response = await axiosInstance.post("auth/login", userData);
             const data = await response.data;
             this.dispatch(login({
-                user: {email: userData.email, fullName: data.fullName, role: data.role},
+                user: {id: data.user.id, email: data.user.email, fullName: data.user.fullName, role: data.user.role},
                 token: data.accessToken
             }));
             return {success: true};
@@ -53,9 +54,7 @@ class Auth {
 
     async logout() {
         try {
-            localStorage.removeItem("ticket");
-            localStorage.removeItem("user");
-            this.setUser(null);
+            this.dispatch(logout());
             await axiosInstance.get("auth/logout");
         } catch (error) {
             console.error(error.response.data.error);
@@ -109,7 +108,7 @@ class Auth {
             const response = await axiosInstance.post("auth/verify-otp", {otp});
             const data = await response.data;
             this.dispatch(login({
-                user: {email: this.user.email, fullName: data.fullName, role: data.role},
+                user: {id: data.user.id, email: data.user.email, fullName: data.user.fullName, role: data.user.role},
                 token: data.accessToken
             }));
             toast("OTP verified successfully");
@@ -168,10 +167,23 @@ class Auth {
             return false;
         }
     }
+
+    getUser() {
+        return this.user;
+    }
+
+    isAuthenticated() {
+        return this.authenticated;
+    }
 }
 
+let authInstance = null;
 export default function AuthService() {
-    const user = useSelector((state) => state.auth.user);
+    const { user, isAuthenticated } = useSelector((state) => state.auth);
     const dispatch = useDispatch();
-    return new Auth(user, dispatch);
+    if (!authInstance) {
+        authInstance = new Auth(user, isAuthenticated, dispatch);
+    }
+
+    return authInstance;
 }
