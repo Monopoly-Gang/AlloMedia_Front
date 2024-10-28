@@ -1,16 +1,37 @@
 import { Edit, Trash2 } from "lucide-react";
 import PropTypes from 'prop-types';
-import { useNavigate } from 'react-router-dom'; 
+import axiosInstance from "../../config/axiosService";
+import { useNavigate , useParams } from 'react-router-dom';
 
-const MenuItem = ({ item }) => {
-  const navigate = useNavigate(); 
-
+const MenuItem = ({ item, onDelete }) => {
+  const navigate = useNavigate();
+ 
+  
   const handleEditClick = () => {
-    navigate(`/dashboard/restaurant-manager/edit-menu-item/${item.id}`, { state: { item } }); 
+    navigate(`edit-menu-item/${item._id}`, { state: { item } }); 
   };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axiosInstance.post('MenuItem/DeleteMenuItem', {
+        id: item._id
+      });
+      if (response.status === 200) {
+        console.log('Form submitted successfully');
+        onDelete(item._id);
+      } else {
+        console.error('Form submission failed');
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+    }
+  };
+
 
   return (
     <div className="bg-white dark:bg-slate-900 p-4 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden animate-fadeInUp">
+      <input type="hidden" value={item._id} />
       <img
         src={item.image}
         alt={item.name}
@@ -22,15 +43,18 @@ const MenuItem = ({ item }) => {
         ${item.price.toFixed(2)}
       </p>
       <div className="flex justify-end mt-2">
-        <button
-          className="text-green-500 mr-2 rounded-full bg-slate-200 dark:bg-slate-800 p-2"
-          onClick={handleEditClick} 
+        <button className="text-green-500 mr-2 rounded-full bg-slate-200 dark:bg-slate-800 p-2"
+        onClick={handleEditClick}
         >
           <Edit size={16} />
+          
         </button>
-        <button className="text-red-500 rounded-full bg-slate-200 dark:bg-slate-800 p-2">
-          <Trash2 size={16} />
-        </button>
+        <form onSubmit={handleSubmit}>
+          <input type="hidden" id="id" name="id" value={item._id} />
+          <button type="submit" className="text-red-500 rounded-full bg-slate-200 dark:bg-slate-800 p-2">
+            <Trash2 size={16} />
+          </button>
+        </form>
       </div>
     </div>
   );
@@ -38,6 +62,7 @@ const MenuItem = ({ item }) => {
 
 MenuItem.propTypes = {
   item: PropTypes.object.isRequired,
+  onDelete: PropTypes.func.isRequired, // Add prop type for onDelete
 };
 
 export default MenuItem;

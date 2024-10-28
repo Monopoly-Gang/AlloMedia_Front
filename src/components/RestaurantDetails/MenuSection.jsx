@@ -1,22 +1,51 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect  } from "react";
+import { useNavigate , useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Plus } from "lucide-react";
 import MenuItem from "./MenuItem";
 import SpinnerIcon from "../../components/SpinnerIcon";
 import PropTypes from 'prop-types';
+import axiosInstance  from "../../config/axiosService";
 
-const MenuSection = ({ menu, userRole = 'restaurantManager' }) => {
+const MenuSection = ({userRole = 'restaurantManager' }) => {
   const { t } = useTranslation();
+  const { id } = useParams();
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [menuItems, setMenuItems] = useState([]);
   const itemsPerPage = 6;
 
-  const filteredMenu = menu.filter((item) =>
+  useEffect(() => {
+    fetchRestaurantData();
+  }, []);
+
+  const fetchRestaurantData = async () => {
+    setLoading(true);
+    try {
+      const response = await axiosInstance.get(`/MenuItem/getMenuItems/${id}`);
+      if (response.status === 200) {
+        console.log(response.data);
+        setMenuItems(response.data);
+      } else {
+        toast.error(t("Failed to load restaurant data"));
+      }
+    } catch (error) {
+      console.error("Error fetching restaurant data:", error);
+      toast.error(t("Failed to load restaurant data"));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const filteredMenu = menuItems.filter((item) =>
     item.name.toLowerCase().startsWith(searchTerm.toLowerCase())
   );
+
+  const handleDeleteMenuItem = (id) => {
+    setMenuItems((prevItems) => prevItems.filter(item => item._id !== id));
+  };
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const currentItems = filteredMenu.slice(0, indexOfLastItem);
@@ -32,7 +61,7 @@ const MenuSection = ({ menu, userRole = 'restaurantManager' }) => {
   const handleAddMenuItem = () => {
     const route = userRole === 'superAdmin' 
       ? "/dashboard/super-admin/add-menu-item"
-      : "/dashboard/restaurant-manager/add-menu-item";
+      : `/dashboard/restaurant-manager/add-menu-item/${id}`;
     navigate(route);
   };
 
@@ -57,7 +86,7 @@ const MenuSection = ({ menu, userRole = 'restaurantManager' }) => {
       />
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {currentItems.map((item) => (
-          <MenuItem key={item.id} item={item} />
+          <MenuItem key={item._id} item={item} onDelete={handleDeleteMenuItem} />
         ))}
       </div>
       {indexOfLastItem < filteredMenu.length && (
@@ -83,7 +112,6 @@ const MenuSection = ({ menu, userRole = 'restaurantManager' }) => {
 };
 
 MenuSection.propTypes = {
-  menu: PropTypes.array.isRequired,
   userRole: PropTypes.oneOf(['superAdmin', 'restaurantManager'])
 };
 

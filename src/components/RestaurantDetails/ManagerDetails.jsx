@@ -3,8 +3,11 @@ import { useTranslation } from "react-i18next";
 import PropTypes from 'prop-types';
 
 const ManagerDetails = ({ manager }) => {
-
   const { t } = useTranslation();
+
+  if (!manager) {
+    return <div>{t("Manager details are not available")}</div>;
+  }
 
   return (
     <div className="bg-white dark:bg-slate-900 p-4 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden mb-6">
@@ -30,7 +33,7 @@ const ManagerDetails = ({ manager }) => {
 };
 
 ManagerDetails.propTypes = {
-    manager: PropTypes.object.isRequired,
-  };
+  manager: PropTypes.object,
+};
 
 export default ManagerDetails;

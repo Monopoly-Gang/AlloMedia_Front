@@ -22,18 +22,12 @@ const AddMenuItem = lazy(() => import('../pages/superAdmin/RestaurantManagement/
 const RestaurantManagerDetails = lazy(() => import('../pages/restaurantManager/RestaurantManagement/RestaurantDetails'));
 const AddMenuItemRestaurantManager = lazy(() => import('../pages/restaurantManager/MenuManagement/AddMenuItem'));
 const ViewOrders = lazy(() => import('../pages/restaurantManager/OrderManagement/ViewOrders'));
-const Restaurants = lazy(() => import('../pages/Restaurants'));
-const RestaurantMenuDetails = lazy(() => import('../pages/RestaurantDetails'));
+// const Restaurants = lazy(() => import('../pages/Restaurants'));
+// const RestaurantMenuDetails = lazy(() => import('../pages/RestaurantDetails'));
 const EditMenuItem = lazy(() => import('../pages/restaurantManager/MenuManagement/EditMenuItem'));
-const MenuDetails = lazy(() => import('../pages/MenuDetails'));
-const Cart = lazy(() => import('../pages/Cart'));
-const OrderTracking = lazy(() => import('../pages/OrderTracking'));
-const OrderList = lazy(() => import('../pages/OrderList'));
-const DeliveryConfirmation = lazy(() => import('../pages/DeliveryConfirmation'));
-const ListDeliveryDrivers = lazy(() => import('../pages/superAdmin/DeliveryDriverManagement/ListDeliveryDrivers'));
-const AddDeliveryDriver = lazy(() => import('../pages/superAdmin/DeliveryDriverManagement/AddDeliveryDriver'));
-const EditDeliveryDriver = lazy(() => import('../pages/superAdmin/DeliveryDriverManagement/EditDeliveryDriver'));
-
+// const MenuDetails = lazy(() => import('../pages/MenuDetails'));
+// const Cart = lazy(() => import('../pages/Cart'));
+// const OrderTracking = lazy(() => import('../pages/OrderTracking'));
 
 
 export const routes = [
@@ -41,13 +35,13 @@ export const routes = [
     element: MainLayout,
     children: [
       { path: '/', element: Home },
-      { path: '/restaurants', element: Restaurants },
-      { path: '/restaurant-details/:id', element: RestaurantMenuDetails },
-      { path: '/menu-details/:id', element: MenuDetails },
-      { path: '/cart', element: Cart },
-      { path: '/order-tracking', element: OrderTracking },  
-      { path: '/order-list', element: OrderList },  
-      { path: '/delivery-confirmation', element: DeliveryConfirmation },
+      // { path: '/restaurants', element: Restaurants },
+      // { path: '/restaurant-details/:id', element: RestaurantMenuDetails },
+      // { path: '/menu-details/:id', element: MenuDetails },
+      // { path: '/cart', element: Cart },
+      // { path: '/order-tracking', element: OrderTracking },  
+      // { path: '/order-list', element: OrderList },  
+      // { path: '/delivery-confirmation', element: DeliveryConfirmation },
     ],
   },
   {
@@ -55,9 +49,9 @@ export const routes = [
     children: [
       { path: '/dashboard/restaurant-manager', element: RestaurantManagerDashboard },
       { path: '/dashboard/restaurant-manager/restaurant-details/:id', element: RestaurantManagerDetails },
-      { path: '/dashboard/restaurant-manager/add-menu-item', element: AddMenuItemRestaurantManager },
-      { path: '/dashboard/restaurant-manager/view-orders', element: ViewOrders },
-      { path: '/dashboard/restaurant-manager/edit-menu-item/:id', element: EditMenuItem },
+      { path: '/dashboard/restaurant-manager/add-menu-item/:id', element: AddMenuItemRestaurantManager },
+      { path: '/dashboard/restaurant-manager/view-orders/:id', element: ViewOrders },
+      { path: '/dashboard/restaurant-manager/restaurant-details/:restorant_id/edit-menu-item/:item_id', element: EditMenuItem },
     ],
   },
   {
@@ -69,9 +63,9 @@ export const routes = [
       { path: '/dashboard/super-admin/add-restaurant', element: AddRestaurant },
       { path: '/dashboard/super-admin/approve-restaurant', element: ApproveRestaurants },
       { path: '/dashboard/super-admin/add-menu-item', element: AddMenuItem },
-      { path: '/dashboard/super-admin/delivery-drivers', element: ListDeliveryDrivers },
-      { path: '/dashboard/super-admin/add-delivery-driver', element: AddDeliveryDriver },
-      { path: '/dashboard/super-admin/edit-delivery-driver/:id', element: EditDeliveryDriver }, 
+      // { path: '/dashboard/super-admin/delivery-drivers', element: ListDeliveryDrivers },
+      // { path: '/dashboard/super-admin/add-delivery-driver', element: AddDeliveryDriver },
+      // { path: '/dashboard/super-admin/edit-delivery-driver/:id', element: EditDeliveryDriver }, 
     ],
   },
   {

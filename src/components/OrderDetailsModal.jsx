@@ -32,13 +32,13 @@ const OrderDetailsModal = ({ order, isOpen, onClose }) => {
         <div className="p-6 space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Card icon={<User size={24} />} title={t('Customer')}>
-              <p className="text-gray-600 dark:text-gray-300">{order.customerName}</p>
+              <p className="text-gray-600 dark:text-gray-300">{(order.client) ? order.client : "No Client"}</p>
             </Card>
             <Card icon={<MapPin size={24} />} title={t('Address')}>
-              <p className="text-gray-600 dark:text-gray-300">{order.address}</p>
+              <p className="text-gray-600 dark:text-gray-300">{(order.address) ? order.address : "No Address"}</p>
             </Card>
             <Card icon={<Phone size={24} />} title={t('Phone')}>
-              <p className="text-gray-600 dark:text-gray-300">{order.phone}</p>
+              <p className="text-gray-600 dark:text-gray-300">{(order.phone) ? order.phone : "No Phone"}</p>
             </Card>
             <Card icon={<Clock size={24} />} title={t('Status')}>
               <span className={`px-2 py-1 rounded-full text-sm font-semibold
@@ -53,14 +53,14 @@ const OrderDetailsModal = ({ order, isOpen, onClose }) => {
             <ul className="space-y-2">
               {order.items.map((item, index) => (
                 <li key={index} className="flex justify-between">
-                  <span className="dark:text-white">{item.name} x{item.quantity}</span>
-                  <span className="dark:text-white">${item.price.toFixed(2)}</span>
+                  <span className="dark:text-white">{item.menuItem.name} x{item.quantity}</span>
+                  <span className="dark:text-white">${item.menuItem.price.toFixed(2)}</span>
                 </li>
               ))}
             </ul>
           </Card>
           <Card icon={<DollarSign size={24} />} title={t('Total')}>
-            <p className="text-xl font-semibold dark:text-white">${order.total.toFixed(2)}</p>
+            <p className="text-xl font-semibold dark:text-white">${((order.items[0].menuItem.price)*(order.items[0].quantity)).toFixed(2)}</p>
           </Card>
         </div>
       </motion.div>
