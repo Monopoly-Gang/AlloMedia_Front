@@ -124,7 +124,6 @@ const RegisterClient = () => {
                     showPassword={showPassword}
                     togglePasswordVisibility={togglePasswordVisibility}
                     error={errors.password}
-                    touched={touched.password}
                   />
                 </div>
                 <InputField
