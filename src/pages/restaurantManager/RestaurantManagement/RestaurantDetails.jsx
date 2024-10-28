@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import RestaurantHeader from "../../../components/RestaurantDetails/RestaurantHeader";
 import MenuSection from "../../../components/RestaurantDetails/MenuSection";
 import RestaurantInfoSection from "../../../components/RestaurantDetails/RestaurantInfoSection";
-// import EditMenuItemModal from "../MenuManagement/EditMenuItem";  
+
 import { toast, Toaster } from "sonner";
 import axiosInstance from '../../../config/axiosService';
 

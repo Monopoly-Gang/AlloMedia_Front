@@ -69,7 +69,9 @@ const RegisterRestaurant = () => {
 
   async function onSubmit(data) {
     const isRegistered = await Auth.registerRestaurant({
-      ...data, logo: data.logo.target.value, banner: data.banner.target.value
+      ...data,
+      logo: data.logo.target.value,
+      banner: data.banner.target.value,
     });
     if (isRegistered) navigate("/login");
   }
@@ -79,33 +81,29 @@ const RegisterRestaurant = () => {
       case 0:
         return (
           <div className="space-y-4">
-            <div className="flex space-x-4">
-              <div className="flex-1">
-                <InputField
-                  id="fullName"
-                  name="fullName"
-                  placeholder={t("Full Name")}
-                  value={formData.fullName}
-                  onChange={handleChange}
-                  icon={User}
-                  error={errors.fullName}
-                  touched={touched.fullName}
-                />
-              </div>
-              <div className="flex-1">
-                <InputField
-                  id="email"
-                  name="email"
-                  placeholder={t("Email")}
-                  type="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  icon={Mail}
-                  error={errors.email}
-                  touched={touched.email}
-                />
-              </div>
-            </div>
+            <InputField
+              id="fullName"
+              name="fullName"
+              placeholder={t("Full Name")}
+              value={formData.fullName}
+              onChange={handleChange}
+              icon={User}
+              error={errors.fullName}
+              touched={touched.fullName}
+            />
+
+            <InputField
+              id="email"
+              name="email"
+              placeholder={t("Email")}
+              type="email"
+              value={formData.email}
+              onChange={handleChange}
+              icon={Mail}
+              error={errors.email}
+              touched={touched.email}
+            />
+
             <div className="flex space-x-4">
               <div className="flex-1">
                 <InputField
@@ -149,32 +147,28 @@ const RegisterRestaurant = () => {
       case 1:
         return (
           <div className="space-y-4">
-            <div className="flex space-x-4">
-              <div className="flex-1">
-                <InputField
-                  id="restaurantName"
-                  name="restaurantName"
-                  placeholder={t("Restaurant Name")}
-                  value={formData.restaurantName}
-                  onChange={handleChange}
-                  icon={Building}
-                  error={errors.restaurantName}
-                  touched={touched.restaurantName}
-                />
-              </div>
-              <div className="flex-1">
-                <InputField
-                  id="cuisineType"
-                  name="cuisineType"
-                  placeholder={t("Cuisine Type")}
-                  value={formData.cuisineType}
-                  onChange={handleChange}
-                  icon={UtensilsCrossed}
-                  error={errors.cuisineType}
-                  touched={touched.cuisineType}
-                />
-              </div>
-            </div>
+            <InputField
+              id="restaurantName"
+              name="restaurantName"
+              placeholder={t("Restaurant Name")}
+              value={formData.restaurantName}
+              onChange={handleChange}
+              icon={Building}
+              error={errors.restaurantName}
+              touched={touched.restaurantName}
+            />
+
+            <InputField
+              id="cuisineType"
+              name="cuisineType"
+              placeholder={t("Cuisine Type")}
+              value={formData.cuisineType}
+              onChange={handleChange}
+              icon={UtensilsCrossed}
+              error={errors.cuisineType}
+              touched={touched.cuisineType}
+            />
+
             <InputField
               id="restaurantAddress"
               name="restaurantAddress"
@@ -199,30 +193,27 @@ const RegisterRestaurant = () => {
         );
       case 2:
         return (
-          <div className="flex items-center justify-between space-x-4">
-            <div className="w-2/3">
-              <ImageUpload
-                name="banner"
-                label={t("Banner")}
-                onChange={(file) =>
-                  handleChange({ target: { name: "banner", value: file } })
-                }
-                error={errors.banner}
-                t={t}
-              />
-            </div>
-            <div className="w-1/3">
-              <ImageUpload
-                name="logo"
-                label={t("Logo")}
-                onChange={(file) =>
-                  handleChange({ target: { name: "logo", value: file } })
-                }
-                error={errors.logo}
-                t={t}
-              />
-            </div>
-          </div>
+          <>
+            <ImageUpload
+              name="banner"
+              label={t("Banner")}
+              onChange={(file) =>
+                handleChange({ target: { name: "banner", value: file } })
+              }
+              error={errors.banner}
+              t={t}
+            />
+
+            <ImageUpload
+              name="logo"
+              label={t("Logo")}
+              onChange={(file) =>
+                handleChange({ target: { name: "logo", value: file } })
+              }
+              error={errors.logo}
+              t={t}
+            />
+          </>
         );
       default:
         return null;
@@ -230,44 +221,54 @@ const RegisterRestaurant = () => {
   };
 
   return (
-    <div className="p-6 bg-white dark:bg-slate-900 rounded-lg shadow-md">
-      <h1 className="text-2xl dark:text-slate-400 font-bold mb-4">{t("Add Restaurant")}</h1>
-      <div className="mb-6">
-        <Stepper steps={steps} activeStep={currentStep} />
-      </div>
-      <form onSubmit={handleSubmit}>
-        {renderStepContent(currentStep)}
-        <div className="mt-6 flex justify-between">
-          <button
-            type="button"
-            onClick={() => handleStepChange("prev")}
-            className="flex items-center px-4 py-2 font-semibold bg-slate-200 text-slate-700 rounded"
-            disabled={currentStep === 0}
-          >
-            <ArrowLeft size={16} className="mr-2" />
-            {t("Back")}
-          </button>
-          {currentStep === steps.length - 1 ? (
-            <button
-              type="submit"
-              className="flex items-center px-4 py-2 bg-primary text-white font-semibold rounded"
-              disabled={isSubmitting}
-            >
-              <Save size={16} className="mr-2" />
-              {isSubmitting ? t("Saving...") : t("Save")}
-            </button>
-          ) : (
-            <button
-              type="button"
-              onClick={() => handleStepChange("next")}
-              className="flex items-center px-4 py-2 bg-primary text-white font-semibold rounded"
-            >
-              {t("Next")}
-              <ArrowRight size={16} className="ml-2" />
-            </button>
-          )}
+    <div className="relative flex min-h-screen items-center justify-center px-6 py-10 bg-slate-50 dark:bg-slate-900 sm:px-16">
+      <div className="relative w-full max-w-[900px] rounded-md bg-[linear-gradient(45deg,#f97316_0%,rgba(255,255,255,0)_25%,rgba(255,255,255,0)_75%,_#f97316_100%)] p-2 dark:bg-[linear-gradient(45deg,#f97316_0%,rgba(255,255,255,0)_25%,rgba(255,255,255,0)_75%,_#f97316_100%)]">
+        <div className="relative flex flex-col justify-center rounded-md bg-white/80 backdrop-blur-lg dark:bg-slate-900/80 px-6 lg:min-h-[500px] py-10">
+          <div className="mx-auto w-full max-w-[647px]">
+            <h1 className="text-2xl dark:text-slate-400 font-bold mb-4">
+              {t("Add Restaurant")}
+            </h1>
+            <div className="flex flex-col items-center">
+              <div className="mb-4">
+                <Stepper steps={steps} activeStep={currentStep} />
+              </div>
+              <form onSubmit={handleSubmit} className="w-full max-w-[647px]">
+                {renderStepContent(currentStep)}
+                <div className="mt-6 flex justify-between">
+                  <button
+                    type="button"
+                    onClick={() => handleStepChange("prev")}
+                    className="flex items-center px-4 py-2 font-semibold bg-slate-200 text-slate-700 rounded"
+                    disabled={currentStep === 0}
+                  >
+                    <ArrowLeft size={16} className="mr-2" />
+                    {t("Back")}
+                  </button>
+                  {currentStep === steps.length - 1 ? (
+                    <button
+                      type="submit"
+                      className="flex items-center px-4 py-2 bg-primary text-white font-semibold rounded"
+                      disabled={isSubmitting}
+                    >
+                      <Save size={16} className="mr-2" />
+                      {isSubmitting ? t("Saving...") : t("Save")}
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => handleStepChange("next")}
+                      className="flex items-center px-4 py-2 bg-primary text-white font-semibold rounded"
+                    >
+                      {t("Next")}
+                      <ArrowRight size={16} className="ml-2" />
+                    </button>
+                  )}
+                </div>
+              </form>
+            </div>
+          </div>
         </div>
-      </form>
+      </div>
     </div>
   );
 };
